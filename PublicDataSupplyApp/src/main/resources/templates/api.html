@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>사용자 테이블 </title>
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script type="text/javascript">
+      $(document).ready(function(){
+    	  $("#managerMenu").load("managermenu.html");
+          $("#commonMenu").load("commonmenu.html");
+          $("#commonNav").load("commonnav.html");
+          $("#userMenu").load("usermenu.html");
+          $("#alertMenu").load("alertMenu.html");
+          $("#page-top").addClass('sidebar-toggled');
+      });
+  </script> 
+</head> 
+  
+<body id="page-top" class="sidebar-toggled">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+ 	 <!-- Sidebar -->
+	
+     <!-- Sidebar -->
+	
+	 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+	
+	 <div id="commonMenu"></div>  <!--  managerMenu -->
+	  <!-- Heading -->
+      <div id="managerMenu"></div>  <!--  managerMenu -->
+      <!-- Divider -->
+      <div id="userMenu"></div>
+ 	  <hr class="sidebar-divider my-0">
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+      </ul>
+  
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+       <div id="commonNav"></div>  <!--  managerMenu -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+           <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    	
+            <h1 class="h3 mb-0 text-gray-800">API 관리</h1>
+            <a href="swagger-ui.html"  class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" target="_blank">외부 제공 API(SWAGGER)</a>              
+            
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="addApiButton">
+            <i class="fas fa-download fa-sm text-white-50"></i> API 등록</a>
+          </div>
+         <p class="mb-4">API 정보 목록 확인/등록/수정 화면 </p>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">API 리스트 </h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th style="display: none">ID</th>
+                      <th>API명</th>
+                      <th>상세API</th>
+                      <th>문서ID</th>
+                      <th>담당자</th>
+                      <th>승인</th>
+                      
+                      <th>등록일</th>
+                      <th>수정일</th>
+                      <th>상세</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th style="display: none">ID</th>
+                      <th>API명</th>
+                      <th>상세API</th>
+                      <th>문서ID</th>
+                      <th>담당자</th>
+                      <th>승인</th>
+                      <th>등록일</th>
+                      <th>수정일</th>
+                      <th>상세</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  	<tr th:each="obj : ${datalist}">
+    					<td style="display: none" th:text="${obj.apiId}"></td>
+    					<td th:text="${obj.apiName}"></td>
+    					<td th:text="${obj.apiDetailName}"></td>
+    					<td>
+    						<a th:href="'docDetailList.do?docId=' + @{${obj.docId}}" target="_blank"
+								th:text="${obj.docName}">-</a>
+    					</td>    					
+    					<td th:text="${obj.userId}"></td>
+    					<td th:text="${obj.approvalYN}"></td>
+    					<td th:text="${obj.regDate}"></td>
+    					<td th:text="${obj.updateDate}"></td>
+    					<td><button class="btn btn-success editApiButton" data-toggle="modal" data-target="#editApiModal">Edit</button></td>
+    				</tr>                
+    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+   <div class="modal fade" id="apiEditModal" tabindex="-1" role="dialog" aria-labelledby="apiModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="apiModalLabel">API 정보 수정</h4>
+
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/apiedit" method="post">
+            			<div class="form-group">
+            				<label for="apiUserId" class="col-md-3">ID</label>
+            				<input class="col-md-8" name="modalApiId" id="modalApiId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiName" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalApiName" id="modalApiName" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiUserId" class="col-md-3">담당자</label>
+            				<input class="col-md-8" name="modalApiUserId" id="modalApiUserId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiDocId" class="col-md-3">문서ID</label>
+            				<input class="col-md-8" name="modalApiDocId" id="modalApiDocId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiDocId" class="col-md-3">URL</label>
+            				<input class="col-md-8" name="modalApiUrl" id="modalApiUrl" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiConditions" class="col-md-3">조건</label>
+            				<input class="col-md-8" name="modalConditions" id="modalConditions" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiConditions" class="col-md-3">승인</label>
+            				<input class="col-md-8" name="modalApproval" id="modalApproval" value="">
+            			</div>
+            			
+					</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editApiModalButton">수정</button>
+                <button type="button" class="btn btn-primary" id="deleteApiModalButton">삭제</button>                
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="modal fade" id="apiAddModal" tabindex="-1" role="dialog" aria-labelledby="apiAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="apiModalLabel">API 정보 수정</h4>
+
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/apiadd" method="post">
+            			<div class="form-group">
+            				<label for="apiAddUserId" class="col-md-3">ID</label>
+            				<input class="col-md-8" name="modalAddApiId" id="modalAddApiId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddName" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalAddApiName" id="modalAddApiName" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddUserId" class="col-md-3">담당자</label>
+            				<input class="col-md-8" name="modalAddApiUserId" id="modalAddApiUserId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddDocId" class="col-md-3">문서ID</label>
+            				<input class="col-md-8" name="modalAddApiDocId" id="modalAddApiDocId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddDocId" class="col-md-3">URL</label>
+            				<input class="col-md-8" name="modalAddApiUrl" id="modalApiAddUrl" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddConditions" class="col-md-3">조건</label>
+            				<input class="col-md-8" name="modalAddConditions" id="modalAddConditions" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddApproval" class="col-md-3">조건</label>
+            				<input class="col-md-8" name="modalAddApproval" id="modalAddApproval" value="">
+            			</div>
+            			
+					</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addApiModalButton">추가</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
+  <script> 
+
+  
+  $("#addApiButton").click(
+  	function(){
+		
+		//$('#userModalLabel').val("사용자 등록");
+		$('#apiAddModal').modal();
+		//$('#userModalLabel').val("사용자 등록");
+		
+		
+		//userModalLabel
+  });
+  
+  $(".editApiButton").click(
+		  function(){
+			$('#apiEditModal').modal();	  
+		    var tdArr = new Array();
+		    var checkBtn = $(this);
+		    
+		    var tr = checkBtn.parent().parent();
+		    var td = tr.children();
+			var apiId = td.eq(0).text();
+		    var apiName = td.eq(1).text();
+		    var userId  = td.eq(2).text();
+		    var docId = td.eq(3).text();
+		    var apiUrl = td.eq(4).text();
+		    var conditions = td.eq(5).text();
+		    var approval = td.eq(6).text();
+		    
+		    
+		    $('#modalApiId').val(apiId);
+		    $('#modalApiName').val(apiName);
+		    $('#modalApiUserId').val(userId);
+		    $('#modalApiDocId').val(docId);
+		    $('#modalApiUrl').val(apiUrl);
+		    $('#modalConditions').val(conditions);
+		    $('#modalApproval').val(approval);
+		    
+		  });
+  $("#editApiModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "apiedit",
+		data:{
+			"APIID":$('#modalApiId').val(),
+			"APINAME":$('#modalApiName').val(),
+			"USERID":$('#modalApiUserId').val(),
+			"DOCID":$('#modalApiDocId').val(),
+			"APIURL":$('#modalApiUrl').val(),
+			"CONDITONS":$('#modalConditions').val(),
+			"APPROVAL":$('#modalApproval').val()
+		},
+		success:function(data){
+			alert('수정 성공');
+			window.open('api.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+	  });
+  });
+  $("#addApiModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "apiadd",
+		data:{
+			"APIID":$('#modalAddApiId').val(),
+			"APINAME":$('#modalAddApiName').val(),
+			"USERID":$('#modalAddApiUserId').val(),
+			"DOCID":$('#modalAddApiDocId').val(),
+			"APIURL":$('#modalApiAddUrl').val(),
+			"CONDITONS":$('#modalAddConditions').val(),
+			"APPROVAL":$('#modalApproval').val()
+		},
+		success:function(data){
+			alert('add 성공');
+			window.open('api.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		 
+	  });
+  });
+  $("#deleteApiModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "apidelete",
+		data:{
+			"APIID":$('#modalAddApiId').val(),
+			"APINAME":$('#modalAddApiName').val(),
+			"USERID":$('#modalAddApiUserId').val(),
+			"DOCID":$('#modalAddApiDocId').val(),
+			"APIURL":$('#modalApiAddUrl').val(),
+			"CONDITONS":$('#modalAddConditions').val(),
+			"APPROVAL":$('#modalApproval').val()
+		},
+		success:function(data){
+			alert('add 성공');
+			window.open('api.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		 
+	  });
+  });
+  
+  
+  </script>  
+</body>
+
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>사용자 테이블 </title>
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script type="text/javascript">
+      $(document).ready(function(){
+         $("#managerMenu").load("managermenu.html");
+         $("#commonMenu").load("commonmenu.html");
+         $("#commonNav").load("commonnav.html");
+         $("#userMenu").load("usermenu.html");
+         $("#alertMenu").load("alertMenu.html");
+         $("#page-top").addClass('sidebar-toggled');
+      });
+  </script> 
+</head> 
+<body id="page-top" class="sidebar-toggled">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+      <div id="commonMenu"></div>  <!--  managerMenu -->
+     
+	  <!-- Heading -->
+      <div id="managerMenu"></div>  <!--  managerMenu -->
+      <!-- Divider -->
+      <div id="userMenu"></div>
+ 	  <hr class="sidebar-divider my-0">
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+      </ul>	
+<!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+     	 <div id="commonNav"></div>  <!--  managerMenu -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+           <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    	
+            <h1 class="h3 mb-0 text-gray-800">사용자 관리</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="addUserButton">
+            <i class="fas fa-download fa-sm text-white-50"></i> 사용자 등록</a>
+             
+          </div>
+         <p class="mb-4">사용자 정보 목록 확인/등록/수정 화면 </p>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">사용자 리스트 </h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>직원번호</th>
+                      <th>이름</th>
+                      <th>부서</th>
+                      <th>권한</th>
+                      <th>등록일</th>
+                      <th>수정일</th>
+                      <th style="display:none">부서코드</th>
+                      <th>MODIFY</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>직원번호</th>
+                      <th>이름</th>
+                      <th>부서</th>    
+                      <th>권한</th>
+                      <th>등록일</th>
+                      <th>수정일</th>
+                      <th style="display:none">부서코드</th>
+                      <th>MODIFY</th>
+                
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  	<tr th:each="obj : ${datalist}">
+    					<td th:text="${obj.userId}"></td>
+    					<td th:text="${obj.userName}"></td>
+    					<td th:text="${obj.depName}" ></td>
+    					<td th:text="${obj.authCode}"></td>
+    					<td th:text="${obj.regDate}"></td>
+    					<td th:text="${obj.updateDate}"></td>
+    					<td th:text="${obj.depCode}" style="display:none"></td>
+    					
+    					<td><button class="btn btn-success editButton" data-toggle="modal" data-target="#myModal">Edit</button></td>
+    				</tr>                
+    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+   <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="userModalLabel">사용자 정보 수정</h4>
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/useredit" method="post">
+            			<div class="form-group">
+            				<label for="id" class="col-md-3">직원번호</label>
+            				<input class="col-md-8" name="modalId" id="modalId" value="" disabled>
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalName" id="modalName" value="">
+            			</div>
+            			
+            			<div class="form-group">
+            				<label for="dep" class="col-md-3">부서</label>
+            				<select id="modalDep" name="modalDep">
+                       			  <option value=""> -- </option>
+                         		  <option th:each="entry : ${depMap.entrySet()}" th:value="${entry.key}" th:utext="${entry.value}"></option>
+                  			</select>
+            			</div>
+            			
+            			
+            			<div class="form-group">
+            				<label for="auth" class="col-md-3">AUTH</label>
+            				<select id="modalAuth" name="modalAuth">
+            					<option value="ADMIN">ADMIN</option>
+            					<option value="USER">USER</option>
+            				</select>
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">등록일</label>
+            				<input class="col-md-8" name="modalRegDate" id="modalRegDate" value="" disabled>
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">수정일</label>
+            				<input class="col-md-8" name="modalUpdateDate" id="modalUpdateDate" value="" disabled>
+            			</div>
+            			
+            		</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editUserModalButton">수정</button>
+                <button type="button" class="btn btn-danger" id="deleteUserModalButton">삭제</button>                
+            </div>
+        </div>
+    </div>
+    
+  </div>
+  <div class="modal fade" id="userAddModal" tabindex="-1" role="dialog" aria-labelledby="userAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="userAddModalLabel">사용자 정보 입력</h4>
+
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/useradd" method="post">
+            			<div class="form-group">
+            				<label for="id" class="col-md-3">직원번호</label>
+            				<input class="col-md-8" name="modalAddId" id="modalAddId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalAddName" id="modalAddName" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="dep" class="col-md-3">부서</label>
+            				<select id="modalAddDep" name="modalDep">
+                       			  <option value=""> -- </option>
+                         		  <option th:each="depInfo : ${deplist}"
+   										th:value="${depInfo.depCode}"
+                           				th:utext="${depInfo.depName}"/>
+                  			</select>
+            			</div>
+            			<div class="form-group">
+            				<label for="auth" class="col-md-3">AUTH</label>
+            				<select id="modalAddAuth" name="modalAuth">
+            					<option value="ADMIN">ADMIN</option>
+            					<option value="USER">USER</option>
+            				</select>
+            			</div>
+            		</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addUserModalButton">추가</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
+  <script> 
+
+
+  $("#addUserButton").click(
+  	function(){
+		
+		$('#userModalLabel').val("사용자 등록");
+		$('#userAddModal').modal();
+		//$('#userModalLabel').val("사용자 등록");
+		
+		
+		//userModalLabel
+  });
+  
+  $(".editButton").click(
+		  function(){
+			$('#userEditModal').modal();	  
+		    var tdArr = new Array();
+		    var checkBtn = $(this);
+		    
+		    var tr = checkBtn.parent().parent();
+		    var td = tr.children();
+			var id = td.eq(0).text();
+		    var name = td.eq(1).text();
+		    var dep = td.eq(6).text();//depName이 아닌 코드 값으로 
+		    var auth = td.eq(3).text();
+		    var reg = td.eq(4).text();
+		    var update = td.eq(5).text();
+		    
+		    
+		    $('#modalId').val(id);
+		    $('#modalName').val(name);
+		    $('#modalDep').val(dep);
+		    $('#modalAuth').val(auth);
+		    $('#modalRegDate').val(reg);
+		    $('#modalUpdateDate').val(update);
+		    
+		    
+		//    <th>직원번호</th>
+         //   <th>이름</th>
+          //  <th>부서</th>    
+           // <th>권한</th>
+           // <th>등록일</th>
+           // <th>수정일</th>
+           // <th>MODIFY</th>
+		  //  modalUpdateDate
+		    
+		    
+		  });
+  $("#editUserModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "useredit",
+		data:{
+			"ID":$('#modalId').val(),
+			"NAME":$('#modalName').val(),
+			"DEP":$('#modalDep').val(),
+			"AUTH":$('#modalAuth').val(),
+			"REGDATE":$('#modalRegDate').val(),
+			
+		},
+		success:function(data){
+			alert('수정 성공');
+			window.open('user.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		
+	  });
+  });
+  $("#addUserModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "useradd",
+		data:{
+			"ID":$('#modalAddId').val(),
+			"NAME":$('#modalAddName').val(),
+			"DEP":$('#modalAddDep').val(),
+			"AUTH":$('#modalAddAuth').val()
+		},
+		success:function(data){
+			alert('add 성공');
+			window.open('user.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		 
+	  }); 
+  });
+  $("#deleteUserModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "userdelete",
+		data:{
+			"ID":$('#modalId').val(),
+			"NAME":$('#modalName').val(),
+			"DEP":$('#modalDep').val(),
+			"AUTH":$('#modalAuth').val()
+		},
+		success:function(data){
+			alert('delete 성공');
+			window.open('user.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		
+	  });
+  });
+  
+  </script>  
+</body>
+
+</html>

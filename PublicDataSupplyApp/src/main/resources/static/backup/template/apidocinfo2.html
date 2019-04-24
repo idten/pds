@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>사용자 테이블 </title>
+ 
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+	font-family: "Malgun gothic", sans-serif;
+}
+
+.table>tbody>tr>.no-line {
+	border-top: none;
+}
+/*.table > thead > tr > .no-line {border-bottom: none;}*/
+.table>tbody>tr>.thick-line {
+	border-top: 2px solid;
+}
+
+.gr {
+	background-color: #F2F2F0
+}
+</style>
+  <script type="text/javascript">
+      $(document).ready(function(){
+         $("#managerMenu").load("managermenu.html");
+         $("#commonMenu").load("commonmenu.html");
+         $("#userMenu").load("usermenu.html");
+         $("#alertMenu").load("alertMenu.html");
+      });
+  </script> 
+</head> 
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <div id="commonMenu"></div>  <!--  managerMenu -->
+     
+	  <!-- Heading -->
+      <div id="managerMenu"></div>  <!--  managerMenu -->
+      <!-- Divider -->
+      <div id="userMenu"></div>
+ 	  <hr class="sidebar-divider my-0">
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+      </ul>
+	
+<!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Search -->
+          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+                
+               
+                
+              </div>
+            </div>
+          </form>
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+            <!-- Nav Item - Alerts -->
+          <div id="alertMenu"></div>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Settings
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Activity Log
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+
+          </ul>
+ 
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+<div class="col-md-12">
+			<div class="panel with-nav-tabs panel-primary">
+				<div class="panel-heading">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab1primary" data-toggle="tab">펀드정보조회</a></li>
+						<li><a href="#tab2primary" data-toggle="tab">Primary 2</a></li>
+						<li><a href="#tab3primary" data-toggle="tab">Primary 3</a></li>
+						<li class="dropdown"><a href="#" data-toggle="dropdown">Dropdown
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#tab4primary" data-toggle="tab">Primary 4</a></li>
+								<li><a href="#tab5primary" data-toggle="tab">Primary 5</a></li>
+							</ul></li>
+					</ul>
+				</div>
+				<div class="panel-body">
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab1primary">
+						
+						<h1>펀드누적 수익률정보 조회</h1>
+         <hr>  
+          <p>공공데이터 기업은행 펀드 누적 수익률 정보 조회 <br>
+   
+						  <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">문서정보</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td class="text-center gr"><strong>담당자</strong> </td>
+                    <td>박현조(d23358)</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center gr"><strong>담당부서)</strong></td>
+                    <td>개인상품부</td> 
+                  </tr>
+                  <tr>
+                    <td class="text-center gr"><strong>제공명</strong></td>
+                     <td>공공데이터 기업은행 펀드누적 수익률정보 조회</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center gr"><strong>상세정보 </strong></td>
+                     <td>펀드투자지역코드, 펀드유형구분코드 등의 입력 파라미터를 이용하여펀드 목록 및 상세정보를 조회할 수 있는 서비스 </td>
+                  </tr>
+                  <tr>
+                    <td class="text-center gr"><strong>갱신주기</strong></td>
+                     <td>일 1회</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center gr"><strong>파일업로드</strong></td>
+                     <td>업로드~~~~<button>업로드 버튼</button></td>
+                  </tr>                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+    </div>		
+	   <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">제공 API</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th class="text-center">API명</th>
+                    <th class="text-center">상세기능명</th>
+                    <th class="text-center">등록일자</th>
+                    <th class="text-right">상세</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>펀드누적수익률정보 조회 서비스 </td>
+                    <td class="text-center">목록조회(전체)</td>
+                    <td class="text-center">2019.04.01</td>
+                    <td class="text-right">
+                    
+                    
+                    <button class="primary">상세</button>
+                    <button onclick="window.open('apidetail.do')">button</button>
+                    
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>펀드유형별누적 수익률 TOP5 조회 </td>
+                    <td class="text-center">펀드유형별 누적수익률 TOP 5 조회</td>
+                    <td class="text-center">2019.04.01</td>
+                    <td class="text-right"><button class="primary">상세</button></td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>펀드투자지역별누적수익률 TOP5정보조회 </td>
+                    <td class="text-center">펀드투자지역별누적수익률 TOP5정보조회</td>
+                    <td class="text-center">2019.04.01</td>
+                    <td class="text-right"><button class="primary">상세</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+           <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">최근 처리 이력</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th class="text-center">파일명 </th>
+                    <th class="text-center">상세내용</th>
+                    <th class="text-center">등록일시</th>
+                    <th class="text-right">상세</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>파일명 </td>
+                    <td class="text-center">업로드</td>
+                    <td class="text-center">2019.04.03 13:22</td>
+                    <td class="text-right"><button class="primary">상세</button></td>
+                  </tr>
+                                    <tr>
+                    <td>2</td>
+                    <td>파일명 </td>
+                    <td class="text-center">업로드</td>
+                    <td class="text-center">2019.04.02 13:22</td>
+                    <td class="text-right"><button class="primary">상세</button></td>
+                  </tr>
+                                    <tr>
+                    <td>3</td>
+                    <td>파일명 </td>
+                    <td class="text-center">업로드</td>
+                    <td class="text-center">2019.04.01 13:22</td>
+                    <td class="text-right"><button class="primary">상세</button></td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+	   
+					
+						</div>
+						<div class="tab-pane fade" id="tab2primary">Primary 2</div>
+						<div class="tab-pane fade" id="tab3primary">Primary 3</div>
+						<div class="tab-pane fade" id="tab4primary">Primary 4</div>
+						<div class="tab-pane fade" id="tab5primary">Primary 5</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+   <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="userModalLabel">사용자 정보 수정</h4>
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/useredit" method="post">
+            			<div class="form-group">
+            				<label for="id" class="col-md-3">직원번호</label>
+            				<input class="col-md-8" name="modalId" id="modalId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalName" id="modalName" value="">
+            			</div>
+            			
+            			<div class="form-group">
+            				<label for="dep" class="col-md-3">부서</label>
+            				<select id="modalDep" name="modalDep">
+                       			  <option value=""> -- </option>
+                         		  <option th:each="entry : ${depMap.entrySet()}" th:value="${entry.key}" th:utext="${entry.value}"></option>
+                  			</select>
+            			</div>
+            			
+            			
+            			<div class="form-group">
+            				<label for="auth" class="col-md-3">AUTH</label>
+            				<select id="modalAuth" name="modalAuth">
+            					<option value="ADMIN">ADMIN</option>
+            					<option value="USER">USER</option>
+            				</select>
+            			</div>
+            		</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editUserModalButton">수정</button>
+                <button type="button" class="btn btn-danger" id="deleteUserModalButton">삭제</button>                
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="modal fade" id="userAddModal" tabindex="-1" role="dialog" aria-labelledby="userAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="userAddModalLabel">사용자 정보 입력</h4>
+
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/useradd" method="post">
+            			<div class="form-group">
+            				<label for="id" class="col-md-3">직원번호</label>
+            				<input class="col-md-8" name="modalAddId" id="modalAddId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalAddName" id="modalAddName" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="dep" class="col-md-3">부서</label>
+            				<select id="modalAddDep" name="modalDep">
+                       			  <option value=""> -- </option>
+                         		  <option th:each="depInfo : ${deplist}"
+   										th:value="${depInfo.depCode}"
+                           				th:utext="${depInfo.depName}"/>
+                  			</select>
+            			</div>
+            			<div class="form-group">
+            				<label for="auth" class="col-md-3">AUTH</label>
+            				<select id="modalAddAuth" name="modalAuth">
+            					<option value="ADMIN">ADMIN</option>
+            					<option value="USER">USER</option>
+            				</select>
+            			</div>
+            		</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addUserModalButton">추가</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
+  <script> 
+
+
+  $("#addUserButton").click(
+  	function(){
+		
+		$('#userModalLabel').val("사용자 등록");
+		$('#userAddModal').modal();
+		//$('#userModalLabel').val("사용자 등록");
+		
+		
+		//userModalLabel
+  });
+  
+  $(".editButton").click(
+		  function(){
+			$('#userEditModal').modal();	  
+		    var tdArr = new Array();
+		    var checkBtn = $(this);
+		    
+		    var tr = checkBtn.parent().parent();
+		    var td = tr.children();
+			var id = td.eq(0).text();
+		    var name = td.eq(1).text();
+		    var dep = td.eq(2).text();
+		    var auth = td.eq(3).text();
+		    var reg = td.eq(4).text();
+		    var update = td.eq(5).text();
+		    
+		    
+		    $('#modalId').val(id);
+		    $('#modalName').val(name);
+		    $('#modalDep').val(dep);
+		    $('#modalAuth').val(auth);
+		    
+		    
+		  });
+  $("#editUserModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "useredit",
+		data:{
+			"ID":$('#modalId').val(),
+			"NAME":$('#modalName').val(),
+			"DEP":$('#modalDep').val(),
+			"AUTH":$('#modalAuth').val()
+		},
+		success:function(data){
+			alert('수정 성공');
+			window.open('user.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		
+	  });
+  });
+  $("#addUserModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "useradd",
+		data:{
+			"ID":$('#modalAddId').val(),
+			"NAME":$('#modalAddName').val(),
+			"DEP":$('#modalAddDep').val(),
+			"AUTH":$('#modalAddAuth').val()
+		},
+		success:function(data){
+			alert('add 성공');
+			window.open('user.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		 
+	  }); 
+  });
+  $("#deleteUserModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "userdelete",
+		data:{
+			"ID":$('#modalId').val(),
+			"NAME":$('#modalName').val(),
+			"DEP":$('#modalDep').val(),
+			"AUTH":$('#modalAuth').val()
+		},
+		success:function(data){
+			alert('delete 성공');
+			window.open('user.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		
+	  });
+  });
+  
+  </script>  
+</body>
+
+</html>

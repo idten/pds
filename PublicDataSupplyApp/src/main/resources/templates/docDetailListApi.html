@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko-kr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문서 상세정보</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+	font-family: "Malgun gothic", sans-serif;
+}
+
+.table>tbody>tr>.no-line {
+	border-top: none;
+}
+/*.table > thead > tr > .no-line {border-bottom: none;}*/
+.table>tbody>tr>.thick-line {
+	border-top: 2px solid;
+}
+
+.gr {
+	background-color: #F2F2F0
+}
+
+.panel-title {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 16px;
+	color: black;
+}
+
+.panel-primary>.panel-heading {
+	color: #fff;
+	background-color: #09bd590f;
+	border-color: #428bca;
+}
+
+.container {
+	width: 100%;
+}
+</style>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script src="vendor/jquery/jquery.min.js"></script>
+
+</head>
+<body>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				문서 상태 정보 <span id="docId" th:text="${docStatus.docId}"></span>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th class="text-center" style="display: none">docId ID</th>
+							<th class="text-center">현재상태</th>
+							<th class="text-center">파일명</th>
+							<th class="text-center">파일사이즈</th>
+							<th class="text-center">최근업데이트일</th>
+							<th class="text-center">승인</th>
+							<th class="text-center">업로드</th>
+							<th class="text-center">확인</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="text-center" th:text="${docStatus.status}"></td>
+							<td class="text-center" th:text="${docStatus.fileName}"></td>
+							<td class="text-center" th:text="${docStatus.fileSize}"></td>
+							<td class="text-center" th:text="${docStatus.updateDate}"></td>
+							<td class="text-center" th:text="${docStatus.approval}"></td>
+
+							<td>
+								<form id="uploadForm" enctype="multipart/form-data">
+									<input type="file" id="fileId" name="file-data" />
+								</form>
+							</td>
+							<td>
+								<button type="button" class="btn btn-danger"
+									id="fileUploadButton">업로드</button>
+							</td>
+
+
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				제공 API 리스트<span th:text="${docStatus.docId}"></span>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th class="text-center" style="display: none">API ID</th>
+							<th class="text-center">API명</th>
+							<th class="text-center">상세API</th>
+							<th class="text-center">등록일</th>
+							<th class="text-center">수정일</th>
+							<th class="text-right">상세</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="obj : ${apilist}">
+							<td class="text-center" th:text="${obj.apiId}"
+								style="display: none"></td>
+							<td class="text-center" th:text="${obj.apiName}"></td>
+							<td class="text-center" th:text="${obj.apiDetailName}"></td>
+							<td class="text-center" th:text="${obj.regDate}"></td>
+							<td class="text-center" th:text="${obj.updateDate}"></td>
+							<td class="text-center"><button class="primary">상세</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">수행 로그</h3>
+		</div>
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-condensed">
+					<thead>
+						<tr align="center">
+							<th style="display: none">로그 ID</th>
+							<th>DOC ID</th>
+							<th>문서명</th>
+							<th>Actin ID</th>
+							<th>Action</th>
+							<th>USER</th>
+							<th>일시</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+						</tr>
+					</tfoot>
+					<tbody>
+						<tr th:each="obj : ${logDoclist}" align="center">
+							<td th:text="${obj.logId}" style="display: none"></td>
+							<td th:text="${obj.docId}"></td>
+							<td th:text="${obj.docName}"></td>
+							<td th:text="${obj.action}"></td>
+							<td th:text="${obj.docUpId}"></td>
+							<td th:text="${obj.owner}"></td>
+							<td th:text="${obj.trxDate}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src='js/bootstrap.min.js'></script>
+	<script>
+		$(document).ready(function() {
+			// 	  $("#docTab li:nth-child(1)").addClass('active');
+			//alert("Test");
+			$("#docTab ul li").first().addClass("active");
+			//  	  $('.tab-content:first-child').first().addClass('active');
+			$(".tab-pane").first().addClass("active in");
+		});
+		
+
+		$('#fileUploadButton').on('click', function() {
+			alert("upload");
+			var checkBtn = $(this);
+
+			var tr = checkBtn.parent().parent();
+			var td = tr.children();
+			var docId = $('#docId').text();
+		//	var approval = td.eq(4).text();
+
+			alert("docId" + docId)
+			docId = $('#docId').html();
+			alert("docId2" + docId)
+			
+			//			"docId" : $('#docId').val(),
+		//	var docName = td.eq(1).text();
+		//	var docOwners = td.eq(2).text();
+		//	var docOwnerName = td.eq(3).text();
+	//		var approval = td.eq(4).text();
+
+		//	alert("docId" + docId)
+			var form = new FormData(document.getElementById('uploadForm'));
+			form.append("docId", docId);
+	//		form.append("docName", docName);
+	//		form.append("docOwners", docOwners);
+	//		form.append("docOwnerName", docOwnerName);
+	//		form.append("approval", approval);
+			//form.append("docId", docId);
+
+			$.ajax({
+				url : "uploadFile",
+				data : form,
+		
+				dataType : 'text',
+
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					alert('upload 성공');
+					window.open('docDetailListApi.do?docId='+docId, '_self');
+				},
+				error : function(data) {
+					alert('Error:' + data);
+				}
+			});
+		});
+	</script>
+
+</body>
+
+</html>
