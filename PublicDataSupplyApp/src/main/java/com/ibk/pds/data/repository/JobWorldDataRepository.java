@@ -8,4 +8,6 @@ import com.ibk.pds.data.model.JobWorldData;
 
 public interface JobWorldDataRepository  extends MongoRepository<JobWorldData,String>{
 	public  List<JobWorldData> findByStdYM(String stdYM);
+	
+	public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
 }

@@ -84,7 +84,8 @@ public class statController {
 		//return mav;
 		
 		mav.setViewName("stat");
-		return mav;
+		return mav; 
+		
 	}
 
 }

@@ -42,4 +42,14 @@ public class JobWorldDataService {
 		return list;
 	}
 	
+	//public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
+	public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode) {
+		logger.info("stdDate="+stdYM);
+		List<JobWorldData> list = jobWorldDataRepository.findByStdYMAndIndustryCode(stdYM, industryCode);
+		//.findByStdYM(stdDate);
+		
+		logger.info("getByStdDate ="+list.size());
+		return list;
+	}
+	
 }

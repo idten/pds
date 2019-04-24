@@ -1,10 +1,10 @@
-package com.ibk.pds.api.model.IonejobCareerStaticsview;
+package com.ibk.pds.api.model.EmploymentInfo;
 
 //채용정보 산업별 조회
 //조회조건: stdYm
 //등록일자: 2019.04.23 
 //등록자   : 박현조
-public class viewCareerStatisticsListRequest {
+public class ViewCareersRequest {
 	private String serviceKey;   	//서비스키(공공데이터포털에서 받은 인증키)
 	private Integer numOfRows;		//한 페이지 결과 수 (10)- 필수 입력 아님 
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 

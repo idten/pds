@@ -1,4 +1,4 @@
-package com.ibk.pds.api.model.IonejobCareerStaticsview;
+package com.ibk.pds.api.model.EmploymentInfo;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.ibk.pds.data.model.JobWorldData;
 //조회조건: stdYm
 //등록일자: 2019.04.23 
 //등록자   : 박현조
-public class viewCareerStatisticsListResponse {
+public class ViewCareersResponse {
 
 	//private
 	//공통 코드 
@@ -19,13 +19,18 @@ public class viewCareerStatisticsListResponse {
 	
 	private Integer numOfRows=0;
 	
-	@JacksonXmlProperty(localName="items")
-	@JacksonXmlElementWrapper(useWrapping=false)
-	
-	private List<JobWorldData> listJobWorldData;
-	
-	
-	
+//	@JacksonXmlProperty(localName="items")
+	@JacksonXmlElementWrapper(localName="items" , useWrapping=true)
+	private List<ViewCareersResponseSub> item;
+
+	public List<ViewCareersResponseSub> getItem() {
+		return item;
+	}
+
+	public void setItem(List<ViewCareersResponseSub> item) {
+		this.item = item;
+	}
+
 	public String getResultCode() {
 		return resultCode;
 	}
@@ -50,15 +55,9 @@ public class viewCareerStatisticsListResponse {
 		this.numOfRows = numOfRows;
 	}
 
-	public List<JobWorldData> getListJobWorldData() {
-		return listJobWorldData;
-	}
+	
 
-	public void setListJobWorldData(List<JobWorldData> listJobWorldData) {
-		this.listJobWorldData = listJobWorldData;
-	}
-
-
+	
 	
 
 }

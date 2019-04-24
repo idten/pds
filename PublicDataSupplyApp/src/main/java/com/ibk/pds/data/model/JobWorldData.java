@@ -8,19 +8,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Document(collection = "PDS_JOBWORLD_DATA")
 public class JobWorldData {
-	
-	
-	
 	//기준일자(stdYm) + 세부구분코드 detailIndustryCode
 	@Id
 	private String dataId;
-	
 	private String stdYM;
-	
 	private String industryName;
-	
 	private String industryCode;
-	
 	private String detailIndustryName;
 	private String detailIndustryCode;
 	
