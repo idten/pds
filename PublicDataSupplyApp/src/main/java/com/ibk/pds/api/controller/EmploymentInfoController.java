@@ -19,6 +19,7 @@ import com.ibk.pds.api.model.EmploymentInfo.ViewCareersDetailRequest;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersRequest;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersResponse;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersResponseSub;
+import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.service.JobWorldDataService;
@@ -35,6 +36,8 @@ public class EmploymentInfoController {
 	private Logger logger = LoggerFactory.getLogger(EmploymentInfoController.class);
 	//전처리
 	
+	@Autowired
+	AuthService authService;
 	@Value("${authYN}")
 	private String authYN;
 	
@@ -45,8 +48,24 @@ public class EmploymentInfoController {
 	//검색기준: stdYm  년월 
 	@RequestMapping(value="/viewCareersStatisticsList",produces="application/xml")
 	public  ViewCareersResponse viewCareersStatisticsList(@RequestBody ViewCareersRequest request) {
+		
 		logger.info("JobWorldRequest="+request.toString());
+		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
+		Random generator = new Random();   
+		int num= generator.nextInt(100);    
+		String logId = key + Integer.toString(num);
+		String apiId= "A20190423012943";
+		String apiUrl=	"/EmploymentInfo/viewCareersStatisticsList";
 		ViewCareersResponse response = new ViewCareersResponse();
+		
+		int result = 0;
+		if(authYN.contentEquals("Y"))
+			result = authService.auth();
+		
+		if(result!=-1) {
+			logger.info("인증실패");
+		
+	//	ViewCareersResponse response = new ViewCareersResponse();
 		List<JobWorldData> list = new ArrayList<JobWorldData>();
 		//응답전문의 List
 		List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
@@ -80,15 +99,6 @@ public class EmploymentInfoController {
 
 		}
 		response.setItem(responseSubList);
-
-		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
-		Random generator = new Random();   
-		int num= generator.nextInt(100);    
-		
-		//apinInfo 가져와서 set
-		String logId = key + Integer.toString(num);
-		String apiId= "A20190423012943";
-		String apiUrl=	"/EmploymentInfo/viewCareersStatisticsList";
 		logger.info("인증수행 여부 ="+authYN);
 		//추후 apiInfo 조회를 통해서 처리 
 		String apiName = "잡월드채용정보월별조회";
@@ -98,11 +108,25 @@ public class EmploymentInfoController {
 		String responseMessage = response.toString();
 		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
+		
 		LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 		logApiDataService.saveApiData(logApiData);
 		//.saveLogApiData(logApiData);
+		}else {
+			
+			
+			//추후 apiInfo 조회를 통해서 처리 
+			String apiName = "잡월드채용정보월별조회";
+			String action = "CALL";
+			String statusCode ="1111";//코드 확인필요 
+			String requestMessage = request.toString();
+			String responseMessage = response.toString();
+			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
+			
+			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 
+		}
 
 		return response;			
 	}
@@ -111,8 +135,33 @@ public class EmploymentInfoController {
 	@RequestMapping(value="/viewCareersStatisticsDetailList",produces="application/xml")
 	public  ViewCareersResponse viewCareersStatisticsDetailList(@RequestBody ViewCareersDetailRequest request) {
 		logger.info("JobWorldRequest="+request.toString());
-		//		logger.info("job="+jobWorldRequest);			
+		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
+		Random generator = new Random();   
+		int num= generator.nextInt(100);    
+
+		String logId = key + Integer.toString(num);
+		String apiId= "A20190423013000";
+		String apiUrl=	"/EmploymentInfo/viewCareersStatisticsDetailList";
 		ViewCareersResponse response = new ViewCareersResponse();
+		
+		int result = 0;
+		if(authYN.contentEquals("Y"))
+			result = authService.auth();
+		
+		if(result!=-1) {
+			logger.info("인증실패");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		logger.info("JobWorldRequest="+request.toString());
+		//		logger.info("job="+jobWorldRequest);			
+		//ViewCareersResponse response = new ViewCareersResponse();
 		//JobWorldResponse jobWorldResponse = new JobWorldResponse();
 		List<JobWorldData> list = new ArrayList<JobWorldData>();
 		//응답전문의 List
@@ -152,13 +201,7 @@ public class EmploymentInfoController {
 		}
 		response.setItem(responseSubList);
 
-		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
-		Random generator = new Random();   
-		int num= generator.nextInt(100);    
-
-		String logId = key + Integer.toString(num);
-		String apiId= "A20190423013000";
-		String apiUrl=	"/EmploymentInfo/viewCareersStatisticsDetailList";
+	
 		
 		//추후 apiInfo 조회를 통해서 처리 
 		String apiName = "잡월드채용정산업별조회";
@@ -171,6 +214,18 @@ public class EmploymentInfoController {
 		LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 		logApiDataService.saveApiData(logApiData);
 			//.saveLogApiData(logApiData);
+		}else {
+			String apiName = "잡월드채용정산업별조회";
+			String action = "CALL";
+			String statusCode ="1111";
+			String requestMessage = request.toString();
+			String responseMessage = response.toString();
+			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			logApiDataService.saveApiData(logApiData);
+			
+		}
 		return response;			
 	}
 
