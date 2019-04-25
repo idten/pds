@@ -24,5 +24,13 @@ public class DateUtil {
 		//return dTime
 	}
 	
+	public static String getDateYYYY_MM_DDHHMMSSMISSS() {
+		SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy-MM-dd.HH:mm:ss.SSS", Locale.KOREA );
+		Date currentTime = new Date ( );
+		return formatter.format ( currentTime );
+		//return dTime
+	}
+	
+	
 	
 }

@@ -13,7 +13,10 @@ public class ViewCareersResponseSub {
 	public ViewCareersResponseSub() {
 		
 	}
-	
+	public String toString() {
+		return "[stdYm="+stdYm+",industryName="+industryName+",industryCode="+industryCode+",detailIndustryName="+detailIndustryName
+				+",careersCount="+careersCount+",careersPer="+careersPer+"]";
+	}
 	
 	public ViewCareersResponseSub(String stdYm, 
 			String industryName, 

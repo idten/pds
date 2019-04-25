@@ -23,6 +23,20 @@ public class ViewCareersResponse {
 	@JacksonXmlElementWrapper(localName="items" , useWrapping=true)
 	private List<ViewCareersResponseSub> item;
 
+	public String toString() {
+
+		 String result = "resultCode="+resultCode+",resultMsg="+resultMsg+",numOfRows"+numOfRows;
+		 String subResult = "";
+		 int size = item.size();
+		 for(int i = 0 ;i<size;i++) {
+			 ViewCareersResponseSub subItem = item.get(0);
+			 subResult += "["+(i+1)+"]"+subItem.toString()+"\n";
+		 }
+		 
+		 return result+subResult;
+	}
+	
+	
 	public List<ViewCareersResponseSub> getItem() {
 		return item;
 	}
@@ -56,7 +70,7 @@ public class ViewCareersResponse {
 	}
 
 	
-
+	
 	
 	
 

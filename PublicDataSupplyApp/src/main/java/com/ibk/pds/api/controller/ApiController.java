@@ -65,6 +65,7 @@ public class ApiController {
 		String logId = key + Integer.toString(num);
 		String apiId="APIID";
 		String apiName = "IONEJOB";
+		String apiUrl = "test";
 		String action = "호출 ";
 		String statusCode ="0000";
 		String request = "<xml>요청 전문<xml>";
@@ -80,7 +81,7 @@ public class ApiController {
 //				String response,
 //				String trxDate) 
 
-		LogApiData logApiData = new LogApiData(logId,apiId,apiName,action,statusCode,request,response,trxDate);
+		LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl, action,statusCode,request,response,trxDate);
 		logApiDataService.saveApiData(logApiData);
 		//.saveLogApiData(logApiData);
 		
