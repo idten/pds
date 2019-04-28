@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ibk.pds.common.model.ApiInfo;
@@ -48,11 +50,27 @@ public class JobWorldDataService {
 	}
 	public List<JobWorldData> findByStdDate(String stdDate) {
 		logger.info("stdDate="+stdDate);
-		List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
+		//List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
+		Pageable firstPageWithTwoElements = PageRequest.of(1, 2);
+		
+	//	List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
+		List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate,firstPageWithTwoElements);
 		logger.info("getByStdDate ="+list.size());
 		return list;
 	}
+	public List<JobWorldData> findByStdDatePaging(String stdDate,Pageable page) {
+		logger.info("stdDate="+stdDate);
+		//List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
+		
+	//	List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
+		List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate,page);
+		logger.info("getByStdDate(Paging) ="+list.size());
+		return list;
+	}
+	
 
+	
+	
 	//public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
 	public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode) {
 		logger.info("stdDate="+stdYM);
@@ -62,5 +80,14 @@ public class JobWorldDataService {
 		logger.info("getByStdDate ="+list.size());
 		return list;
 	}
+	public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode,Pageable page) {
+		logger.info("stdDate="+stdYM);
+		List<JobWorldData> list = jobWorldDataRepository.findByStdYMAndIndustryCode(stdYM, industryCode,page);
+		//.findByStdYM(stdDate);
+
+		logger.info("getByStdDat(Paging)e ="+list.size());
+		return list;
+	}
+	
 
 }

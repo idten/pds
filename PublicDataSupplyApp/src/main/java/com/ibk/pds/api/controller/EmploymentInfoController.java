@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,9 +71,24 @@ public class EmploymentInfoController {
 		List<JobWorldData> list = new ArrayList<JobWorldData>();
 		//응답전문의 List
 		List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
-
+		
+		int page = request.getPageNo();
+		int size = request.getNumOfRows();
+		
+		
+		logger.info("Paging:"+page+",size="+size);
+		
+		if(size==0) {
+			size=10;
+			logger.info("Paging:"+page+",size="+size);
+		}
+		Pageable paging = PageRequest.of(page, size);
+	//	jobWorldDataService.findByStdDatePaging(stdDate, page);
 		//JobWorldData List를 ViewCareersRequestSub List로 변환 
-		list = jobWorldDataService.findByStdDate(request.getStdYm());
+		list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
+		
+		//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
+		
 		String stdYm = "";
 		String industryName = "";
 		String industryCode = "";
@@ -167,8 +184,27 @@ public class EmploymentInfoController {
 		//응답전문의 List
 		List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
 
+		
+		
+		
+		
+		int page = request.getPageNo();
+		int size = request.getNumOfRows();
+		
+		
+		logger.info("Paging:"+page+",size="+size);
+		
+		if(size==0) {
+			size=10;
+			logger.info("Paging:"+page+",size="+size);
+		}
+		Pageable paging = PageRequest.of(page, size);
+	//	jobWorldDataService.findByStdDatePaging(stdDate, page);
 		//JobWorldData List를 ViewCareersRequestSub List로 변환 
-		list = jobWorldDataService.findByStdYMAndIndustryCode(request.getStdYm(),request.getIndustryCode());
+		//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
+		
+		//JobWorldData List를 ViewCareersRequestSub List로 변환 
+		list = jobWorldDataService.findByStdYMAndIndustryCode(request.getStdYm(),request.getIndustryCode(),paging);
 
 
 		//JobWorldData jobworldData = new JobWorldData (null, null, null, null, null, null, 0, null, null, null, null);
