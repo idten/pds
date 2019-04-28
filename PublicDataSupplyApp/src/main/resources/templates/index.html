@@ -83,10 +83,8 @@
                     <div class="col mr-2">
                       <div class="font-weight-bold text-primary text-uppercase mb-1" th:text="${obj.docName}"></div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">19.02.12(12Mb)</div>
-                    <label class="btn btn-primary btn-file">
-					        파일추가 <input type="file" style="display: none;">
-    				</label>
-                    </div>
+                        <button  class="btn btn-primary" th:onclick="'javascript:getDoc(\'' + @{${obj.docId}} +'\');'" >상세</button>
+    				</div>
                     
                   </div>
                 </div>
@@ -341,6 +339,27 @@
           $("#managerMenu").load("managermenu.html");
       } 
   }) ;
+  
+  
+  function getDoc(docId){
+	//    alert(docId);
+	    window.open("docDetailList.do?docId="+docId, "문사 detail", "width=1000, height=1000, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );  
+		
+	}  
+  
+  
+	$(".detailButton").click(
+			  function(){
+//				$('#docEditModal').modal();	  
+				var tdArr = new Array();
+			    var checkBtn = $(this);
+			    var tr = checkBtn.parent().parent();
+			    var td = tr.children();
+				var docId = td.eq(0).text();
+			    window.open("docDetailList.do?docId="+docId, "문사 detail", "width=1000, height=1000, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );  
+			  });
+	
+	
   </script>  
 	  
 </body>

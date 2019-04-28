@@ -208,7 +208,7 @@
     			       		<button type="button" class="btn btn-danger" id="updateApproval">승인</button>                
     					</td>
     					 <td>		
-    			       		<button type="button" class="btn btn-danger detailButton" id="detail">내용</button>                
+    			       		<button type="button" class="btn btn-danger" id="detail">내용</button>                
     					</td>
     					
     				</tr>                
@@ -222,6 +222,68 @@
         <!-- /.container-fluid -->
 
       </div>
+      <!-- End of Main Content -->
+     <!-- Begin Page Content -->
+        <div class="container-fluid" id="jobworlddata">
+
+          <!-- Page Heading -->
+           <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    	
+            <h1 class="h3 mb-0 text-gray-800">JOBWORLD DATA</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="addUserButton">
+            <i class="fas fa-download fa-sm text-white-50"></i> JOB WORLD 자료 [김기은 ]</a>
+             
+          </div>
+         <p class="mb-4">사용자 정보 목록 확인/등록/수정 화면 </p>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">사용자 리스트 </h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTableJob" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>기준일자</th>
+                      <th>업종(조건)</th>
+                      <th>세부산업(조건)</th>
+                      <th>공고수</th>
+                      <th>업종내비중</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>ID</th>
+                      <th>기준일자</th>
+                      <th>업종</th>
+                      <th>세부산업</th>
+                      <th>공고수</th>
+                      <th>업종내비중</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  	<tr th:each="obj : ${datalist}">
+                  		<td th:text="${obj.dataId}"></td>
+    					<td th:text="${obj.stdYM}"></td>
+    					<td th:text="${obj.industryName}"></td>
+    					<td th:text="${obj.detailIndustryName}"></td>
+    					<td th:text="${obj.careersCount}"></td>
+    					<td th:text="${obj.careersPer}"></td>
+    				</tr>                
+    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+ 
       <!-- End of Main Content -->
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
@@ -280,7 +342,62 @@
     </div>
   </div>
   
-  
+   <div class="modal fade" id="docEditModal" tabindex="-1" role="dialog" aria-labelledby="docModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="docModalLabel">문서 정보 수정</h4>
+
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/docedit" method="post">
+            		<div class="form-group">
+            				<label for="id" class="col-md-3">ID</label>
+            				<input class="col-md-8" name="modalDocId" id="modalDocId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalDocName" id="modalDocName" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">TYPE</label>
+            				<input class="col-md-8" name="modalDocType" id="modalDocType" value="">
+            			</div>    
+            			<div class="form-group">
+            				<label for="id" class="col-md-3">DEP</label>
+            				<input class="col-md-8" name="modalDepName" id="modalDepName" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">OWNERs</label>
+            				<input class="col-md-8" name="modalDocOwners" id="modalDocOwners" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="name" class="col-md-3">승인</label>
+            				<input class="col-md-8" name="modalDocApproval" id="modalDocApproval" value="">
+            			</div>
+            			
+            		</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editDocModalButton">수정</button>
+                <button type="button" class="btn btn-danger" id="deleteDocModalButton">삭제</button>                
+            </div>
+        </div>
+    </div>
+  </div>
   
    <div class="modal fade" id="docAddModal" tabindex="-1" role="dialog" aria-labelledby="docAddModalLabel"
 aria-hidden="true">
@@ -372,7 +489,53 @@ $(function(){
     			   	 );
     	 
     });
-  
+    $('#fileUploadButton').on('click', function () {
+  	  alert("upload");
+  	 var checkBtn = $(this);
+ 	
+
+		var tr = checkBtn.parent().parent();
+	    var td = tr.children();
+		var docId = td.eq(0).text();
+	    var docName = td.eq(1).text();
+	    var docOwners  = td.eq(2).text();
+	    var status = td.eq(3).text();
+	    var fileName = td.eq(4).text();
+	    var fileSize = td.eq(5).text();
+	    var updateDate = td.eq(6).text();
+	    var approval = td.eq(7).text();
+	    alert("fileName"+docId)
+  	   // console.log('btn-upload');
+	 
+	      
+  	    var form = new FormData(document.getElementById('uploadForm'));
+  	    form.append("docId", docId);
+  	  	form.append("docName", docName);
+  	 	form.append("docOwners", docOwners);
+  		form.append("status", status);
+  		form.append("fileName", fileName);
+  		form.append("fileSize", fileSize);
+  		form.append("approval", approval);
+  	//form.append("docId", docId);
+  	
+  	    $.ajax({
+  	      url: "uploadFile",
+  	      data:form,
+  	    
+  	      dataType: 'text',
+  	      
+  	      processData: false,
+  	      contentType: false,
+  	      type: 'POST',
+  	    success:function(data){
+			alert('upload 성공');
+			window.open('upload.do','_self');
+		},
+		error:function(data){
+			alert('Error:'+data);
+		}
+  	    });
+  	  });
     
     $("#updateApproval").click(function(){
     	var checkBtn = $(this);
@@ -402,16 +565,7 @@ $(function(){
       });
     
     
-	$(".detailButton").click(
-		  function(){
-//			$('#docEditModal').modal();	  
-			var tdArr = new Array();
-		    var checkBtn = $(this);
-		    var tr = checkBtn.parent().parent();
-		    var td = tr.children();
-			var docId = td.eq(0).text();
-		    window.open("jobworld.do", "문사 detail", "width=1000, height=1000, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );  
-		  });
+    
     
 </script>
 </body>
