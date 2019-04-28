@@ -202,26 +202,17 @@ public class DocInfoController {
 	//docDetailListApi.do
 
 	@RequestMapping(value = "/docDetailListApi.do", method = RequestMethod.GET)
-	public ModelAndView docDetailListApi(
-			@RequestParam("docId") String docId,
-			ModelAndView mav) {
+	public ModelAndView docDetailListApi(@RequestParam("docId") String docId, ModelAndView mav) {
 
-		logger.info("====="+docId);
 		List<ApiInfo> apiInfoList = apiInfoService.getApiInfoListByDocId(docId);
 		logger.info("Api List.size()="+apiInfoList.size());
 
 		DocumentStatus docStatus = documentStatusService.getDocStatus(docId);
 		List<LogDocData> logDocDataList = logDocDataService.getLogDocDataListByDocId(docId);
-		//getLogDocDataListByDocId
-	//	List<LogDocData> logDocDataList = logDocDataService.getLogDocDataList();
-		//getDocStatusList();
 		LogDocData logDocData = null;
-
-
 		int len = logDocDataList.size();
 		for(int i = 0; i<len ; i++){
 			logDocData = logDocDataList.get(i);
-
 			logger.info("logDocData OUTPUT"+logDocData.toString());
 		}
 
@@ -229,32 +220,6 @@ public class DocInfoController {
 		mav.addObject("docStatus",docStatus);
 		mav.addObject("apilist",apiInfoList);
 		mav.setViewName("docDetailListApi");
-		return mav;
-
-	}
-
-	@RequestMapping(value = "/invoice.do", method = RequestMethod.GET)
-	public ModelAndView docDetailList2(
-			ModelAndView mav) {
-
-		List<DocumentInfo> docInfoList = documentInfoService.getDocInfoList();
-		DocumentInfo docInfo=null;
-		int len = docInfoList.size();
-		for(int i = 0; i<len ; i++){
-			docInfo = docInfoList.get(i);
-			logger.info("doc OUTPUT"+docInfo.toString());
-		}
-		mav.addObject("datalist",docInfoList);
-
-
-
-		List<UserInfo> userInfoList = userInfoService.getUserInfoList();
-		List<DepInfo> depCodeList = depInfoService.getDepCodeList();
-		Map<String,String> depCodeMap = depInfoService.getDepCodeMap();
-		mav.addObject("depMap", depCodeMap);
-		mav.addObject("deplist",depCodeList);
-		mav.setViewName("invoice");
-
 		return mav;
 
 	}

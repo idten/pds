@@ -43,6 +43,7 @@ import com.ibk.pds.common.service.UserInfoService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.service.JobWorldDataService;
+import com.ibk.pds.log.model.DocTrxStatus;
 import com.ibk.pds.log.model.LogDocData;
 import com.ibk.pds.log.service.LogDocDataService;
 
@@ -167,7 +168,7 @@ public class DocStatusController {
 		String docName = docInfo.getDocName();
 		String docOwners = docInfo.getDocOwners();
 		String approval = docInfo.getAutoApprovalYN();
-
+		DocTrxStatus docTrxStatus = new DocTrxStatus("","");
 		if(itr.hasNext()) {
 			List<MultipartFile> mpf = request.getFiles( itr.next());
 			// 임시 파일을 복사한다.
@@ -187,7 +188,7 @@ public class DocStatusController {
 				Sheet sheet = workbook.getSheetAt(0);
 				Iterator<Row> rowIterator = sheet.rowIterator();
 				int rowCount = 0;
-
+				int result = 0;
 
 				while (rowIterator.hasNext()) {
 					Row row = rowIterator.next();
@@ -223,34 +224,20 @@ public class DocStatusController {
 						//삭제 등을 수행할 키 
 						updateCode = "D"+key;
 						uploadDate = today;
-						//기준일자	업종	업종코드	세부산업	상세코드	공고수	업종내비중	
-						//					201903	판매	J001	물류	J101	111	5%	
-						//					201903	유통	J002	운송	J102	222	5%	
-						//					201903	판매	J003	백화점	J103	333	5%	
-						//					201903	판매	J004	백화점	J104	444	5%	
-						//					201903	유통	J005	운송	J105	555	5%	
-						////					
-						//					private String dataId;
-						//					private String stdYM;
-						//					private String industryName;
-						//					private String industryCode;
-						//					private String detailIndustryName;
-						//					private String detailIndustryCode;
-						//					private int careersCount;
-						//					private String careersPer;
-						//					// 문서 내용이 아닌 관려용 daa 
-						//					private String approval;
-						//					//삭제, 승인 등 관련해서 처리를 위한 구분 값 
-						//					private String updateCode;
-						//					private String uploadDate;
-						////					//업종 
 
 						JobWorldData jobWorldData = new JobWorldData(dataId,stdYM,industryName,industryCode,detailIndustryName,detailIndustryCode,careersCount,careersPer,approval,updateCode,uploadDate);
 						logger.info("JobWorld Data insert:"+jobWorldData.toString());
-						jobWorldDataService.addJobWorldData(jobWorldData);
+						docTrxStatus = jobWorldDataService.addJobWorldData(jobWorldData);
+						//정상아닌 경우에 break;
+						if(!"000".equals(docTrxStatus.getStatus())) {
+							logger.info("Input Error"+docTrxStatus.getContents());
+							break;
+						}
 					}
 					System.out.println();
 				}
+
+				logger.info("=========================================================");
 				String docUpId = "U"+key;
 				//상태 추가 
 				//				DocumentInfo docInfo = documentInfoService.getDocInfobyDocId(docId).get(0);
@@ -259,206 +246,41 @@ public class DocStatusController {
 				//				String docOwners = docInfo.getDocOwners();
 				//				String approval = docInfo.getAutoApprovalYN();
 				String status = ""; 
-				if(approval.equals("N")) {
-					status = "승인대기";
+				//입력하다가 시랲시에는 상태 
+
+				if(!docTrxStatus.getStatus().equals("000")) {
+					logger.info("Status:"+docTrxStatus.getStatus());
+					status = "입력실패";
+					//자동승인이더라도 N으로 해서 리스트업 한 후에 관리자가 삭제 
+					approval = "N";
 				}else {
-					status = "승인완료";
-				}
-				DocumentStatus documentStatus = new DocumentStatus(docId,docUpId,docName,docOwners,approval,status,newFileName,file.length(),today);
-				documentStatusService.saveDocStatus(documentStatus);
 
-
-				String logId = "L"+key;
-				//logId = 
-				//로그도 추가 
-				LogDocData logDocData = new LogDocData(logId,docId,docName,"INSERT",docUpId,docOwners);
-				logDocDataService.saveLogDocData(logDocData);
-
-
-			}
-
-		}
-		return "redirect:docDetailList.do";
-	}
-
-	@RequestMapping(value = "uploadFile2", method = RequestMethod.POST)
-	@ResponseBody
-	public String uploadFile2(
-			@RequestParam("docId") String docId,
-			MultipartHttpServletRequest request) {		
-
-		//docId기준으로 DocInfo를 생성해서 처리 합시다 
-
-
-
-		String key = DateUtil.getDateYYYYMMDDHHMMSS();
-		String today = DateUtil.getDateYYYYMMDD();
-
-		logger.info("File upload");
-		String root = request.getSession().getServletContext().getRealPath("/");
-		String path = ConstantCode.rootDirectory;
-		logger.info("path="+path);
-		String newFileName = ""; // 업로드 되는 파일명
-
-		File dir = new File(path);
-		if(!dir.isDirectory()){
-			dir.mkdir();
-		}
-		Iterator<String> files = request.getFileNames();
-		while(files.hasNext()){
-
-			//File convFile = new File(mFile.)
-			String uploadFile = files.next();
-
-			MultipartFile mFile = request.getFile(uploadFile);
-			logger.info("uploadFile="+uploadFile);
-			//			newFileName = orgfileName+"."
-			//					+ System.currentTimeMillis();
-			//최신파일로 업데이트 수행 
-			DataFormatter dataFormatter = new DataFormatter();
-			try {
-				File file = new File(mFile.getOriginalFilename());
-				//				file.len
-				System.out.println("fileInfo="+file.getAbsolutePath()+":"+file.length());
-				mFile.transferTo(file);
-
-				System.out.println("fileInfo="+file.getAbsolutePath()+":"+file.length());
-
-				//poi excel to DB
-				Workbook workbook = WorkbookFactory.create(file);
-				Sheet sheet = workbook.getSheetAt(0);
-				Iterator<Row> rowIterator = sheet.rowIterator();
-				int count = 1;
-				while (rowIterator.hasNext()) {
-					Row row = rowIterator.next();
-
-					// Now let's iterate over the columns of the current row
-					Iterator<Cell> cellIterator = row.cellIterator();
-
-					// System.out.print(count+"\t");
-					count++;
-					//        cellIterator.
-					while (cellIterator.hasNext()) {
-						Cell cell = cellIterator.next();
-						String cellValue = dataFormatter.formatCellValue(cell);
-
-						//db에 insert하는 로직 추가 필요 
-						//데이터별로 추가하는것 분리 
-						System.out.print(cellValue + "\t");
+					if(approval.equals("N")) {
+						status = "승인대기";
+					}else {
+						status = "승인완료";
 					}
-					System.out.println();
-				}				 
-				String docUpId = "U"+key;
-				//상태 추가 
-				DocumentInfo docInfo = documentInfoService.getDocInfobyDocId(docId).get(0);
 
-				String docName = docInfo.getDocName();
-				String docOwners = docInfo.getDocOwners();
-				String approval = docInfo.getAutoApprovalYN();
-				String status = ""; 
-				if(approval.equals("N")) {
-					status = "승인대기";
-				}else {
-					status = "승인완료";
 				}
+				
+				
+				//이때까지 들어간 것들에 대한 처리를 위해서 
 				DocumentStatus documentStatus = new DocumentStatus(docId,docUpId,docName,docOwners,approval,status,newFileName,file.length(),today);
 				documentStatusService.saveDocStatus(documentStatus);
-
-
 				String logId = "L"+key;
-				//logId = 
-				//로그도 추가 
-				LogDocData logDocData = new LogDocData(logId,docId,docName,"INSERT",docUpId,docOwners);
-				logDocDataService.saveLogDocData(logDocData);
+				String logStatus = docTrxStatus.getStatus();
+				String logContents = docTrxStatus.getContents();
 
-			} catch (Exception e) {
-				e.printStackTrace();
+				//logId = 
+				logger.info("========================================================="+docTrxStatus.getStatus()+":"+docTrxStatus.getContents());
+					
+				LogDocData logDocData = new LogDocData(logId,docId,docName,"INSERT",docUpId,docOwners,logStatus,logContents);
+				logDocDataService.saveLogDocData(logDocData);
 			}
+
 		}
 		return "redirect:docDetailList.do";
 	}
-
-
-
-	//	@RequestMapping(value = "uploadFile", method = RequestMethod.POST)
-	//	@ResponseBody
-	//	public String uploadFile(
-	//			@RequestParam("docId") String docId,
-	//			@RequestParam("docName") String docName,
-	//			@RequestParam("docOwners") String docOwners,
-	//			@RequestParam("docOwnerName") String docOwnerName,
-	//			@RequestParam("approval") String approval,
-	//			MultipartHttpServletRequest request) {		
-	//		String key = DateUtil.getDateYYYYMMDDHHMMSS();
-	//		String today = DateUtil.getDateYYYYMMDD();
-	//		logger.info("File upload");
-	//		String root = request.getSession().getServletContext().getRealPath("/");
-	//		String path = ConstantCode.rootDirectory;
-	//		logger.info("path="+path);
-	//		String newFileName = ""; // 업로드 되는 파일명
-	//
-	//		File dir = new File(path);
-	//		if(!dir.isDirectory()){
-	//			dir.mkdir();
-	//		}
-	//		Iterator<String> files = request.getFileNames();
-	//		while(files.hasNext()){
-	//			String uploadFile = files.next();
-	//
-	//			MultipartFile mFile = request.getFile(uploadFile);
-	//
-	//			String orgfileName = mFile.getOriginalFilename();
-	//			logger.info("docId="+docId);
-	//			newFileName = orgfileName+"."
-	//					+ System.currentTimeMillis();
-	//			//최신파일로 업데이트 수행 
-	//			DataFormatter dataFormatter = new DataFormatter();
-	//			try {
-	//				File file = new File(mFile.getOriginalFilename());
-	//				//				file.len
-	//				mFile.transferTo(file);
-	//				//poi excel to DB
-	//				Workbook workbook = WorkbookFactory.create(file);
-	//				Sheet sheet = workbook.getSheetAt(0);
-	//				Iterator<Row> rowIterator = sheet.rowIterator();
-	//				int count = 1;
-	//				while (rowIterator.hasNext()) {
-	//					Row row = rowIterator.next();
-	//
-	//					// Now let's iterate over the columns of the current row
-	//					Iterator<Cell> cellIterator = row.cellIterator();
-	//
-	//					// System.out.print(count+"\t");
-	//					count++;
-	//					//        cellIterator.
-	//					while (cellIterator.hasNext()) {
-	//						Cell cell = cellIterator.next();
-	//						String cellValue = dataFormatter.formatCellValue(cell);
-	//
-	//
-	//						System.out.print(cellValue + "\t");
-	//					}
-	//					System.out.println();
-	//				}				 
-	//				String docUpId = "U"+key;
-	//				//상태 추가 
-	//				DocumentStatus documentStatus = new DocumentStatus(docId,docUpId,docName,docOwners,"Y","정상",newFileName,file.length(),today);
-	//				documentStatusService.saveDocStatus(documentStatus);
-	//
-	//
-	//				String logId = "L"+key;
-	//				//logId = 
-	//				//로그도 추가 
-	//				LogDocData logDocData = new LogDocData(logId,docId,docName,"INSERT",docUpId,docOwners);
-	//				logDocDataService.saveLogDocData(logDocData);
-	//
-	//			} catch (Exception e) {
-	//				e.printStackTrace();
-	//			}
-	//		}
-	//		return "redirect:upload.do";
-	//	}
-	//	//updateApproval
 
 
 	//docId 기준 으로 승인 

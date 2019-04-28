@@ -80,7 +80,6 @@ body {
 							<td class="text-center" th:text="${docStatus.fileSize}"></td>
 							<td class="text-center" th:text="${docStatus.updateDate}"></td>
 							<td class="text-center" th:text="${docStatus.approval}"></td>
-
 							<td>
 								<form id="uploadForm" enctype="multipart/form-data">
 									<input type="file" id="fileId" name="file-data" />
@@ -146,8 +145,8 @@ body {
 							<th style="display: none">로그 ID</th>
 							<th>DOC ID</th>
 							<th>문서명</th>
-							<th>Actin ID</th>
 							<th>Action</th>
+							<th>STATUS</th>
 							<th>USER</th>
 							<th>일시</th>
 						</tr>
@@ -176,16 +175,12 @@ body {
 	<script src='js/bootstrap.min.js'></script>
 	<script>
 		$(document).ready(function() {
-			// 	  $("#docTab li:nth-child(1)").addClass('active');
-			//alert("Test");
 			$("#docTab ul li").first().addClass("active");
-			//  	  $('.tab-content:first-child').first().addClass('active');
 			$(".tab-pane").first().addClass("active in");
 		});
 		
 
 		$('#fileUploadButton').on('click', function() {
-			alert("upload");
 			var checkBtn = $(this);
 
 			var tr = checkBtn.parent().parent();
@@ -193,24 +188,10 @@ body {
 			var docId = $('#docId').text();
 		//	var approval = td.eq(4).text();
 
-			alert("docId" + docId)
 			docId = $('#docId').html();
-			alert("docId2" + docId)
 			
-			//			"docId" : $('#docId').val(),
-		//	var docName = td.eq(1).text();
-		//	var docOwners = td.eq(2).text();
-		//	var docOwnerName = td.eq(3).text();
-	//		var approval = td.eq(4).text();
-
-		//	alert("docId" + docId)
 			var form = new FormData(document.getElementById('uploadForm'));
 			form.append("docId", docId);
-	//		form.append("docName", docName);
-	//		form.append("docOwners", docOwners);
-	//		form.append("docOwnerName", docOwnerName);
-	//		form.append("approval", approval);
-			//form.append("docId", docId);
 
 			$.ajax({
 				url : "uploadFile",
@@ -222,7 +203,7 @@ body {
 				contentType : false,
 				type : 'POST',
 				success : function(data) {
-					alert('upload 성공');
+					alert('File upload 성공');
 					window.open('docDetailListApi.do?docId='+docId, '_self');
 				},
 				error : function(data) {

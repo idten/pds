@@ -71,18 +71,20 @@ body {
     
   <script type="text/javascript">
       $(document).ready(function(){
-         $("#managerMenu").load("managermenu.html");
-         $("#commonMenu").load("commonmenu.html");
-         $("#userMenu").load("usermenu.html");
-         $("#alertMenu").load("alertMenu.html");
+    	  $("#managerMenu").load("managermenu.html");
+          $("#commonMenu").load("commonmenu.html");
+          $("#commonNav").load("commonnav.html");
+          $("#userMenu").load("usermenu.html");
+          $("#alertMenu").load("alertMenu.html");
+          $("#page-top").addClass('sidebar-toggled');
       });
   </script> 
 </head> 
-<body id="page-top">
+<body id="page-top" class="sidebar-toggled">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+	 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
       <div id="commonMenu"></div>  <!--  managerMenu -->
      

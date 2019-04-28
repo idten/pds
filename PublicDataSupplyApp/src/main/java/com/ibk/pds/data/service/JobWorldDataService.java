@@ -14,42 +14,53 @@ import com.ibk.pds.common.repository.ApiInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
+import com.ibk.pds.log.model.DocTrxStatus;
 @Service
 public class JobWorldDataService {
 	@Autowired
 	JobWorldDataRepository jobWorldDataRepository;
 
 	private Logger logger = LoggerFactory.getLogger(JobWorldDataService.class);
-	
+
 	public List<JobWorldData> getJobWorldDataList(){
 		List<JobWorldData> jobWorldDataList = jobWorldDataRepository.findAll();
 		return jobWorldDataList;
 	}
-	public void addJobWorldData(JobWorldData jobWorldData) {
+	public DocTrxStatus addJobWorldData(JobWorldData jobWorldData) {
+
+		//DocTrxStatus docTrxStatus = new DocTrxStatus("","");
+		
 		logger.info("addJobWorldData["+jobWorldData.toString());
-		jobWorldDataRepository.insert(jobWorldData);
+
+		try {
+			jobWorldDataRepository.insert(jobWorldData);
+
+		}catch(Exception e) {
+			logger.info("Insert Error:"+e.getLocalizedMessage());
+			DocTrxStatus docTrxStatus = new DocTrxStatus("100",e.getLocalizedMessage());
+			
+			return docTrxStatus;
+		}
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		
+		//정상일 경우 
+		return docTrxStatus;
 	}
-//	public List<JobWorldData> getApiInfoList(){
-//		List<ApiInfo> apiInfoList = apiInfoRepository.findAll();
-//		return apiInfoList;
-//	}
-	//public  List<JobWorldData> findByStdDate(String stdDate);
 	public List<JobWorldData> findByStdDate(String stdDate) {
 		logger.info("stdDate="+stdDate);
 		List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
-		
 		logger.info("getByStdDate ="+list.size());
 		return list;
 	}
-	
+
 	//public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
 	public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode) {
 		logger.info("stdDate="+stdYM);
 		List<JobWorldData> list = jobWorldDataRepository.findByStdYMAndIndustryCode(stdYM, industryCode);
 		//.findByStdYM(stdDate);
-		
+
 		logger.info("getByStdDate ="+list.size());
 		return list;
 	}
-	
+
 }

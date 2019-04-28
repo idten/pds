@@ -82,7 +82,7 @@ public class DocumentStatusService {
 		String docOwners = docStatus.getDocOwners();
 		String docUpId = docStatus.getDocUpId();
 		
-		LogDocData logDocData = new LogDocData(logId,docId,docName,"INSERT",docUpId,docOwners);
+		LogDocData logDocData = new LogDocData(logId,docId,docName,"INSERT",docUpId,docOwners,"","");
 		logDocDataService.saveLogDocData(logDocData);
 	}
 

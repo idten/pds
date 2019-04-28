@@ -23,8 +23,12 @@ public class LogDocData {
 	private String docUpId;
 	private String owner;
 	
+	private String status ;
+	//에러 발생시 등
+	private String contents;
+	
 	//처리 시간 
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	//@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private Date trxDate;
 	
 	
@@ -36,10 +40,10 @@ public class LogDocData {
 				+"action="+action
 				+"docUpId="+docUpId
 				+"owner="+owner
+				+"status="+status
+				+"contents="+contents
 				+"trxDate="+trxDate
 				//+"uploadDate="+uploadDate
-				
-				
 				;
 	}
 	public LogDocData(
@@ -48,7 +52,10 @@ public class LogDocData {
 			String docName, 
 			String action, 
 			String docUpId,
-			String owner) 
+			String owner,
+			String status,
+			String contents		
+			) 
 	{
 		this.logId = logId;
 		this.docId = docId;
@@ -56,7 +63,21 @@ public class LogDocData {
 		this.action = action;
 		this.docUpId = docUpId;
 		this.owner = owner;
-		
+		this.status = status;
+		this.contents = contents;
+		this.trxDate = new Date();
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getContents() {
+		return contents;
+	}
+	public void setContents(String contents) {
+		this.contents = contents;
 	}
 	public String getLogId() {
 		return logId;

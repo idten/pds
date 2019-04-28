@@ -23,10 +23,6 @@ public class LogDocDataService {
 	LogDocDataRepository logDocDataRepository;
 
 	private Logger logger = LoggerFactory.getLogger(LogDocDataService.class);
-	
-	
-	
-	
 	public List<LogDocData> getLogDocDataList(){
 		List<LogDocData> logDocDataList = logDocDataRepository.findAll();
 		return logDocDataList;
