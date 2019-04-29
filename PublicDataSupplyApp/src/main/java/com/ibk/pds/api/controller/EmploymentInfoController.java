@@ -30,19 +30,19 @@ import com.ibk.pds.log.service.LogApiDataService;
 
 //아이원잡 채용공고 통계 조회 서비스 
 @RestController
-@RequestMapping("/EmploymentInfo")
+@RequestMapping("/employmentInfo")
 public class EmploymentInfoController {
 
 	@Autowired
 	LogApiDataService logApiDataService;
 	private Logger logger = LoggerFactory.getLogger(EmploymentInfoController.class);
 	//전처리
-	
+
 	@Autowired
 	AuthService authService;
 	@Value("${authYN}")
 	private String authYN;
-	
+
 	//필터
 	@Autowired
 	JobWorldDataService jobWorldDataService;
@@ -50,88 +50,89 @@ public class EmploymentInfoController {
 	//검색기준: stdYm  년월 
 	@RequestMapping(value="/viewCareersStatisticsList",produces="application/xml")
 	public  ViewCareersResponse viewCareersStatisticsList(@RequestBody ViewCareersRequest request) {
-		
+
 		logger.info("JobWorldRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
 		Random generator = new Random();   
 		int num= generator.nextInt(100);    
 		String logId = key + Integer.toString(num);
-		String apiId= "A20190423012943";
-		String apiUrl=	"/EmploymentInfo/viewCareersStatisticsList";
+
+		String apiId= "viewCareersStatisticsList";
+		String apiUrl=	"/employmentInfo/viewCareersStatisticsList";
 		ViewCareersResponse response = new ViewCareersResponse();
-		
+
 		int result = 0;
 		if(authYN.contentEquals("Y"))
 			result = authService.auth();
-		
+
 		if(result!=-1) {
-			logger.info("인증실패");
-		
-	//	ViewCareersResponse response = new ViewCareersResponse();
-		List<JobWorldData> list = new ArrayList<JobWorldData>();
-		//응답전문의 List
-		List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
-		
-		int page = request.getPageNo();
-		int size = request.getNumOfRows();
-		
-		
-		logger.info("Paging:"+page+",size="+size);
-		
-		if(size==0) {
-			size=10;
+			logger.info("인증성공");
+
+			//	ViewCareersResponse response = new ViewCareersResponse();
+			List<JobWorldData> list = new ArrayList<JobWorldData>();
+			//응답전문의 List
+			List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
+
+			int page = request.getPageNo();
+			int size = request.getNumOfRows();
+
+
 			logger.info("Paging:"+page+",size="+size);
-		}
-		Pageable paging = PageRequest.of(page, size);
-	//	jobWorldDataService.findByStdDatePaging(stdDate, page);
-		//JobWorldData List를 ViewCareersRequestSub List로 변환 
-		list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
-		
-		//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
-		
-		String stdYm = "";
-		String industryName = "";
-		String industryCode = "";
 
-		String detailIndustryName = "";
-		int careersCount=0;
-		String careersPer="";
+			if(size==0) {
+				size=10;
+				logger.info("Paging:"+page+",size="+size);
+			}
+			Pageable paging = PageRequest.of(page, size);
+			//	jobWorldDataService.findByStdDatePaging(stdDate, page);
+			//JobWorldData List를 ViewCareersRequestSub List로 변환 
+			list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
 
-		logger.info("DB Result:"+list.size());
-		for(JobWorldData jobworldData : list) {
-			stdYm = jobworldData.getStdYM();
-			industryName = jobworldData.getIndustryName();
-			industryCode = jobworldData.getIndustryCode();
-			detailIndustryName = jobworldData.getDetailIndustryName();
-			careersCount = jobworldData.getCareersCount();
-			careersPer = jobworldData.getCareersPer();
+			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 
-			ViewCareersResponseSub responseSub = 
-					new ViewCareersResponseSub(stdYm, industryName, industryCode, detailIndustryName,careersCount,careersPer);
-			responseSubList.add(responseSub);
-		}
+			String stdYm = "";
+			String industryName = "";
+			String industryCode = "";
 
-		for(ViewCareersResponseSub resSub : responseSubList) {
-			logger.info("select Result="+resSub.toString());
+			String detailIndustryName = "";
+			int careersCount=0;
+			String careersPer="";
 
-		}
-		response.setItem(responseSubList);
-		logger.info("인증수행 여부 ="+authYN);
-		//추후 apiInfo 조회를 통해서 처리 
-		String apiName = "잡월드채용정보월별조회";
-		String action = "CALL";
-		String statusCode ="0000";
-		String requestMessage = request.toString();
-		String responseMessage = response.toString();
-		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+			logger.info("DB Result:"+list.size());
+			for(JobWorldData jobworldData : list) {
+				stdYm = jobworldData.getStdYM();
+				industryName = jobworldData.getIndustryName();
+				industryCode = jobworldData.getIndustryCode();
+				detailIndustryName = jobworldData.getDetailIndustryName();
+				careersCount = jobworldData.getCareersCount();
+				careersPer = jobworldData.getCareersPer();
 
-		
-		LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-		logApiDataService.saveApiData(logApiData);
-		//.saveLogApiData(logApiData);
+				ViewCareersResponseSub responseSub = 
+						new ViewCareersResponseSub(stdYm, industryName, industryCode, detailIndustryName,careersCount,careersPer);
+				responseSubList.add(responseSub);
+			}
+
+			for(ViewCareersResponseSub resSub : responseSubList) {
+				logger.info("select Result="+resSub.toString());
+
+			}
+			response.setItem(responseSubList);
+			logger.info("인증수행 여부 ="+authYN);
+			//추후 apiInfo 조회를 통해서 처리 
+			String apiName = "잡월드채용정보월별조회";
+			String action = "CALL";
+			String statusCode ="0000";
+			String requestMessage = request.toString();
+			String responseMessage = response.toString();
+			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+
+			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			logApiDataService.saveApiData(logApiData);
+			//.saveLogApiData(logApiData);
 		}else {
-			
-			
+
+
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "잡월드채용정보월별조회";
 			String action = "CALL";
@@ -140,7 +141,7 @@ public class EmploymentInfoController {
 			String responseMessage = response.toString();
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
-			
+
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 
 		}
@@ -160,95 +161,95 @@ public class EmploymentInfoController {
 		String apiId= "A20190423013000";
 		String apiUrl=	"/EmploymentInfo/viewCareersStatisticsDetailList";
 		ViewCareersResponse response = new ViewCareersResponse();
-		
+
 		int result = 0;
 		if(authYN.contentEquals("Y"))
 			result = authService.auth();
-		
+
 		if(result!=-1) {
 			logger.info("인증실패");
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		logger.info("JobWorldRequest="+request.toString());
-		//		logger.info("job="+jobWorldRequest);			
-		//ViewCareersResponse response = new ViewCareersResponse();
-		//JobWorldResponse jobWorldResponse = new JobWorldResponse();
-		List<JobWorldData> list = new ArrayList<JobWorldData>();
-		//응답전문의 List
-		List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
 
-		
-		
-		
-		
-		int page = request.getPageNo();
-		int size = request.getNumOfRows();
-		
-		
-		logger.info("Paging:"+page+",size="+size);
-		
-		if(size==0) {
-			size=10;
+
+
+
+
+
+
+
+
+			logger.info("JobWorldRequest="+request.toString());
+			//		logger.info("job="+jobWorldRequest);			
+			//ViewCareersResponse response = new ViewCareersResponse();
+			//JobWorldResponse jobWorldResponse = new JobWorldResponse();
+			List<JobWorldData> list = new ArrayList<JobWorldData>();
+			//응답전문의 List
+			List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
+
+
+
+
+
+			int page = request.getPageNo();
+			int size = request.getNumOfRows();
+
+
 			logger.info("Paging:"+page+",size="+size);
-		}
-		Pageable paging = PageRequest.of(page, size);
-	//	jobWorldDataService.findByStdDatePaging(stdDate, page);
-		//JobWorldData List를 ViewCareersRequestSub List로 변환 
-		//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
-		
-		//JobWorldData List를 ViewCareersRequestSub List로 변환 
-		list = jobWorldDataService.findByStdYMAndIndustryCode(request.getStdYm(),request.getIndustryCode(),paging);
+
+			if(size==0) {
+				size=10;
+				logger.info("Paging:"+page+",size="+size);
+			}
+			Pageable paging = PageRequest.of(page, size);
+			//	jobWorldDataService.findByStdDatePaging(stdDate, page);
+			//JobWorldData List를 ViewCareersRequestSub List로 변환 
+			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
+
+			//JobWorldData List를 ViewCareersRequestSub List로 변환 
+			list = jobWorldDataService.findByStdYMAndIndustryCode(request.getStdYm(),request.getIndustryCode(),paging);
 
 
-		//JobWorldData jobworldData = new JobWorldData (null, null, null, null, null, null, 0, null, null, null, null);
-		String stdYm = "";
-		String industryName = "";
-		String industryCode = "";
+			//JobWorldData jobworldData = new JobWorldData (null, null, null, null, null, null, 0, null, null, null, null);
+			String stdYm = "";
+			String industryName = "";
+			String industryCode = "";
 
-		String detailIndustryName = "";
-		int careersCount=0;
-		String careersPer="";
+			String detailIndustryName = "";
+			int careersCount=0;
+			String careersPer="";
 
-		logger.info("DB Result:"+list.size());
-		for(JobWorldData jobworldData : list) {
-			stdYm = jobworldData.getStdYM();
-			industryName = jobworldData.getIndustryName();
-			industryCode = jobworldData.getIndustryCode();
-			detailIndustryName = jobworldData.getDetailIndustryName();
-			careersCount = jobworldData.getCareersCount();
-			careersPer = jobworldData.getCareersPer();
+			logger.info("DB Result:"+list.size());
+			for(JobWorldData jobworldData : list) {
+				stdYm = jobworldData.getStdYM();
+				industryName = jobworldData.getIndustryName();
+				industryCode = jobworldData.getIndustryCode();
+				detailIndustryName = jobworldData.getDetailIndustryName();
+				careersCount = jobworldData.getCareersCount();
+				careersPer = jobworldData.getCareersPer();
 
-			ViewCareersResponseSub responseSub = 
-					new ViewCareersResponseSub(stdYm, industryName, industryCode, detailIndustryName,
-							careersCount,careersPer);
-			responseSubList.add(responseSub);
-		}
+				ViewCareersResponseSub responseSub = 
+						new ViewCareersResponseSub(stdYm, industryName, industryCode, detailIndustryName,
+								careersCount,careersPer);
+				responseSubList.add(responseSub);
+			}
 
-		for(ViewCareersResponseSub resSub : responseSubList) {
-			logger.info("select Result="+resSub.toString());
+			for(ViewCareersResponseSub resSub : responseSubList) {
+				logger.info("select Result="+resSub.toString());
 
-		}
-		response.setItem(responseSubList);
+			}
+			response.setItem(responseSubList);
 
-	
-		
-		//추후 apiInfo 조회를 통해서 처리 
-		String apiName = "잡월드채용정산업별조회";
-		String action = "CALL";
-		String statusCode ="0000";
-		String requestMessage = request.toString();
-		String responseMessage = response.toString();
-		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
-		LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-		logApiDataService.saveApiData(logApiData);
+
+			//추후 apiInfo 조회를 통해서 처리 
+			String apiName = "잡월드채용정산업별조회";
+			String action = "CALL";
+			String statusCode ="0000";
+			String requestMessage = request.toString();
+			String responseMessage = response.toString();
+			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			logApiDataService.saveApiData(logApiData);
 			//.saveLogApiData(logApiData);
 		}else {
 			String apiName = "잡월드채용정산업별조회";
@@ -260,7 +261,7 @@ public class EmploymentInfoController {
 
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 			logApiDataService.saveApiData(logApiData);
-			
+
 		}
 		return response;			
 	}

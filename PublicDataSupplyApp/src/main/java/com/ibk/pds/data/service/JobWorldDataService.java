@@ -51,10 +51,10 @@ public class JobWorldDataService {
 	public List<JobWorldData> findByStdDate(String stdDate) {
 		logger.info("stdDate="+stdDate);
 		//List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
-		Pageable firstPageWithTwoElements = PageRequest.of(1, 2);
+	//	Pageable firstPageWithTwoElements = PageRequest.of(1, 2);
 		
-	//	List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
-		List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate,firstPageWithTwoElements);
+		List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
+	//	List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate,firstPageWithTwoElements);
 		logger.info("getByStdDate ="+list.size());
 		return list;
 	}
