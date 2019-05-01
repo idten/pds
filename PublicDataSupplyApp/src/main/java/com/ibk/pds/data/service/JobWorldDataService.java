@@ -29,18 +29,12 @@ public class JobWorldDataService {
 		return jobWorldDataList;
 	}
 	public DocTrxStatus addJobWorldData(JobWorldData jobWorldData) {
-
-		//DocTrxStatus docTrxStatus = new DocTrxStatus("","");
-		
 		logger.info("addJobWorldData["+jobWorldData.toString());
-
 		try {
 			jobWorldDataRepository.insert(jobWorldData);
-
 		}catch(Exception e) {
 			logger.info("Insert Error:"+e.getLocalizedMessage());
-			DocTrxStatus docTrxStatus = new DocTrxStatus("100",e.getLocalizedMessage());
-			
+			DocTrxStatus docTrxStatus = new DocTrxStatus("100",e.getLocalizedMessage());			
 			return docTrxStatus;
 		}
 		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
@@ -50,27 +44,16 @@ public class JobWorldDataService {
 	}
 	public List<JobWorldData> findByStdDate(String stdDate) {
 		logger.info("stdDate="+stdDate);
-		//List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
-	//	Pageable firstPageWithTwoElements = PageRequest.of(1, 2);
-		
 		List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
-	//	List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate,firstPageWithTwoElements);
 		logger.info("getByStdDate ="+list.size());
 		return list;
 	}
 	public List<JobWorldData> findByStdDatePaging(String stdDate,Pageable page) {
 		logger.info("stdDate="+stdDate);
-		//List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
-		
-	//	List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate);
 		List<JobWorldData> list = jobWorldDataRepository.findByStdYM(stdDate,page);
 		logger.info("getByStdDate(Paging) ="+list.size());
 		return list;
 	}
-	
-
-	
-	
 	//public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
 	public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode) {
 		logger.info("stdDate="+stdYM);

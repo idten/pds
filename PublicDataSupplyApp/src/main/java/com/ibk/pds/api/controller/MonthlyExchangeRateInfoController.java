@@ -22,6 +22,7 @@ import com.ibk.pds.api.model.EmploymentInfo.ViewCareersRequest;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersResponse;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersResponseSub;
 import com.ibk.pds.api.model.MonthlyExchangeRateInfo.ViewMonthlyExchangeRateByStdCurrencyRequest;
+import com.ibk.pds.api.model.MonthlyExchangeRateInfo.ViewMonthlyExchangeRateByStdCurrencyResponse;
 import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.JobWorldData;
@@ -52,7 +53,7 @@ public class MonthlyExchangeRateInfoController {
 
 	//검색기준: stdYm  년월 
 	@RequestMapping(value="/viewMontlyExchangeByStdCurrency",produces="application/xml")
-	public  ViewCareersResponse viewMontlyExchangeByStdCurrency(@RequestBody ViewMonthlyExchangeRateByStdCurrencyRequest request) {
+	public  ViewMonthlyExchangeRateByStdCurrencyResponse viewMontlyExchangeByStdCurrency(@RequestBody ViewMonthlyExchangeRateByStdCurrencyRequest request) {
 
 		logger.info("viewMontlyExchangeByStdCurrency="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -62,8 +63,8 @@ public class MonthlyExchangeRateInfoController {
 
 		String apiId= "viewMontlyExchangeByStdCurrency";
 		String apiUrl=	"/monthlyExchangeRateInfo/viewMontlyExchangeByStdCurrency";
-		ViewCareersResponse response = new ViewCareersResponse();
-
+//		ViewCareersResponse response = new ViewCareersResponse();
+		ViewMonthlyExchangeRateByStdCurrencyResponse response = new ViewMonthlyExchangeRateByStdCurrencyResponse() ;
 		int result = 0;
 		if(authYN.contentEquals("Y"))
 			result = authService.auth();
@@ -71,10 +72,8 @@ public class MonthlyExchangeRateInfoController {
 		if(result!=-1) {
 			logger.info("인증성공");
 
-			//	ViewCareersResponse response = new ViewCareersResponse();
 			List<MonthlyExchangeRateData> list = new ArrayList<MonthlyExchangeRateData>();
 			//응답전문의 List
-		//	List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
 
 			int page = request.getPageNo();
 			int size = request.getNumOfRows();
@@ -87,61 +86,81 @@ public class MonthlyExchangeRateInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
-			//	jobWorldDataService.findByStdDatePaging(stdDate, page);
-			//JobWorldData List를 ViewCareersRequestSub List로 변환 
-			list = monthlyExchangeRateDataService.findByStdDatePaging(request.getStdCurrency(),paging);
+			list = monthlyExchangeRateDataService.findByStdCurrency(request.getStdCurrency(), paging);
+					
 
-			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
-
-//			String stdYm = "";
-//			String industryName = "";
-//			String industryCode = "";
-//
-//			String detailIndustryName = "";
-//			int careersCount=0;
-//			String careersPer="";
-//			private String stdCurrency;
+			String stdCurrency;
 //			//상태 통화
-//			private String relativeCurrency;
+			String relativeCurrency;
+			String monthly1Rate;
+			String monthly2Rate;
+			String monthly3Rate;
+			String monthly4Rate;
+			String monthly5Rate;
+			String monthly6Rate;
+			String monthly7Rate;
+			String monthly8Rate;
+			String monthly9Rate;
+			String monthly10Rate;
+			String monthly11Rate;
+			String monthly12Rate;
+			
+//			this.resultCode = resultCode;
+//			this.resultMsg = resultMsg;
+//			this.numOfRows = numOfRows;
 //			
-//			private String monthly1Rate;
-//			private String monthly2Rate;
-//			private String monthly3Rate;
-//			private String monthly4Rate;
-//			private String monthly5Rate;
-//			private String monthly6Rate;
-//			private String monthly7Rate;
-//			private String monthly8Rate;
-//			private String monthly9Rate;
-//			private String monthly10Rate;
-//			private String monthly11Rate;
-//			private String monthly12Rate;
+			String resultCode;// = resultCode;
+			String resultMsg;
+			Integer numOfRows = list.size();
 //			
-			String stdCurrency = "";
-//			String 
 			logger.info("DB Result:"+list.size());
+			
+			
+		//	ViewMonthlyExchangeRateByStdCurrencyResponse response;
 			for(MonthlyExchangeRateData data : list) {
 
+				stdCurrency = data.getStdCurrency();
+				relativeCurrency = data.getRelativeCurrency();
+				monthly1Rate = data.getMonthly1Rate();
+				monthly2Rate = data.getMonthly2Rate();
+				monthly3Rate = data.getMonthly3Rate();
+				monthly4Rate = data.getMonthly4Rate();
+				monthly5Rate = data.getMonthly5Rate();
+				monthly6Rate = data.getMonthly6Rate();
+				monthly7Rate = data.getMonthly7Rate();
+				monthly8Rate = data.getMonthly8Rate();
+				monthly9Rate = data.getMonthly9Rate();
+				monthly10Rate = data.getMonthly10Rate();
+				monthly11Rate = data.getMonthly11Rate();
+				monthly12Rate = data.getMonthly12Rate();
+				resultCode="000";
+				resultMsg="정상";
 				
+				 response = 
+						new ViewMonthlyExchangeRateByStdCurrencyResponse(
+								
+								resultCode,
+								resultMsg,
+								1,
+								stdCurrency,
+								relativeCurrency,
+								monthly1Rate,
+								monthly2Rate,
+								monthly3Rate,
+								monthly4Rate,
+								monthly5Rate,
+								monthly6Rate,
+								monthly7Rate,
+								monthly8Rate,
+								monthly9Rate,
+								monthly10Rate,
+								monthly11Rate,
+								monthly12Rate
+								
+								);
 				
-				
-				stdYm = data.getStdYM();
-				industryName = jobworldData.getIndustryName();
-				industryCode = jobworldData.getIndustryCode();
-				detailIndustryName = jobworldData.getDetailIndustryName();
-				careersCount = jobworldData.getCareersCount();
-				careersPer = jobworldData.getCareersPer();
-
-				ViewCareersResponseSub responseSub = 
-						new ViewCareersResponseSub(stdYm, industryName, industryCode, detailIndustryName,careersCount,careersPer);
-				responseSubList.add(responseSub);
+			
 			}
-
-			for(ViewCareersResponseSub resSub : responseSubList) {
-				logger.info("select Result="+resSub.toString());
-
-			}
-			response.setItem(responseSubList);
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "잡월드채용정보월별조회";
@@ -173,5 +192,7 @@ public class MonthlyExchangeRateInfoController {
 
 		return response;			
 	}
+
+	
 
 }

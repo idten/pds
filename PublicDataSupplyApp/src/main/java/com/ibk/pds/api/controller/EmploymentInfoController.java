@@ -84,8 +84,6 @@ public class EmploymentInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
-			//	jobWorldDataService.findByStdDatePaging(stdDate, page);
-			//JobWorldData List를 ViewCareersRequestSub List로 변환 
 			list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
 
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
@@ -167,16 +165,6 @@ public class EmploymentInfoController {
 			result = authService.auth();
 
 		if(result!=-1) {
-			logger.info("인증실패");
-
-
-
-
-
-
-
-
-
 			logger.info("JobWorldRequest="+request.toString());
 			//		logger.info("job="+jobWorldRequest);			
 			//ViewCareersResponse response = new ViewCareersResponse();
@@ -184,11 +172,6 @@ public class EmploymentInfoController {
 			List<JobWorldData> list = new ArrayList<JobWorldData>();
 			//응답전문의 List
 			List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
-
-
-
-
-
 			int page = request.getPageNo();
 			int size = request.getNumOfRows();
 

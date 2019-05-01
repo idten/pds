@@ -7,7 +7,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.ibk.pds.data.model.MonthlyExchangeRateData;
 
+//제공 API 1개
 public interface MonthlyExchangeRateDataRepository  extends MongoRepository<MonthlyExchangeRateData,String>{
+	
 	
 	public List<MonthlyExchangeRateData> findByStdCurrency(String stdCurrency);
 	public List<MonthlyExchangeRateData> findByStdCurrency(String stdCurrency,Pageable pageable);
