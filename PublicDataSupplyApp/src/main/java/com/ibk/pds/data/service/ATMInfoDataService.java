@@ -22,6 +22,12 @@ import com.ibk.pds.data.repository.ATMInfoDataRepository;
 import com.ibk.pds.data.repository.BranchInfoDataRepository;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
 import com.ibk.pds.log.model.DocTrxStatus;
+
+
+
+
+
+
 @Service
 public class ATMInfoDataService {
 	@Autowired
@@ -35,11 +41,13 @@ public class ATMInfoDataService {
 	}
 
 	//전체 목록 리턴 
-	public List<ATMInfoData> getATMInfoDataList(Pageable page){
+	public List<ATMInfoData> findATMInfoDataList(Pageable page){
 		List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll(page).getContent();
 		return atmInfoDataList;
 	}
 	
+	
+	//자료 입력시 
 	public DocTrxStatus addATMInfoData(ATMInfoData atmInfoData) {
 		logger.info("addBranchInfoData["+atmInfoData.toString());
 		try {
@@ -56,6 +64,17 @@ public class ATMInfoDataService {
 //	public Page<ATMInfoData> findAll(Pageable pageable);
 //	public List<ATMInfoData> findByATMName(String atmName, Pageable pageable);
 //	public List<ATMInfoData> findByATMSectionCode(String atmSectionCode, Pageable pageable);	
+	
+	
+	
+	
+	
+	//API: 전체 리스트 정보 
+	public List<ATMInfoData> findAll(Pageable page){
+		List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll(page).getContent();
+		return atmInfoDataList;
+	}
+	
 	
 	public List<ATMInfoData> findByATMName(String atmName,Pageable page) {
 		logger.info("atmName="+atmName);

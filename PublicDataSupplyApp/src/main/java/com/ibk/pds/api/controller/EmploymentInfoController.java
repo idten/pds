@@ -48,7 +48,7 @@ public class EmploymentInfoController {
 	JobWorldDataService jobWorldDataService;
 
 	//검색기준: stdYm  년월 
-	@RequestMapping(value="/viewCareersStatisticsList",produces="application/xml")
+	@RequestMapping(value="/employmentInfoByStdDate",produces="application/xml")
 	public  ViewCareersResponse viewCareersStatisticsList(@RequestBody ViewCareersRequest request) {
 
 		logger.info("JobWorldRequest="+request.toString());
@@ -183,11 +183,6 @@ public class EmploymentInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
-			//	jobWorldDataService.findByStdDatePaging(stdDate, page);
-			//JobWorldData List를 ViewCareersRequestSub List로 변환 
-			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
-
-			//JobWorldData List를 ViewCareersRequestSub List로 변환 
 			list = jobWorldDataService.findByStdYMAndIndustryCode(request.getStdYm(),request.getIndustryCode(),paging);
 
 

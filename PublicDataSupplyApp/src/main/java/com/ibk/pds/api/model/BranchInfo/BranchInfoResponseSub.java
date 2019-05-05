@@ -5,7 +5,7 @@ package com.ibk.pds.api.model.BranchInfo;
 public class BranchInfoResponseSub {
 	
 	String branchName = "";
-	String branchPhoneNUmber= "";
+	String branchPhoneNumber= "";
 	String branchAddress = "";
 	String branchSection = "";
 	String branchSectionCode = "";
@@ -17,19 +17,19 @@ public class BranchInfoResponseSub {
 		
 	}
 	public String toString() {
-		return "[branchName="+branchName+",branchPhoneNUmber="+branchPhoneNUmber+",branchAddress="+branchAddress+
+		return "[branchName="+branchName+",branchPhoneNUmber="+branchPhoneNumber+",branchAddress="+branchAddress+
 				",branchSection="+branchSection
 				+",branchSectionCode="+branchSectionCode;
 	}
 	public BranchInfoResponseSub(
 			String branchName, 
-			String branchPhoneNUmber, 
+			String branchPhoneNumber, 
 			String branchAddress,
 			String branchSection,
 			String branchSectionCode 
 			) {
 		this.branchName = branchName;
-		this.branchPhoneNUmber = branchPhoneNUmber;
+		this.branchPhoneNumber = branchPhoneNumber;
 		this.branchAddress = branchAddress;
 		this.branchSection = branchSection;
 		this.branchSectionCode = branchSectionCode;
@@ -40,11 +40,12 @@ public class BranchInfoResponseSub {
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
 	}
-	public String getBranchPhoneNUmber() {
-		return branchPhoneNUmber;
+	
+	public String getBranchPhoneNumber() {
+		return branchPhoneNumber;
 	}
-	public void setBranchPhoneNUmber(String branchPhoneNUmber) {
-		this.branchPhoneNUmber = branchPhoneNUmber;
+	public void setBranchPhoneNumber(String branchPhoneNumber) {
+		this.branchPhoneNumber = branchPhoneNumber;
 	}
 	public String getBranchAddress() {
 		return branchAddress;

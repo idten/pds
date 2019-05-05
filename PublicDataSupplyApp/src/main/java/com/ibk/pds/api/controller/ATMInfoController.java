@@ -11,25 +11,38 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ibk.pds.api.model.ATMInfo.ATMInfoAllRequest;
+import com.ibk.pds.api.model.ATMInfo.ATMInfoByNameRequest;
+import com.ibk.pds.api.model.ATMInfo.ATMInfoBySectionRequest;
+import com.ibk.pds.api.model.ATMInfo.ATMInfoResponse;
+import com.ibk.pds.api.model.ATMInfo.ATMInfoResponseSub;
+import com.ibk.pds.api.model.BranchInfo.BranchInfoResponseSub;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersDetailRequest;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersRequest;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersResponse;
 import com.ibk.pds.api.model.EmploymentInfo.ViewCareersResponseSub;
 import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
+import com.ibk.pds.data.model.ATMInfoData;
+import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.service.ATMInfoDataService;
 import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 
-//아이원잡 채용공고 통계 조회 서비스 
+//ATM정보 
+//1. ATM정보 전체 리스트
+//2. ATM명칭에 따른 조회
+//3. 지역코드(ex> 서울02)에 따른 대상 조회 
+
 @RestController
 @RequestMapping("/atmInfo")
 public class ATMInfoController {
@@ -48,19 +61,49 @@ public class ATMInfoController {
 	@Autowired
 	ATMInfoDataService atmInfoDataService;
 
-	//검색기준: atmName
-	@RequestMapping(value="/atmInfoByName",produces="application/xml")
-	public  ViewCareersResponse viewCareersStatisticsList(@RequestBody ViewCareersRequest request) {
 
-		logger.info("JobWorldRequest="+request.toString());
+
+
+	public ATMInfoResponseSub convertToResponseSub(ATMInfoData data) {
+		String atmName;			//ATM명
+		String atmDivision;  	//ATM구분  
+		String startTime;		//시작시간
+		String endTime;			//종료시간
+		String atmAddress;		//주소
+		String atmSection;		//지역구분
+		String atmSectionCode;	//지역구분 코드 
+		atmName = data.getAtmName();
+		atmDivision = data.getAtmDivision();
+		startTime = data.getStartTime() ;
+		endTime = data.getEndTime();
+		atmAddress = data.getAtmAddress();
+		atmSection = data.getAtmSection();
+		atmSectionCode = data.getAtmSectionCode();
+
+		ATMInfoResponseSub responseSub = new ATMInfoResponseSub(atmName, atmDivision, 
+				startTime, endTime,
+				atmAddress,
+				atmSection, atmSectionCode
+				);
+
+
+		return responseSub;
+	}
+
+	//검색기준: atmAll
+	//전체 목록 
+	@RequestMapping(value="/atmInfoAll",produces="application/xml")
+	public  ATMInfoResponse viewATMInfoAll(@RequestBody ATMInfoAllRequest request) {
+
+		logger.info("ATMInfoAll="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
 		Random generator = new Random();   
 		int num= generator.nextInt(100);    
 		String logId = key + Integer.toString(num);
 
-		String apiId= "viewCareersStatisticsList";
-		String apiUrl=	"/employmentInfo/viewCareersStatisticsList";
-		ViewCareersResponse response = new ViewCareersResponse();
+		String apiId= "atmInfoByName";
+		String apiUrl=	"/atmInfo/atmInfoByName";
+		ATMInfoResponse response = new ATMInfoResponse();
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
@@ -70,9 +113,9 @@ public class ATMInfoController {
 			logger.info("인증성공");
 
 			//	ViewCareersResponse response = new ViewCareersResponse();
-			List<JobWorldData> list = new ArrayList<JobWorldData>();
-			//응답전문의 List
-			List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
+			List<ATMInfoData> list = new ArrayList<ATMInfoData>();
+			//응답TMInfo전문의 List
+			List<ATMInfoResponseSub> responseSubList = new ArrayList<ATMInfoResponseSub> ();
 
 			int page = request.getPageNo();
 			int size = request.getNumOfRows();
@@ -85,40 +128,27 @@ public class ATMInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
-			list = atmInfoDataService.findByStdDatePaging(request.getStdYm(),paging);
+			
+			
+			
+			list = atmInfoDataService.findAll(paging);//.findByStdDatePaging(request.getStdYm(),paging);			
 
-			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 
-			String stdYm = "";
-			String industryName = "";
-			String industryCode = "";
-
-			String detailIndustryName = "";
-			int careersCount=0;
-			String careersPer="";
+			for(ATMInfoData data : list) {
+				ATMInfoResponseSub responseSub = convertToResponseSub(data);
+				responseSubList.add(responseSub);
+			}			
 
 			logger.info("DB Result:"+list.size());
-			for(JobWorldData jobworldData : list) {
-				stdYm = jobworldData.getStdYM();
-				industryName = jobworldData.getIndustryName();
-				industryCode = jobworldData.getIndustryCode();
-				detailIndustryName = jobworldData.getDetailIndustryName();
-				careersCount = jobworldData.getCareersCount();
-				careersPer = jobworldData.getCareersPer();
 
-				ViewCareersResponseSub responseSub = 
-						new ViewCareersResponseSub(stdYm, industryName, industryCode, detailIndustryName,careersCount,careersPer);
-				responseSubList.add(responseSub);
-			}
-
-			for(ViewCareersResponseSub resSub : responseSubList) {
+			for(ATMInfoResponseSub resSub : responseSubList) {
 				logger.info("select Result="+resSub.toString());
 
 			}
 			response.setItem(responseSubList);
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "잡월드채용정보월별조회";
+			String apiName = "atmInfoByName ";
 			String action = "CALL";
 			String statusCode ="0000";
 			String requestMessage = request.toString();
@@ -133,7 +163,7 @@ public class ATMInfoController {
 
 
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "잡월드채용정보월별조회";
+			String apiName = "atmInfoByName";
 			String action = "CALL";
 			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
@@ -148,31 +178,33 @@ public class ATMInfoController {
 		return response;			
 	}
 
-	//검색기준: stdYm  년월 
-	@RequestMapping(value="/viewCareersStatisticsDetailList",produces="application/xml")
-	public  ViewCareersResponse viewCareersStatisticsDetailList(@RequestBody ViewCareersDetailRequest request) {
-		logger.info("JobWorldRequest="+request.toString());
+
+	//검색기준: atmName
+	@RequestMapping(value="/atmInfoByName",produces="application/xml")
+	public  ATMInfoResponse viewATMInfoByNameRequest(@RequestBody ATMInfoByNameRequest request) {
+
+		logger.info("ATMInfoByNameRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
 		Random generator = new Random();   
 		int num= generator.nextInt(100);    
-
 		String logId = key + Integer.toString(num);
-		String apiId= "A20190423013000";
-		String apiUrl=	"/EmploymentInfo/viewCareersStatisticsDetailList";
-		ViewCareersResponse response = new ViewCareersResponse();
+
+		String apiId= "atmInfoByName";
+		String apiUrl=	"/atmInfo/atmInfoByName";
+		ATMInfoResponse response = new ATMInfoResponse();
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
 			result = authService.auth();
 
 		if(result!=-1) {
-			logger.info("JobWorldRequest="+request.toString());
-			//		logger.info("job="+jobWorldRequest);			
-			//ViewCareersResponse response = new ViewCareersResponse();
-			//JobWorldResponse jobWorldResponse = new JobWorldResponse();
-			List<JobWorldData> list = new ArrayList<JobWorldData>();
-			//응답전문의 List
-			List<ViewCareersResponseSub> responseSubList = new ArrayList<ViewCareersResponseSub> ();
+			logger.info("인증성공");
+
+			//	ViewCareersResponse response = new ViewCareersResponse();
+			List<ATMInfoData> list = new ArrayList<ATMInfoData>();
+			//응답TMInfo전문의 List
+			List<ATMInfoResponseSub> responseSubList = new ArrayList<ATMInfoResponseSub> ();
+
 			int page = request.getPageNo();
 			int size = request.getNumOfRows();
 
@@ -184,134 +216,135 @@ public class ATMInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
-			//	jobWorldDataService.findByStdDatePaging(stdDate, page);
-			//JobWorldData List를 ViewCareersRequestSub List로 변환 
-			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),paging);
-
-			//JobWorldData List를 ViewCareersRequestSub List로 변환 
-			list = jobWorldDataService.findByStdYMAndIndustryCode(request.getStdYm(),request.getIndustryCode(),paging);
+			list = atmInfoDataService.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);			
 
 
-			//JobWorldData jobworldData = new JobWorldData (null, null, null, null, null, null, 0, null, null, null, null);
-			String stdYm = "";
-			String industryName = "";
-			String industryCode = "";
-
-			String detailIndustryName = "";
-			int careersCount=0;
-			String careersPer="";
+			for(ATMInfoData data : list) {
+				ATMInfoResponseSub responseSub = convertToResponseSub(data);
+				responseSubList.add(responseSub);
+			}			
 
 			logger.info("DB Result:"+list.size());
-			for(JobWorldData jobworldData : list) {
-				stdYm = jobworldData.getStdYM();
-				industryName = jobworldData.getIndustryName();
-				industryCode = jobworldData.getIndustryCode();
-				detailIndustryName = jobworldData.getDetailIndustryName();
-				careersCount = jobworldData.getCareersCount();
-				careersPer = jobworldData.getCareersPer();
 
-				ViewCareersResponseSub responseSub = 
-						new ViewCareersResponseSub(stdYm, industryName, industryCode, detailIndustryName,
-								careersCount,careersPer);
-				responseSubList.add(responseSub);
-			}
-
-			for(ViewCareersResponseSub resSub : responseSubList) {
+			for(ATMInfoResponseSub resSub : responseSubList) {
 				logger.info("select Result="+resSub.toString());
 
 			}
 			response.setItem(responseSubList);
-
-
-
+			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "잡월드채용정산업별조회";
+			String apiName = "atmInfoByName ";
 			String action = "CALL";
 			String statusCode ="0000";
 			String requestMessage = request.toString();
 			String responseMessage = response.toString();
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
+
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 			logApiDataService.saveApiData(logApiData);
 			//.saveLogApiData(logApiData);
 		}else {
-			String apiName = "잡월드채용정산업별조회";
+
+
+			//추후 apiInfo 조회를 통해서 처리 
+			String apiName = "atmInfoByName";
 			String action = "CALL";
-			String statusCode ="1111";
+			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
 			String responseMessage = response.toString();
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
+
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-			logApiDataService.saveApiData(logApiData);
 
 		}
+
 		return response;			
 	}
 
+	//findByATMSectionCode
+	@RequestMapping(value="/atmInfoBySection",produces="application/xml")
+	public  ATMInfoResponse viewATMInfoBySectionCode(@RequestBody ATMInfoBySectionRequest request) {
 
-	//
-	//
-	//	@RequestMapping(value="/ionejob",produces="application/xml")
-	//	public  JobWorldResponse restJson(@RequestBody JobWorldRequest jobWorldRequest) {
-	//		logger.info("JobWorldRequest="+jobWorldRequest.toString());
-	//		logger.info("jobWorldRequest="+jobWorldRequest.getStdYYYYmm());
-	//
-	//
-	//		logger.info("job="+jobWorldRequest);			
-	//		JobWorldResponse jobWorldResponse = new JobWorldResponse();
-	//
-	//		List<JobWorldData> list = new ArrayList<JobWorldData>();
-	//		list = jobWorldDataService.findByStdDate(jobWorldRequest.getStdYYYYmm());
-	//
-	//		jobWorldResponse.setListJobWorldData(list);
-	//		logger.info("job="+jobWorldResponse);			
-	//
-	//		// api 로그도 추가
-	//		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
-	//		Random generator = new Random();   
-	//		int num= generator.nextInt(100);    
-	//
-	//		String logId = key + Integer.toString(num);
-	//		String apiId="APIID";
-	//		String apiName = "IONEJOB";
-	//		String action = "호출 ";
-	//		String statusCode ="0000";
-	//		String request = "<xml>요청 전문<xml>";
-	//		String response = "<xml>응답 전문<xml>";
-	//		String trxDate = key;
-	////		public LogApiData(
-	////				String logId,
-	////				String apiId, 
-	////				String apiName,
-	////				String action,
-	////				String statusCode,
-	////				String request, 
-	////				String response,
-	////				String trxDate) 
-	//
-	//		LogApiData logApiData = new LogApiData(logId,apiId,apiName,action,statusCode,request,response,trxDate);
-	//		logApiDataService.saveApiData(logApiData);
-	//		//.saveLogApiData(logApiData);
-	//		
-	//		
-	//		
-	//		return jobWorldResponse;			
-	//	}
+		logger.info("ATMInfoBySectionRequest="+request.toString());
+		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
+		Random generator = new Random();   
+		int num= generator.nextInt(100);    
+		String logId = key + Integer.toString(num);
+
+		String apiId= "atmInfoByName";
+		String apiUrl=	"/atmInfo/atmInfoBySection";
+		ATMInfoResponse response = new ATMInfoResponse();
+
+		int result = 0;
+		if(authYN.contentEquals("Y"))
+			result = authService.auth();
+
+		if(result!=-1) {
+			logger.info("인증성공");
+
+			//	ViewCareersResponse response = new ViewCareersResponse();
+			List<ATMInfoData> list = new ArrayList<ATMInfoData>();
+			//응답TMInfo전문의 List
+			List<ATMInfoResponseSub> responseSubList = new ArrayList<ATMInfoResponseSub> ();
+
+			int page = request.getPageNo();
+			int size = request.getNumOfRows();
 
 
+			logger.info("Paging:"+page+",size="+size);
 
-	//list = jobWorldDataService.findByStdDate("20190319");
-
-	//	list =jobWorldDataService.getJobWorldDataList();
-	//	jobWorldDataService.getJobWorldDataList();
-	//List<Test> list = new ArrayList<Test>();
-	//Test t1  = new Test("1","2");
-	//JobWorldData jobWorldData = new JobWorldData("1","2","3","4","5","6");
-	//list.add(jobWorldData);
-	//list.add(jobWorldData);
+			if(size==0) {
+				size=10;
+				logger.info("Paging:"+page+",size="+size);
+			}
+			Pageable paging = PageRequest.of(page, size);
+			list = atmInfoDataService.findByATMName(request.getAtmSectionCode(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
 
 
+			logger.info("DB Result:"+list.size());
+
+			for(ATMInfoData data : list) {
+				ATMInfoResponseSub responseSub = convertToResponseSub(data);
+				responseSubList.add(responseSub);
+			}			
+
+			for(ATMInfoResponseSub resSub : responseSubList) {
+				logger.info("select Result="+resSub.toString());
+
+			}
+			response.setItem(responseSubList);
+			logger.info("인증수행 여부 ="+authYN);
+			//추후 apiInfo 조회를 통해서 처리 
+			String apiName = "ATMatmInfoBySection ";
+			String action = "CALL";
+			String statusCode ="0000";
+			String requestMessage = request.toString();
+			String responseMessage = response.toString();
+			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+
+			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			logApiDataService.saveApiData(logApiData);
+			//.saveLogApiData(logApiData);
+		}else {
+
+
+			//추후 apiInfo 조회를 통해서 처리 
+			String apiName = "ATM정보";
+			String action = "CALL";
+			String statusCode ="1111";//코드 확인필요 
+			String requestMessage = request.toString();
+			String responseMessage = response.toString();
+			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+
+			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+
+		}
+
+		return response;			
+	}
 
 }

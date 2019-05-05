@@ -51,10 +51,14 @@ public class BranchInfoDataService {
 		//정상일 경우 
 		return docTrxStatus;
 	}
-//	public Page<BranchInfoData> findAll(Pageable pageable);
-//	public List<BranchInfoData> findByBranchName(String branchName,Pageable pageable);
-//	public List<BranchInfoData> findByBranchSectionCode(String branchSectionCode,Pageable pageable);	
 
+	
+	
+	public List<BranchInfoData> findAll(Pageable page){
+		List<BranchInfoData> branchInfoDataList = branchInfoDataRepository.findAll(page).getContent();
+		return branchInfoDataList;
+	}
+	
 	
 	public List<BranchInfoData> findByBranchName(String branchName,Pageable page) {
 		logger.info("branchName="+branchName);

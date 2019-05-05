@@ -27,25 +27,6 @@ public class FundRateDataService {
 	FundRateDataRepository fundRateDataRepository;
 
 	private Logger logger = LoggerFactory.getLogger(FundRateDataService.class);
-	//	public FundRateData findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd
-	//	(String fundAstTcd, String fundInvmAecd,String pdrsGdcd,String idivFnptDcd,Pageable pageable);
-
-
-	//public List<FundRateData> findByIdivFnptDcd(String idivFnptDcd,Pageable pageable);
-	//
-	////1개월 
-	//public List<FundRateData> findByIdivFnptDcdOrderByTrmMn1ErnnRt(String idivFnptDcd,Pageable pageable);
-	//public List<FundRateData> findByIdivFnptDcdOrderByTrmMn3ErnnRt(String idivFnptDcd,Pageable pageable);
-	//public List<FundRateData> findByIdivFnptDcdOrderByTrmMn6ErnnRt(String idivFnptDcd,Pageable pageable);
-	//public List<FundRateData> findByIdivFnptDcdOrderByTrmMn12ErnnRt(String idivFnptDcd,Pageable pageable);
-	//
-	//
-	//
-	//public List<FundRateData> findByFundInvmAecd(String fundInvmAecd,Pageable pageable);
-	//public List<FundRateData> findByFundInvmAecdOrderByTrmMn1ErnnRt(String fundInvmAecd,Pageable pageable);
-	//public List<FundRateData> findByFundInvmAecdOrderByTrmMn3ErnnRt(String fundInvmAecd,Pageable pageable);
-	//public List<FundRateData> findByFundInvmAecdOrderByTrmMn6ErnnRt(String fundInvmAecd,Pageable pageable);
-	//public List<FundRateData> findByFundInvmAecdOrderByTrmMn12ErnnRt(String fundInvmAecd,Pageable pageable);
 
 	//전체 리스트 
 	public List<FundRateData> getFundRateDataList(){

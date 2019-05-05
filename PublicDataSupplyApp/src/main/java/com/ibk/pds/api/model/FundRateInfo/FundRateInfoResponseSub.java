@@ -71,4 +71,88 @@ public class FundRateInfoResponseSub {
 		this.ttalRmnrRt = ttalRmnrRt;
 		
 	}
+	public String getBaseYmd() {
+		return baseYmd;
+	}
+	public void setBaseYmd(String baseYmd) {
+		this.baseYmd = baseYmd;
+	}
+	public String getOpcmNm() {
+		return opcmNm;
+	}
+	public void setOpcmNm(String opcmNm) {
+		this.opcmNm = opcmNm;
+	}
+	public String getFundNm() {
+		return fundNm;
+	}
+	public void setFundNm(String fundNm) {
+		this.fundNm = fundNm;
+	}
+	public String getAscnFundCd() {
+		return ascnFundCd;
+	}
+	public void setAscnFundCd(String ascnFundCd) {
+		this.ascnFundCd = ascnFundCd;
+	}
+	public String getFundAstTcd() {
+		return fundAstTcd;
+	}
+	public void setFundAstTcd(String fundAstTcd) {
+		this.fundAstTcd = fundAstTcd;
+	}
+	public String getFundInvmAecd() {
+		return fundInvmAecd;
+	}
+	public void setFundInvmAecd(String fundInvmAecd) {
+		this.fundInvmAecd = fundInvmAecd;
+	}
+	public String getTrmMn1ErnnRt() {
+		return trmMn1ErnnRt;
+	}
+	public void setTrmMn1ErnnRt(String trmMn1ErnnRt) {
+		this.trmMn1ErnnRt = trmMn1ErnnRt;
+	}
+	public String getTrmMn3ErnnRt() {
+		return trmMn3ErnnRt;
+	}
+	public void setTrmMn3ErnnRt(String trmMn3ErnnRt) {
+		this.trmMn3ErnnRt = trmMn3ErnnRt;
+	}
+	public String getTrmMn6ErnnRt() {
+		return trmMn6ErnnRt;
+	}
+	public void setTrmMn6ErnnRt(String trmMn6ErnnRt) {
+		this.trmMn6ErnnRt = trmMn6ErnnRt;
+	}
+	public String getTrmMn12ErnnRt() {
+		return trmMn12ErnnRt;
+	}
+	public void setTrmMn12ErnnRt(String trmMn12ErnnRt) {
+		this.trmMn12ErnnRt = trmMn12ErnnRt;
+	}
+	public String getPdrsGdcd() {
+		return pdrsGdcd;
+	}
+	public void setPdrsGdcd(String pdrsGdcd) {
+		this.pdrsGdcd = pdrsGdcd;
+	}
+	public String getIdivFnptDcd() {
+		return idivFnptDcd;
+	}
+	public void setIdivFnptDcd(String idivFnptDcd) {
+		this.idivFnptDcd = idivFnptDcd;
+	}
+	public String getPrcqFeeRt() {
+		return prcqFeeRt;
+	}
+	public void setPrcqFeeRt(String prcqFeeRt) {
+		this.prcqFeeRt = prcqFeeRt;
+	}
+	public String getTtalRmnrRt() {
+		return ttalRmnrRt;
+	}
+	public void setTtalRmnrRt(String ttalRmnrRt) {
+		this.ttalRmnrRt = ttalRmnrRt;
+	}
 }

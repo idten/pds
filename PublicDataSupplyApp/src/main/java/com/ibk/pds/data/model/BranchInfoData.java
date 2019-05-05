@@ -57,5 +57,59 @@ public class BranchInfoData {
 		this.uploadDate = uploadDate;
 		
 	}
+	public String getDataId() {
+		return dataId;
+	}
+	public void setDataId(String dataId) {
+		this.dataId = dataId;
+	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+	public String getBranchPhoneNumber() {
+		return branchPhoneNumber;
+	}
+	public void setBranchPhoneNumber(String branchPhoneNumber) {
+		this.branchPhoneNumber = branchPhoneNumber;
+	}
+	public String getBranchAddress() {
+		return branchAddress;
+	}
+	public void setBranchAddress(String branchAddress) {
+		this.branchAddress = branchAddress;
+	}
+	public String getBranchSection() {
+		return branchSection;
+	}
+	public void setBranchSection(String branchSection) {
+		this.branchSection = branchSection;
+	}
+	public String getBranchSectionCode() {
+		return branchSectionCode;
+	}
+	public void setBranchSectionCode(String branchSectionCode) {
+		this.branchSectionCode = branchSectionCode;
+	}
+	public String getApproval() {
+		return approval;
+	}
+	public void setApproval(String approval) {
+		this.approval = approval;
+	}
+	public String getUpdateCode() {
+		return updateCode;
+	}
+	public void setUpdateCode(String updateCode) {
+		this.updateCode = updateCode;
+	}
+	public String getUploadDate() {
+		return uploadDate;
+	}
+	public void setUploadDate(String uploadDate) {
+		this.uploadDate = uploadDate;
+	}
 	
 }
