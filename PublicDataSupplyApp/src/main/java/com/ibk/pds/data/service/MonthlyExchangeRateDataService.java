@@ -14,6 +14,7 @@ import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.UserInfo;
 import com.ibk.pds.common.repository.ApiInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
+import com.ibk.pds.data.model.EmploymentInfoData;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.model.MonthlyExchangeRateData;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
@@ -63,4 +64,16 @@ public class MonthlyExchangeRateDataService {
 		logger.info("findByStdCurrency ="+list.size());
 		return list;
 	}
+	public List<MonthlyExchangeRateData> findAll(Pageable page) {
+		List<MonthlyExchangeRateData> list = monthlyExchangeRateDataRepository.findAll(page).getContent();
+		logger.info("findAll ="+list.size());
+		return list;
+	}
+	
+//	public List<EmploymentInfoData> findAll(Pageable page){
+//		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll(page).getContent();
+//		return list;
+//	}
+//	
+	
 }

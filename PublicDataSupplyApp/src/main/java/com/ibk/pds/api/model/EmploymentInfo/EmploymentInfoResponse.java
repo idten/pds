@@ -10,7 +10,7 @@ import com.ibk.pds.data.model.JobWorldData;
 //조회조건: stdYm
 //등록일자: 2019.04.23 
 //등록자   : 박현조
-public class ViewCareersResponse {
+public class EmploymentInfoResponse {
 
 	//private
 	//공통 코드 
@@ -21,7 +21,7 @@ public class ViewCareersResponse {
 	
 //	@JacksonXmlProperty(localName="items")
 	@JacksonXmlElementWrapper(localName="items" , useWrapping=true)
-	private List<ViewCareersResponseSub> item;
+	private List<EmploymentInfoResponseSub> item;
 
 	public String toString() {
 
@@ -29,7 +29,7 @@ public class ViewCareersResponse {
 		 String subResult = "";
 		 int size = item.size();
 		 for(int i = 0 ;i<size;i++) {
-			 ViewCareersResponseSub subItem = item.get(0);
+			 EmploymentInfoResponseSub subItem = item.get(0);
 			 subResult += "["+(i+1)+"]"+subItem.toString()+"\n";
 		 }
 		 
@@ -37,11 +37,11 @@ public class ViewCareersResponse {
 	}
 	
 	
-	public List<ViewCareersResponseSub> getItem() {
+	public List<EmploymentInfoResponseSub> getItem() {
 		return item;
 	}
 
-	public void setItem(List<ViewCareersResponseSub> item) {
+	public void setItem(List<EmploymentInfoResponseSub> item) {
 		this.item = item;
 	}
 

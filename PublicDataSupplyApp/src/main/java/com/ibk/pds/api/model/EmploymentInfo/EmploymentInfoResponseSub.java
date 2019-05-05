@@ -2,7 +2,7 @@
 package com.ibk.pds.api.model.EmploymentInfo;
 
 
-public class ViewCareersResponseSub {
+public class EmploymentInfoResponseSub {
 	String stdYm = "";
 	String industryName = "";
 	String industryCode = "";
@@ -10,7 +10,7 @@ public class ViewCareersResponseSub {
 	int careersCount=0;
 	String careersPer="";
 	
-	public ViewCareersResponseSub() {
+	public EmploymentInfoResponseSub() {
 		
 	}
 	public String toString() {
@@ -18,7 +18,7 @@ public class ViewCareersResponseSub {
 				+",careersCount="+careersCount+",careersPer="+careersPer+"]";
 	}
 	
-	public ViewCareersResponseSub(String stdYm, 
+	public EmploymentInfoResponseSub(String stdYm, 
 			String industryName, 
 			String industryCode,
 			String detailIndustryName,

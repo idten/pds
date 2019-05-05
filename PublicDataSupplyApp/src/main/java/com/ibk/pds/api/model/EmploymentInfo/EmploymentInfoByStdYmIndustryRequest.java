@@ -1,21 +1,14 @@
-package com.ibk.pds.api.model.MonthlyExchangeRateInfo;
+package com.ibk.pds.api.model.EmploymentInfo;
 
-//월별 환율조회
-//조회조건: stdCurrency
-//등록일자: 2019.04.30 
+//채용정보 산업별 조회
+//조회조건: stdYm
+//등록일자: 2019.04.23 
 //등록자   : 박현조
-public class ViewMonthlyExchangeRateByStdCurrencyRequest {
+public class EmploymentInfoByStdYmIndustryRequest {
 	private String serviceKey;   	//서비스키(공공데이터포털에서 받은 인증키)
 	private Integer numOfRows;		//한 페이지 결과 수 (10)- 필수 입력 아님 
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
-	private String stdCurrency;		    //기준 연월일(201903)
-	
-	public String getStdCurrency() {
-		return stdCurrency;
-	}
-	public void setStdCurrency(String stdCurrency) {
-		this.stdCurrency = stdCurrency;
-	}
+	private String stdYm;		    //기준 연월일(201903)
 	public String getServiceKey() {
 		return serviceKey;
 	}
@@ -34,8 +27,13 @@ public class ViewMonthlyExchangeRateByStdCurrencyRequest {
 	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
 	}
-	
+	public String getStdYm() {
+		return stdYm;
+	}
+	public void setStdYYYYmm(String stdYm) {
+		this.stdYm = stdYm;
+	}
 	public String toString() {
-		return "ServiceKey="+serviceKey+",numberOfRows="+numOfRows+",pageNo="+pageNo+",stdCurrency="+stdCurrency;
+		return "ServiceKey="+serviceKey+",numberOfRows="+numOfRows+",pageNo="+pageNo+",stdYm="+stdYm;
 	}
 }

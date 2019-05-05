@@ -85,6 +85,13 @@ public class EmploymentInfoDataService {
 		logger.info("getByStdDat(Paging)e ="+list.size());
 		return list;
 	}
-	
+	public List<EmploymentInfoData> findByIndustryCode(String industryCode,Pageable page) {
+		logger.info("stdDate="+industryCode);
+		List<EmploymentInfoData> list = employmentInfoDataRepository.findByIndustryCode(industryCode, page);
+		//.findByStdYM(stdDate);
+
+		logger.info("findByIndustryCode(Paging)e ="+list.size());
+		return list;
+	}
 
 }
