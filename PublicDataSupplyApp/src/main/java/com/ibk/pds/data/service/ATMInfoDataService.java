@@ -59,14 +59,14 @@ public class ATMInfoDataService {
 	
 	public List<ATMInfoData> findByATMName(String atmName,Pageable page) {
 		logger.info("atmName="+atmName);
-		List<ATMInfoData> list = atmInfoDataRepository.findByATMName(atmName, page);//.findByStdYM(stdDate,page);
+		List<ATMInfoData> list = atmInfoDataRepository.findByAtmName(atmName, page);//.findByStdYM(stdDate,page);
 		logger.info("findByBranchName(Paging) ="+list.size());
 		return list;
 	}
 	
 	public List<ATMInfoData> findByATMSectionCode(String atmSectionCode,Pageable page) {
 		logger.info("atmSectionCode="+atmSectionCode);
-		List<ATMInfoData> list = atmInfoDataRepository.findByATMSectionCode(atmSectionCode, page);
+		List<ATMInfoData> list = atmInfoDataRepository.findByAtmSectionCode(atmSectionCode, page);
 		logger.info("findByATMSectionCode(Paging) ="+list.size());
 		return list;
 	}
