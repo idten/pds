@@ -53,6 +53,11 @@ public class EmploymentInfoDataService {
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll(page).getContent();
 		return list;
 	}
+	public List<EmploymentInfoData> findAll(){
+		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll();
+		return list;
+	}
+	
 	
 	
 	
