@@ -372,13 +372,13 @@ aria-hidden="true">
   $("#editUserModalButton").click(function(){
 	  $.ajax({
 		type:'POST',
-		url : "useredit",
+		url : "useredit.do",
 		data:{
 			"ID":$('#modalId').val(),
 			"NAME":$('#modalName').val(),
 			"DEP":$('#modalDep').val(),
 			"AUTH":$('#modalAuth').val(),
-			"REGDATE":$('#modalRegDate').val(),
+			"REGDATE":$('#modalRegDate').val()
 			
 		},
 		success:function(data){

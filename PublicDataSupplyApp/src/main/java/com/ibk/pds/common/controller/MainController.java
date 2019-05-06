@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +33,8 @@ import com.ibk.pds.common.service.DocumentInfoService;
 import com.ibk.pds.common.service.UserInfoService;
 
 @Controller
-public class MainController {
+public class MainController 
+{
 	@Autowired
 	DocumentInfoService documentInfoService;
 	//UserInfoRepository userInfoRepository;
@@ -40,21 +44,35 @@ public class MainController {
 	UserInfoService userInfoService;
 
 	private Logger logger = LoggerFactory.getLogger(MainController.class);
-	
+
+
+	@RequestMapping(value = "/login")
+	public ModelAndView loginSecurity(ModelAndView mav) {
+		mav.setViewName("login");
+		return mav;
+	}
+
+
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
 	public ModelAndView login(ModelAndView mav) {
 		mav.setViewName("login");
 		return mav;
 	}
-	
+	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
+	public ModelAndView loginPost(ModelAndView mav) {
+		System.out.println("====");
+		mav.setViewName("login");
+		return mav;
+	}
+
 	@RequestMapping(value = "/logincheck.do", method = RequestMethod.POST)
 	public ModelAndView loginCheck(ModelAndView mav) {
 		logger.info("loginCHeck--");
 		//ModelAndView mav2 = new ModelAndView();
 		//"redirect:/user"; 
 		mav.setViewName("redirect:/index2");
-		
-		
+
+
 		return mav;
 	}
 
@@ -62,14 +80,25 @@ public class MainController {
 	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
 	public ModelAndView index(ModelAndView mav,HttpServletRequest request) {
 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getPrincipal();
+		System.out.println("User SessionInfo = "+user.getUsername());
+
+
+		String userId="";
 		//로그인 처리가 없다면 기본 값은 d23358 
-		String userId = "";
-		if(null==request.getParameter("userId"))
-		{	
-			userId="d23358";
-		}else {
-			userId = request.getParameter("userId");
-		}
+		userId = user.getUsername();
+
+//		if(userId.equals("")) {
+
+//			if(null==request.getParameter("userId"))
+//			{	
+//				userId="d23358";
+//			}else {
+//				userId = request.getParameter("userId");
+
+//			}
+//		}
 		//String userId="d23358";
 		logger.info("login id="+userId);
 
@@ -88,30 +117,30 @@ public class MainController {
 		logger.info("index Test End");
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/doctest", method = RequestMethod.GET)
 	public ModelAndView doc(ModelAndView mav) {
 		logger.info("Doc Test");
 		List<DocumentInfo> docInfoList = documentInfoService.getDocInfoList();
 		DocumentInfo docInfo=null;
 		int len = docInfoList.size();
-        for(int i = 0; i<len ; i++){
-        	docInfo = docInfoList.get(i);
-        	
-            logger.info("doc OUTPUT"+docInfo.toString());
-        }
+		for(int i = 0; i<len ; i++){
+			docInfo = docInfoList.get(i);
 
-        mav.addObject("datalist",docInfoList);
+			logger.info("doc OUTPUT"+docInfo.toString());
+		}
+
+		mav.addObject("datalist",docInfoList);
 		mav.setViewName("doc");
 		logger.info("Doc Test End");
-		
+
 		return new ModelAndView("redirect:/user");
 	}
 
 	@RequestMapping(value="/loginPDS", method = RequestMethod.POST) 
 	public ModelAndView redirectPost(RedirectAttributes redirectAttr,@RequestParam("id") String id,
 			@RequestParam("password") String password
-			
+
 			) 
 	{ 
 		Map<String, String> map = new HashMap<String,String>();

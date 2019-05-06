@@ -89,7 +89,7 @@ public class UserInfoController {
 		return "redirect:/user.do"; 
 	}
 	
-	@RequestMapping(value="/useredit", method = RequestMethod.POST) 
+	@RequestMapping(value="/useredit.do", method = RequestMethod.POST) 
 	public String userEdit(@RequestParam("ID") String id,
 			@RequestParam("NAME") String name,
 			@RequestParam("DEP") String depCode,
@@ -98,6 +98,8 @@ public class UserInfoController {
 			)
 	{ 
 		//public UserInfo(String userId, String userName, String depCode,String depName, String authCode,String regDate, String updateDate) {
+		
+		System.out.println("================d");
 		String today = DateUtil.getDateYYYYMMDD();
 		String depName = depInfoService.getByDepCode(depCode).getDepName();
 		UserInfo userInfo = new UserInfo(id,name,depCode,depName,auth,regDate,today);
