@@ -53,7 +53,10 @@ public class FundRateDataService {
 	
 	
 	
-	
+	public List<FundRateData> findAll(){
+		List<FundRateData> fundRateDataList = fundRateDataRepository.findAll();
+		return fundRateDataList;
+	}
 	
 	
 	

@@ -74,7 +74,12 @@ public class ATMInfoDataService {
 		List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll(page).getContent();
 		return atmInfoDataList;
 	}
-	
+	//API: 전체 리스트 정보 
+		public List<ATMInfoData> findAll(){
+			List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll();
+			return atmInfoDataList;
+		}
+		
 	
 	public List<ATMInfoData> findByATMName(String atmName,Pageable page) {
 		logger.info("atmName="+atmName);

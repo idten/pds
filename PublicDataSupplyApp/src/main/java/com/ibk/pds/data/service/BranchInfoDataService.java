@@ -58,7 +58,10 @@ public class BranchInfoDataService {
 		List<BranchInfoData> branchInfoDataList = branchInfoDataRepository.findAll(page).getContent();
 		return branchInfoDataList;
 	}
-	
+	public List<BranchInfoData> findAll(){
+		List<BranchInfoData> branchInfoDataList = branchInfoDataRepository.findAll();
+		return branchInfoDataList;
+	}
 	
 	public List<BranchInfoData> findByBranchName(String branchName,Pageable page) {
 		logger.info("branchName="+branchName);

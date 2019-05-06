@@ -69,6 +69,11 @@ public class MonthlyExchangeRateDataService {
 		logger.info("findAll ="+list.size());
 		return list;
 	}
+	public List<MonthlyExchangeRateData> findAll() {
+		List<MonthlyExchangeRateData> list = monthlyExchangeRateDataRepository.findAll();
+		logger.info("findAll ="+list.size());
+		return list;
+	}
 	
 //	public List<EmploymentInfoData> findAll(Pageable page){
 //		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll(page).getContent();
