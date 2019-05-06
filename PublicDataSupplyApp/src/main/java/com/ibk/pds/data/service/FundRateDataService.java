@@ -17,6 +17,7 @@ import com.ibk.pds.common.repository.ApiInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.data.model.FundRateData;
 import com.ibk.pds.data.model.JobWorldData;
+import com.ibk.pds.data.model.MonthlyExchangeRateData;
 import com.ibk.pds.data.repository.FundRateDataRepository;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
 import com.ibk.pds.log.model.DocTrxStatus;
@@ -49,20 +50,53 @@ public class FundRateDataService {
 		//정상일 경우 
 		return docTrxStatus;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public List<FundRateData> findAll(Pageable page){
+		List<FundRateData> fundRateDataList = fundRateDataRepository.findAll(page).getContent();
+		return fundRateDataList;
+	}
+	
+//	public List<MonthlyExchangeRateData> findAll(Pageable page) {
+//		List<MonthlyExchangeRateData> list = monthlyExchangeRateDataRepository.findAll(page).getContent();
+//		logger.info("findAll ="+list.size());
+//		return list;
+//	}
+//	
+	
+	
 	//Key값에 해당되는걸로 조회  1번 api 
-	public FundRateData findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd
-	(String fundAstTcd, String fundInvmAecd,String pdrsGdcd,String idivFnptDcd)
+//	public FundRateData findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd
+//	(String fundAstTcd, String fundInvmAecd,String pdrsGdcd,String idivFnptDcd)
+//	{
+//
+//		logger.info("find.조건="+fundAstTcd+","+fundInvmAecd+","+pdrsGdcd+","+idivFnptDcd);
+//
+//		FundRateData fundRateData = fundRateDataRepository.findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd(fundAstTcd, fundInvmAecd, pdrsGdcd, idivFnptDcd);
+//		logger.info("findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd.toString()"+fundRateData.toString());
+//		return fundRateData;
+//	}
+
+	public List<FundRateData> findOne
+	(String fundAstTcd, String fundInvmAecd,String pdrsGdcd,String idivFnptDcd,Pageable page)
 	{
 
 		logger.info("find.조건="+fundAstTcd+","+fundInvmAecd+","+pdrsGdcd+","+idivFnptDcd);
 
-		FundRateData fundRateData = fundRateDataRepository.findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd(fundAstTcd, fundInvmAecd, pdrsGdcd, idivFnptDcd);
-		logger.info("findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd.toString()"+fundRateData.toString());
-		return fundRateData;
+		List<FundRateData> list = fundRateDataRepository.findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd(fundAstTcd, fundInvmAecd, pdrsGdcd, idivFnptDcd,page);
+		//logger.info("findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd.toString()"+fundRateData.toString());
+		return list;
 	}
-
+	
 	//수익률별 TOP5 
-	public List<FundRateData> findByIdivFnptDcd(String idivFnptDcd, String ernnRtDcd) {
+	public List<FundRateData> findByIdivFnptDcdTop5(String idivFnptDcd, String ernnRtDcd) {
 		//Pageable page = new Pageable();
 		Pageable paging = PageRequest.of(1, 5);
 		List<FundRateData> list = new ArrayList<FundRateData>();
@@ -86,7 +120,7 @@ public class FundRateDataService {
 		return list;
 	}
 	
-	public List<FundRateData> findByFundInvmAecd(String fundInvmAecd, String ernnRtDcd) {
+	public List<FundRateData> findByFundInvmAecdTop5(String fundInvmAecd, String ernnRtDcd) {
 		//Pageable page = new Pageable();
 		Pageable paging = PageRequest.of(1, 5);
 		List<FundRateData> list = new ArrayList<FundRateData>();

@@ -35,7 +35,7 @@ import com.ibk.pds.log.service.LogApiDataService;
 
 //아이원잡 채용공고 통계 조회 서비스 
 @RestController
-@RequestMapping("/employmentInfo")
+@RequestMapping("/api/employmentInfo")
 public class EmploymentInfoController {
 
 	@Autowired

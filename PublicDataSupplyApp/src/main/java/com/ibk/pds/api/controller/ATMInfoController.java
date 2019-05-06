@@ -40,7 +40,7 @@ import com.ibk.pds.log.service.LogApiDataService;
 //3. 지역코드(ex> 서울02)에 따른 대상 조회 
 
 @RestController
-@RequestMapping("/atmInfo")
+@RequestMapping("/api/atmInfo")
 public class ATMInfoController {
 
 	@Autowired

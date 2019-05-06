@@ -40,7 +40,7 @@ import com.ibk.pds.log.service.LogApiDataService;
 
 //아이원잡 채용공고 통계 조회 서비스 
 @RestController
-@RequestMapping("/branchInfo")
+@RequestMapping("/api/branchInfo")
 public class BranchInfoController {
 
 	@Autowired
@@ -57,110 +57,110 @@ public class BranchInfoController {
 	@Autowired
 	BranchInfoDataService branchInfoDataService;
 
-	  public BranchInfoResponseSub convertToResponseSub(BranchInfoData data) {
+	public BranchInfoResponseSub convertToResponseSub(BranchInfoData data) {
 		String branchName = "";
 		String branchPhoneNumber= "";
 		String branchAddress = "";
 		String branchSection = "";
 		String branchSectionCode = "";
-		
+
 		branchName = data.getBranchName();
 		branchPhoneNumber = data.getBranchPhoneNumber();
 		branchAddress = data.getBranchPhoneNumber();
 		branchSection = data.getBranchSection();
 		branchSectionCode = data.getBranchSectionCode();
-		
+
 		BranchInfoResponseSub responseSub = new BranchInfoResponseSub(branchName, branchPhoneNumber, 
 				branchAddress, branchSection,
 				branchSectionCode
 				);
-		
-		
+
+
 		return responseSub;
 	}
-	
-
-		//검색기준: atmName
-		@RequestMapping(value="/branchInfoAll",produces="application/xml")
-		public  BranchInfoResponse viewBranchInfoAll(@RequestBody BranchInfoAllRequest request) {
-
-			logger.info("BranchInfoAllRequest="+request.toString());
-			String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
-			Random generator = new Random();   
-			int num= generator.nextInt(100);    
-			String logId = key + Integer.toString(num);
-
-			String apiId= "branchInfoByName";
-			String apiUrl=	"/branchInfo/branchInfoByName";
-			BranchInfoResponse response = new BranchInfoResponse();
-
-			int result = 0;
-			if(authYN.contentEquals("Y"))
-				result = authService.auth();
-
-			if(result!=-1) {
-				logger.info("인증성공");
-				//	ViewCareersResponse response = new ViewCareersResponse();
-				List<BranchInfoData> list = new ArrayList<BranchInfoData>();
-				List<BranchInfoResponseSub> responseSubList = new ArrayList<BranchInfoResponseSub> ();
-
-				int page = request.getPageNo();
-				int size = request.getNumOfRows();
 
 
+	//검색기준: atmName
+	@RequestMapping(value="/branchInfoAll",produces="application/xml")
+	public  BranchInfoResponse viewBranchInfoAll(@RequestBody BranchInfoAllRequest request) {
+
+		logger.info("BranchInfoAllRequest="+request.toString());
+		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
+		Random generator = new Random();   
+		int num= generator.nextInt(100);    
+		String logId = key + Integer.toString(num);
+
+		String apiId= "branchInfoByName";
+		String apiUrl=	"/branchInfo/branchInfoByName";
+		BranchInfoResponse response = new BranchInfoResponse();
+
+		int result = 0;
+		if(authYN.contentEquals("Y"))
+			result = authService.auth();
+
+		if(result!=-1) {
+			logger.info("인증성공");
+			//	ViewCareersResponse response = new ViewCareersResponse();
+			List<BranchInfoData> list = new ArrayList<BranchInfoData>();
+			List<BranchInfoResponseSub> responseSubList = new ArrayList<BranchInfoResponseSub> ();
+
+			int page = request.getPageNo();
+			int size = request.getNumOfRows();
+
+
+			logger.info("Paging:"+page+",size="+size);
+
+			if(size==0) {
+				size=10;
 				logger.info("Paging:"+page+",size="+size);
+			}
+			Pageable paging = PageRequest.of(page, size);
+			list = branchInfoDataService.findAll(paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
+			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 
-				if(size==0) {
-					size=10;
-					logger.info("Paging:"+page+",size="+size);
-				}
-				Pageable paging = PageRequest.of(page, size);
-				list = branchInfoDataService.findAll(paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
-				//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
+			logger.info("DB Result:"+list.size());
 
-				logger.info("DB Result:"+list.size());
-				
-				for(BranchInfoData data : list) {
-					BranchInfoResponseSub responseSub = convertToResponseSub(data);
-					responseSubList.add(responseSub);
-				}
-
-				for(BranchInfoResponseSub resSub : responseSubList) {
-					logger.info("select Result="+resSub.toString());
-
-				}
-				response.setItem(responseSubList);
-				logger.info("인증수행 여부 ="+authYN);
-				//추후 apiInfo 조회를 통해서 처리 
-				String apiName = "branchInfoByName ";
-				String action = "CALL";
-				String statusCode ="0000";
-				String requestMessage = request.toString();
-				String responseMessage = response.toString();
-				String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-				LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-				logApiDataService.saveApiData(logApiData);
-				//.saveLogApiData(logApiData);
-			}else {
-
-
-				//추후 apiInfo 조회를 통해서 처리 
-				String apiName = apiId;
-				String action = "CALL";
-				String statusCode ="1111";//코드 확인필요 
-				String requestMessage = request.toString();
-				String responseMessage = response.toString();
-				String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-				LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-
+			for(BranchInfoData data : list) {
+				BranchInfoResponseSub responseSub = convertToResponseSub(data);
+				responseSubList.add(responseSub);
 			}
 
-			return response;			
+			for(BranchInfoResponseSub resSub : responseSubList) {
+				logger.info("select Result="+resSub.toString());
+
+			}
+			response.setItem(responseSubList);
+			logger.info("인증수행 여부 ="+authYN);
+			//추후 apiInfo 조회를 통해서 처리 
+			String apiName = "branchInfoByName ";
+			String action = "CALL";
+			String statusCode ="0000";
+			String requestMessage = request.toString();
+			String responseMessage = response.toString();
+			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+
+			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			logApiDataService.saveApiData(logApiData);
+			//.saveLogApiData(logApiData);
+		}else {
+
+
+			//추후 apiInfo 조회를 통해서 처리 
+			String apiName = apiId;
+			String action = "CALL";
+			String statusCode ="1111";//코드 확인필요 
+			String requestMessage = request.toString();
+			String responseMessage = response.toString();
+			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+
+			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+
 		}
+
+		return response;			
+	}
 	//검색기준: atmName
 	@RequestMapping(value="/branchInfoByName",produces="application/xml")
 	public  BranchInfoResponse viewBranchInfoByNameRequest(@RequestBody BranchInfoByNameRequest request) {
@@ -200,7 +200,7 @@ public class BranchInfoController {
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 
 			logger.info("DB Result:"+list.size());
-			
+
 			for(BranchInfoData data : list) {
 				BranchInfoResponseSub responseSub = convertToResponseSub(data);
 				responseSubList.add(responseSub);
@@ -279,12 +279,12 @@ public class BranchInfoController {
 			}
 			Pageable paging = PageRequest.of(page, size);
 			list = branchInfoDataService.findByBranchSectionCode(request.getSectionCode(), paging);
-					//.findByBranchName(request.(), paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
+			//.findByBranchName(request.(), paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
 
-			
+
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 			logger.info("DB Result:"+list.size());
-			
+
 			for(BranchInfoData data : list) {
 				BranchInfoResponseSub responseSub = convertToResponseSub(data);
 				responseSubList.add(responseSub);
@@ -326,6 +326,6 @@ public class BranchInfoController {
 
 		return response;			
 	}
-	
+
 
 }

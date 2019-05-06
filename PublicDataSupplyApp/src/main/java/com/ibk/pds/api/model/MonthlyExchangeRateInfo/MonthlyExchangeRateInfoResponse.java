@@ -21,7 +21,7 @@ public class MonthlyExchangeRateInfoResponse {
 	
 //	@JacksonXmlProperty(localName="items")
 	@JacksonXmlElementWrapper(localName="items" , useWrapping=true)
-	private List<BranchInfoResponseSub> item;
+	private List<MonthlyExchangeRateInfoResponseSub> item;
 
 	public String toString() {
 
@@ -29,7 +29,7 @@ public class MonthlyExchangeRateInfoResponse {
 		 String subResult = "";
 		 int size = item.size();
 		 for(int i = 0 ;i<size;i++) {
-			 BranchInfoResponseSub subItem = item.get(0);
+			 MonthlyExchangeRateInfoResponseSub subItem = item.get(0);
 			 subResult += "["+(i+1)+"]"+subItem.toString()+"\n";
 		 }
 		 
@@ -37,11 +37,11 @@ public class MonthlyExchangeRateInfoResponse {
 	}
 	
 	
-	public List<BranchInfoResponseSub> getItem() {
+	public List<MonthlyExchangeRateInfoResponseSub> getItem() {
 		return item;
 	}
 
-	public void setItem(List<BranchInfoResponseSub> item) {
+	public void setItem(List<MonthlyExchangeRateInfoResponseSub> item) {
 		this.item = item;
 	}
 
