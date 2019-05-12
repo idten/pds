@@ -15,6 +15,8 @@ import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.UserInfo;
 import com.ibk.pds.common.repository.ApiInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
+import com.ibk.pds.common.util.DateUtil;
+import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.FundRateData;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.model.MonthlyExchangeRateData;
@@ -34,7 +36,19 @@ public class FundRateDataService {
 		List<FundRateData> fundRateDataList = fundRateDataRepository.findAll();
 		return fundRateDataList;
 	}
-
+	public DocTrxStatus deleteFundRateDataAll(){
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		
+		
+		try {
+			fundRateDataRepository.deleteAll();
+		}catch(Exception e) {
+			e.printStackTrace();
+			docTrxStatus.setStatus("111");
+			return docTrxStatus;
+		}
+		return docTrxStatus;
+	}
 
 	public DocTrxStatus addFundRateData(FundRateData fundRateData) {
 		logger.info("addFundRateData["+fundRateData.toString());
@@ -50,6 +64,49 @@ public class FundRateDataService {
 		//정상일 경우 
 		return docTrxStatus;
 	}
+	
+	
+	
+	public DocTrxStatus addFundRateDataFromExcel(List<String> cellList,String approval) {
+		String today = DateUtil.getDateYYYYMMDD();
+		String key = DateUtil.getDateYYYYMMDDHHMMSS();
+		
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		String updateCode;
+		String uploadDate;
+		updateCode = "D"+key;
+		uploadDate = today;
+		
+
+		//문서 내용 
+		String baseYmd		= cellList.get(0);		//기준 년월일
+		String opcmNm		= cellList.get(1);  	//운용사명 
+		String fundNm		= cellList.get(2);		//펀드명
+		String fundCode		= cellList.get(3);
+		String ascnFundCd	= cellList.get(4);	//협회펀드코드 
+		String fundAstTcd	= cellList.get(5);	//펀드자산유형코드
+		String fundInvmAecd = cellList.get(6);//펀드투자지역코드 
+		String trmMn1ErnnRt = cellList.get(7);//1개월 수익률
+		String trmMn3ErnnRt = cellList.get(8);//3개월 수익률
+		String trmMn6ErnnRt = cellList.get(9);//6개월 수익률
+		String trmMn12ErnnRt= cellList.get(10);//12개월 수익률
+		String pdrsGdcd		= cellList.get(11);	//상품리스크 등급코드 
+		String idivFnptDcd	= cellList.get(12);	//펀드유형구분코드
+		String prcqFeeRt	= cellList.get(13);	//선취수수료율
+		String ttalRmnrRt	= cellList.get(14);	//총보수료;
+				
+		String dataId=fundCode; 
+		FundRateData fundRateData = new FundRateData(dataId,baseYmd,opcmNm,fundNm,fundCode,ascnFundCd,
+				 fundAstTcd, fundInvmAecd, trmMn1ErnnRt, trmMn3ErnnRt, trmMn6ErnnRt,trmMn12ErnnRt,pdrsGdcd,
+				 idivFnptDcd,prcqFeeRt,ttalRmnrRt,approval,updateCode, uploadDate);
+		
+		
+		addFundRateData(fundRateData);
+		logger.info("FundRateData Data insert:"+fundRateData.toString());
+		return docTrxStatus;
+		
+	}
+	
 	
 	
 	

@@ -1,3 +1,4 @@
+
 package com.ibk.pds.api.model.EmploymentInfo;
 
 //채용정보 산업별 조회

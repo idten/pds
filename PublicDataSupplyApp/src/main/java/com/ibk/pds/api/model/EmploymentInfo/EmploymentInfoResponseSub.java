@@ -12,6 +12,7 @@ public class EmploymentInfoResponseSub {
 	
 	public EmploymentInfoResponseSub() {
 		
+		
 	}
 	public String toString() {
 		return "[stdYm="+stdYm+",industryName="+industryName+",industryCode="+industryCode+",detailIndustryName="+detailIndustryName

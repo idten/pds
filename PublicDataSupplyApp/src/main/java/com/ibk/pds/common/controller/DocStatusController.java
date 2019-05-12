@@ -41,8 +41,15 @@ import com.ibk.pds.common.service.DocumentInfoService;
 import com.ibk.pds.common.service.DocumentStatusService;
 import com.ibk.pds.common.service.UserInfoService;
 import com.ibk.pds.common.util.DateUtil;
+import com.ibk.pds.data.model.ATMInfoData;
+import com.ibk.pds.data.model.EmploymentInfoData;
 import com.ibk.pds.data.model.JobWorldData;
+import com.ibk.pds.data.service.ATMInfoDataService;
+import com.ibk.pds.data.service.BranchInfoDataService;
+import com.ibk.pds.data.service.EmploymentInfoDataService;
+import com.ibk.pds.data.service.FundRateDataService;
 import com.ibk.pds.data.service.JobWorldDataService;
+import com.ibk.pds.data.service.MonthlyExchangeRateDataService;
 import com.ibk.pds.log.model.DocTrxStatus;
 import com.ibk.pds.log.model.LogDocData;
 import com.ibk.pds.log.service.LogDocDataService;
@@ -56,9 +63,22 @@ public class DocStatusController {
 	@Autowired 
 	DocumentInfoService documentInfoService;
 
-	@Autowired
-	JobWorldDataService jobWorldDataService;
+	@Autowired 
+	EmploymentInfoDataService employmentInfoDataService;
 
+
+	@Autowired 
+	ATMInfoDataService atmInfoDataService;
+
+	@Autowired 
+	BranchInfoDataService branchInfoDataService;
+
+	@Autowired 
+	FundRateDataService fundRateDataService;
+
+
+	@Autowired 
+	MonthlyExchangeRateDataService monthlyExchangeRateDataService;
 
 	@Autowired
 	LogDocDataService logDocDataService;
@@ -81,16 +101,11 @@ public class DocStatusController {
 
 
 		logger.info("jobWorld Test");
-		List<JobWorldData> jobWorldDataList = jobWorldDataService.getJobWorldDataList();
+		List<EmploymentInfoData> list = employmentInfoDataService.findAll();//.getJobWorldDataList();
 		//.getApiInfoList();
-		JobWorldData jobWorldData=null;
-		len = jobWorldDataList.size();
-		for(int i = 0; i<len ; i++){
-			jobWorldData = jobWorldDataList.get(i);
-			logger.info(jobWorldData.toString());
-		}
+		EmploymentInfoData employmentInfoData=null;
 
-		mav.addObject("datalist",jobWorldDataList);
+		mav.addObject("datalist",list);
 		//	mav.setViewName("jobworld");
 		logger.info("Api Test End");
 		mav.setViewName("upload");
@@ -115,16 +130,10 @@ public class DocStatusController {
 
 
 		logger.info("jobWorld Test");
-		List<JobWorldData> jobWorldDataList = jobWorldDataService.getJobWorldDataList();
-		//.getApiInfoList();
-		JobWorldData jobWorldData=null;
-		len = jobWorldDataList.size();
-		for(int i = 0; i<len ; i++){
-			jobWorldData = jobWorldDataList.get(i);
-			logger.info(jobWorldData.toString());
-		}
+		List<EmploymentInfoData> list = employmentInfoDataService.findAll();//.getJobWorldDataList();
 
-		mav.addObject("datalist",jobWorldDataList);
+
+		mav.addObject("datalist",list);
 		//	mav.setViewName("jobworld");
 		logger.info("Api Test End");
 		mav.setViewName("approval");
@@ -148,18 +157,6 @@ public class DocStatusController {
 		String today = DateUtil.getDateYYYYMMDD();
 
 		//여기서문서 문서별로 function 처리 해야함 일단 처음이니깐 여기다가 
-
-		String dataId;
-		String stdYM;
-		String industryName;
-		String industryCode;
-		String detailIndustryName;
-		String detailIndustryCode;
-		int careersCount;
-		String careersPer;
-		//		// 문서 내용이 아닌 관려용 daa 
-		// String approval;
-		//		//삭제, 승인 등 관련해서 처리를 위한 구분 값 
 		String updateCode;
 		String uploadDate;
 		List<String>cellList = new ArrayList<String>();
@@ -169,11 +166,17 @@ public class DocStatusController {
 		String docOwners = docInfo.getDocOwners();
 		String approval = docInfo.getAutoApprovalYN();
 		DocTrxStatus docTrxStatus = new DocTrxStatus("","");
+
+
+
+
+
 		if(itr.hasNext()) {
 			List<MultipartFile> mpf = request.getFiles( itr.next());
 			// 임시 파일을 복사한다.
 			for(int i = 0; i < mpf.size(); i++) {
 				String orgfileName = mpf.get(i).getOriginalFilename();
+				//String orgfileName2 = mpf.get(i)
 				String newFileName = orgfileName+"."
 						+ System.currentTimeMillis();
 
@@ -189,6 +192,7 @@ public class DocStatusController {
 				Iterator<Row> rowIterator = sheet.rowIterator();
 				int rowCount = 0;
 				int result = 0;
+
 
 				while (rowIterator.hasNext()) {
 					Row row = rowIterator.next();
@@ -206,29 +210,11 @@ public class DocStatusController {
 						Cell cell = cellIterator.next();
 						String cellValue = dataFormatter.formatCellValue(cell);
 						cellList.add(cellValue);
-						//db에 insert하는 로직 추가 필요 
-						//데이터별로 추가하는것 분리 
 						System.out.print(cellValue + "\t");
 					}
 					if(rowCount!=1) {
-						stdYM = cellList.get(0);
-						industryName = cellList.get(1);
-						industryCode = cellList.get(2);
-						detailIndustryName = cellList.get(3);
-						detailIndustryCode = cellList.get(4);
 
-						dataId = stdYM + detailIndustryCode;
-						careersCount = Integer.parseInt(cellList.get(5));
-						careersPer = cellList.get(6);
-						//approval 은 문서의 자동승이네 따라서 자동
-						//삭제 등을 수행할 키 
-						updateCode = "D"+key;
-						uploadDate = today;
-
-						JobWorldData jobWorldData = new JobWorldData(dataId,stdYM,industryName,industryCode,detailIndustryName,detailIndustryCode,careersCount,careersPer,approval,updateCode,uploadDate);
-						logger.info("JobWorld Data insert:"+jobWorldData.toString());
-						docTrxStatus = jobWorldDataService.addJobWorldData(jobWorldData);
-						//정상아닌 경우에 break;
+						docTrxStatus = insertDocument(docId,cellList,approval);
 						if(!"000".equals(docTrxStatus.getStatus())) {
 							logger.info("Input Error"+docTrxStatus.getContents());
 							break;
@@ -240,11 +226,6 @@ public class DocStatusController {
 				logger.info("=========================================================");
 				String docUpId = "U"+key;
 				//상태 추가 
-				//				DocumentInfo docInfo = documentInfoService.getDocInfobyDocId(docId).get(0);
-				//
-				//				String docName = docInfo.getDocName();
-				//				String docOwners = docInfo.getDocOwners();
-				//				String approval = docInfo.getAutoApprovalYN();
 				String status = ""; 
 				//입력하다가 시랲시에는 상태 
 
@@ -262,8 +243,8 @@ public class DocStatusController {
 					}
 
 				}
-				
-				
+
+
 				//이때까지 들어간 것들에 대한 처리를 위해서 
 				DocumentStatus documentStatus = new DocumentStatus(docId,docUpId,docName,docOwners,approval,status,newFileName,file.length(),today);
 				documentStatusService.saveDocStatus(documentStatus);
@@ -273,7 +254,7 @@ public class DocStatusController {
 
 				//logId = 
 				logger.info("========================================================="+docTrxStatus.getStatus()+":"+docTrxStatus.getContents());
-					
+
 				LogDocData logDocData = new LogDocData(logId,docId,docName,"INSERT",docUpId,docOwners,logStatus,logContents);
 				logDocDataService.saveLogDocData(logDocData);
 			}
@@ -282,6 +263,46 @@ public class DocStatusController {
 		return "redirect:docDetailList.do";
 	}
 
+	//cell List -> db insert를 수행하는 
+	public DocTrxStatus clearDocument(String docId) {
+		DocTrxStatus status = new DocTrxStatus("000","OK");
+		if(docId.equals(ConstantCode.employmentInfoDocId)) {
+
+		}else if(docId.equals(ConstantCode.atmInfoDocId)){
+			//ATMInfo 는 기존 데이터 삭제 
+			status= atmInfoDataService.deleteATMInfoDataAll();
+		}else if(docId.equals(ConstantCode.branchInfoDocId)) {
+			//BranchInfo도 초기화 
+			status= branchInfoDataService.deleteBranchInfoDataAll();
+		}else if(docId.equals(ConstantCode.fundRateInfoDocId)) {
+			//펀드수익률도 초기화
+			status = fundRateDataService.deleteFundRateDataAll();
+		}else if(docId.equals(ConstantCode.monthlyExchangeRateInfoDocId)) {
+			//여기는 필요 없음 
+
+		}
+
+
+
+		return status;
+	}
+
+
+	public DocTrxStatus insertDocument(String docId, List<String>cellList,String approval) {
+		DocTrxStatus status = new DocTrxStatus("000","OK");
+		if(docId.equals(ConstantCode.employmentInfoDocId)) {
+			status = employmentInfoDataService.addEmploymentInfodDataFromExcel(cellList,approval);
+		}else if(docId.equals(ConstantCode.atmInfoDocId)){
+			status = atmInfoDataService.addATMInfodDataFromExcel(cellList, approval);
+		}else if(docId.equals(ConstantCode.branchInfoDocId)) {
+			status = branchInfoDataService.addBranchInfodDataFromExcel(cellList, approval);
+		}else if(docId.equals(ConstantCode.fundRateInfoDocId)) {
+			status = fundRateDataService.addFundRateDataFromExcel(cellList, approval);
+		}else if(docId.equals(ConstantCode.monthlyExchangeRateInfoDocId)) {
+			status = monthlyExchangeRateDataService.addMonthlyExchangeRateDataFromExcel(cellList, approval);
+		}
+		return status;
+	}
 
 	//docId 기준 으로 승인 
 	//추후 코드로 바꿔야함 현재 문자열로 처리 중 

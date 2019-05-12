@@ -15,6 +15,8 @@ import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.UserInfo;
 import com.ibk.pds.common.repository.ApiInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
+import com.ibk.pds.common.util.DateUtil;
+import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.repository.BranchInfoDataRepository;
@@ -31,6 +33,46 @@ public class BranchInfoDataService {
 		List<BranchInfoData> branchInfoDataList = branchInfoDataRepository.findAll();
 		return branchInfoDataList;
 	}
+	public DocTrxStatus deleteBranchInfoDataAll(){
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		try {
+			branchInfoDataRepository.deleteAll();
+		}catch(Exception e) {
+			e.printStackTrace();
+			docTrxStatus.setStatus("111");
+			return docTrxStatus;
+		}
+		return docTrxStatus;
+	}
+
+	public DocTrxStatus addBranchInfodDataFromExcel(List<String> cellList,String approval) {
+		String today = DateUtil.getDateYYYYMMDD();
+		String key = DateUtil.getDateYYYYMMDDHHMMSS();
+		
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		String updateCode;
+		String uploadDate;
+		updateCode = "D"+key;
+		uploadDate = today;
+		
+		String branchName		 = cellList.get(0);			//지점명
+		String branchCode  		 = cellList.get(1);;
+		String branchPhoneNumber = cellList.get(2);;  	//지점전화번호 
+		String branchAddress	 = cellList.get(3);	//지점주소
+		String branchSection	 = cellList.get(4);		//행정구역(서울)
+		String branchSectionCode = cellList.get(5);;	//행정구역코드
+		
+		String dataId=branchCode; 
+
+		BranchInfoData branchInfoData = 
+				new BranchInfoData(dataId,branchName, branchCode,branchPhoneNumber, branchAddress, branchSection,
+						branchSectionCode,approval, updateCode, uploadDate);
+		addBranchInfoData(branchInfoData);
+		logger.info("BranchInfoData Data insert:"+branchInfoData.toString());
+		return docTrxStatus;
+		
+	}
+	
 
 	//전체 목록 리턴 
 	public List<BranchInfoData> getBranchInfoDataList(Pageable page){

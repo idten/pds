@@ -14,7 +14,9 @@ import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.UserInfo;
 import com.ibk.pds.common.repository.ApiInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
+import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.EmploymentInfoData;
+import com.ibk.pds.data.model.FundRateData;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.model.MonthlyExchangeRateData;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
@@ -37,7 +39,7 @@ public class MonthlyExchangeRateDataService {
 	}
 
 
-	public DocTrxStatus addJobWorldData(MonthlyExchangeRateData monthlyExchangeRateData) {
+	public DocTrxStatus addMonthlyExchangeRateData(MonthlyExchangeRateData monthlyExchangeRateData) {
 
 		logger.info("MonthlyExchangeRateData["+monthlyExchangeRateData.toString());
 
@@ -52,6 +54,55 @@ public class MonthlyExchangeRateDataService {
 		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
 		return docTrxStatus;
 	}
+	
+	public DocTrxStatus addMonthlyExchangeRateDataFromExcel(List<String> cellList,String approval) {
+		String today = DateUtil.getDateYYYYMMDD();
+		String key = DateUtil.getDateYYYYMMDDHHMMSS();
+		
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		String updateCode;
+		String uploadDate;
+		updateCode = "D"+key;
+		uploadDate = today;
+		
+		
+		
+		String stdCurrency = cellList.get(0);
+		//상태 통화
+		String relativeCurrency = cellList.get(1);
+		
+		String monthly1Rate = cellList.get(2);
+		String monthly2Rate = cellList.get(3);
+		String monthly3Rate = cellList.get(4);
+		String monthly4Rate = cellList.get(5);
+		String monthly5Rate = cellList.get(6);
+		String monthly6Rate = cellList.get(7);
+		String monthly7Rate = cellList.get(8);
+		String monthly8Rate = cellList.get(9);
+		String monthly9Rate = cellList.get(10);
+		String monthly10Rate = cellList.get(11);
+		String monthly11Rate = cellList.get(12);
+		String monthly12Rate = cellList.get(13);
+		
+		//공통 코드 
+		
+
+		String dataId=stdCurrency+relativeCurrency; 
+		
+		
+		MonthlyExchangeRateData monthlyExchangeRateData = new MonthlyExchangeRateData(dataId, stdCurrency, relativeCurrency,
+				monthly1Rate, monthly2Rate, monthly3Rate, monthly4Rate, monthly5Rate, monthly6Rate, 
+				monthly7Rate, monthly8Rate, monthly9Rate, monthly10Rate, monthly11Rate, monthl2y1Rate, 
+				approval,updateCode,uploadDate);
+		
+		addMonthlyExchangeRateData(monthlyExchangeRateData);
+	//	addFundRateData(fundRateData);
+		logger.info("MonthlyExchangeRateData Data insert:"+monthlyExchangeRateData.toString());
+		return docTrxStatus;
+		
+	}
+	
+	
 	public List<MonthlyExchangeRateData> findByStdCurrency(String stdCurrency) {
 		logger.info("stdCurrency="+stdCurrency);
 		List<MonthlyExchangeRateData> list = monthlyExchangeRateDataRepository.findByStdCurrency(stdCurrency);

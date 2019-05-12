@@ -16,6 +16,7 @@ public class FundRateData {
 	private String baseYmd;		//기준 년월일
 	private String opcmNm;  	//운용사명 
 	private String fundNm;		//펀드명
+	private String fundCode;
 	private String ascnFundCd;	//협회펀드코드 
 	private String fundAstTcd;	//펀드자산유형코드
 	private String fundInvmAecd;//펀드투자지역코드 
@@ -53,6 +54,7 @@ public class FundRateData {
 			String baseYmd, 
 			String opcmNm, 
 			String fundNm, 
+			String fundCode,
 			String ascnFundCd,
 			String fundAstTcd,
 			String fundInvmAecd,
@@ -72,6 +74,7 @@ public class FundRateData {
 		this.baseYmd = baseYmd;
 		this.opcmNm = opcmNm;
 		this.fundNm = fundNm;
+		this.fundCode = fundCode;
 		this.ascnFundCd = ascnFundCd;
 		this.fundAstTcd = fundAstTcd;
 		this.fundInvmAecd = fundInvmAecd;
@@ -87,6 +90,12 @@ public class FundRateData {
 		this.updateCode = updateCode;
 		this.uploadDate = uploadDate;
 		
+	}
+	public String getFundCode() {
+		return fundCode;
+	}
+	public void setFundCode(String fundCode) {
+		this.fundCode = fundCode;
 	}
 	public String getDataId() {
 		return dataId;

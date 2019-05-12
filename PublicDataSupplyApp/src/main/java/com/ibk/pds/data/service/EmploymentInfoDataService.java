@@ -14,6 +14,7 @@ import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.UserInfo;
 import com.ibk.pds.common.repository.ApiInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
+import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.EmploymentInfoData;
 import com.ibk.pds.data.model.JobWorldData;
@@ -47,6 +48,34 @@ public class EmploymentInfoDataService {
 	}
 	
 	
+	public DocTrxStatus addEmploymentInfodDataFromExcel(List<String> cellList,String approval) {
+		String today = DateUtil.getDateYYYYMMDD();
+		String key = DateUtil.getDateYYYYMMDDHHMMSS();
+		
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		String updateCode;
+		String uploadDate;
+		updateCode = "D"+key;
+		uploadDate = today;
+		
+		String stdYM 				= cellList.get(0);
+		String industryName 		= cellList.get(1);
+		String industryCode 		= cellList.get(2);
+		String detailIndustryName   = cellList.get(3);
+		String detailIndustryCode   = cellList.get(4);
+		
+		int careersCount			= Integer.parseInt(cellList.get(5));
+		String careersPer			= cellList.get(6);
+		String dataId = stdYM + detailIndustryCode;
+		
+		EmploymentInfoData employmentInfoData = new EmploymentInfoData(dataId,stdYM,industryName,industryCode,detailIndustryName,detailIndustryCode,careersCount,careersPer,approval,updateCode,uploadDate);
+		addEmploymentInfodData(employmentInfoData);
+		logger.info("EmploymentInfoData Data insert:"+employmentInfoData.toString());
+
+		return docTrxStatus;
+		
+	}
+	//public DocTrxStatus DocTrxStatus()
 	
 
 	public List<EmploymentInfoData> findAll(Pageable page){

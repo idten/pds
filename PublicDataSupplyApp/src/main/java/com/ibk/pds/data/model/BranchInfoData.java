@@ -14,6 +14,8 @@ public class BranchInfoData {
 	
 	//문서 내용 
 	private String branchName;			//지점명
+	private String branchCode;
+
 	private String branchPhoneNumber;  	//지점전화번호 
 	private String branchAddress;		//지점주소
 	private String branchSection;		//행정구역(서울)
@@ -38,6 +40,7 @@ public class BranchInfoData {
 	public BranchInfoData(
 			String dataId,
 			String branchName, 
+			String branchCode,
 			String branchPhoneNumber, 
 			String branchAddress, 
 			String branchSection,
@@ -48,6 +51,7 @@ public class BranchInfoData {
 	{
 		this.dataId = dataId;	
 		this.branchName = branchName;
+		this.branchCode = branchCode;
 		this.branchPhoneNumber = branchPhoneNumber;
 		this.branchAddress = branchAddress;
 		this.branchSection = branchSection;
@@ -57,6 +61,15 @@ public class BranchInfoData {
 		this.uploadDate = uploadDate;
 		
 	}
+	
+	public String getBranchCode() {
+		return branchCode;
+	}
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
+	}
+	
+	
 	public String getDataId() {
 		return dataId;
 	}

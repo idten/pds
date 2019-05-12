@@ -15,18 +15,15 @@ import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.UserInfo;
 import com.ibk.pds.common.repository.ApiInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
+import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.BranchInfoData;
+import com.ibk.pds.data.model.EmploymentInfoData;
 import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.repository.ATMInfoDataRepository;
 import com.ibk.pds.data.repository.BranchInfoDataRepository;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
 import com.ibk.pds.log.model.DocTrxStatus;
-
-
-
-
-
 
 @Service
 public class ATMInfoDataService {
@@ -45,8 +42,48 @@ public class ATMInfoDataService {
 		List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll(page).getContent();
 		return atmInfoDataList;
 	}
-	
-	
+
+
+	public DocTrxStatus deleteATMInfoDataAll(){
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		
+		try {
+			atmInfoDataRepository.deleteAll();
+		}catch(Exception e) {
+			e.printStackTrace();
+			return docTrxStatus;
+		}
+		return docTrxStatus;
+	}
+	public DocTrxStatus addATMInfodDataFromExcel(List<String> cellList,String approval) {
+		String today = DateUtil.getDateYYYYMMDD();
+		String key = DateUtil.getDateYYYYMMDDHHMMSS();
+		
+		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
+		String updateCode;
+		String uploadDate;
+		updateCode = "D"+key;
+		uploadDate = today;
+		String atmName			= cellList.get(0);			//ATM명
+		String atmCode 			= cellList.get(1);
+		String atmDivision  	= cellList.get(2);//ATM구분  
+		String startTime		= cellList.get(3);//시작시간
+		String endTime			= cellList.get(4);//종료시간
+		String atmAddress       = cellList.get(5);		//주소
+		String atmSection       = cellList.get(6);		//지역구분
+		String atmSectionCode	= cellList.get(7);	//지역구분 코드 
+		String dataId=atmCode; 
+
+		ATMInfoData atmInfoData = new ATMInfoData(dataId,atmName,atmCode,atmDivision, startTime, endTime,atmAddress,
+				atmSection,atmSectionCode,approval, updateCode, uploadDate);
+		
+		addATMInfoData(atmInfoData);
+		logger.info("ATMInfoData Data insert:"+atmInfoData.toString());
+		return docTrxStatus;
+		
+	}
+
+
 	//자료 입력시 
 	public DocTrxStatus addATMInfoData(ATMInfoData atmInfoData) {
 		logger.info("addBranchInfoData["+atmInfoData.toString());
@@ -61,33 +98,26 @@ public class ATMInfoDataService {
 		//정상일 경우 
 		return docTrxStatus;
 	}
-//	public Page<ATMInfoData> findAll(Pageable pageable);
-//	public List<ATMInfoData> findByATMName(String atmName, Pageable pageable);
-//	public List<ATMInfoData> findByATMSectionCode(String atmSectionCode, Pageable pageable);	
-	
-	
-	
-	
-	
+
 	//API: 전체 리스트 정보 
 	public List<ATMInfoData> findAll(Pageable page){
 		List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll(page).getContent();
 		return atmInfoDataList;
 	}
 	//API: 전체 리스트 정보 
-		public List<ATMInfoData> findAll(){
-			List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll();
-			return atmInfoDataList;
-		}
-		
-	
+	public List<ATMInfoData> findAll(){
+		List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll();
+		return atmInfoDataList;
+	}
+
+
 	public List<ATMInfoData> findByATMName(String atmName,Pageable page) {
 		logger.info("atmName="+atmName);
 		List<ATMInfoData> list = atmInfoDataRepository.findByAtmName(atmName, page);//.findByStdYM(stdDate,page);
 		logger.info("findByBranchName(Paging) ="+list.size());
 		return list;
 	}
-	
+
 	public List<ATMInfoData> findByATMSectionCode(String atmSectionCode,Pageable page) {
 		logger.info("atmSectionCode="+atmSectionCode);
 		List<ATMInfoData> list = atmInfoDataRepository.findByAtmSectionCode(atmSectionCode, page);

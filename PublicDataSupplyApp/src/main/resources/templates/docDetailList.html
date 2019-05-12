@@ -305,47 +305,6 @@ modal-body {
 
 			});
 		});
-
-		$('#fileUploadButton').on('click', function() {
-			alert("upload");
-			var checkBtn = $(this);
-
-			var tr = checkBtn.parent().parent();
-			var td = tr.children();
-			//				var docId = td.eq(0).text();
-			var docId = $('tr:eq(0)>td:eq(1)').html();
-			var docName = td.eq(1).text();
-			var docOwners = td.eq(2).text();
-			var docOwnerName = td.eq(3).text();
-			var approval = td.eq(4).text();
-
-			alert("fileName" + docId)
-			var form = new FormData(document.getElementById('uploadForm'));
-			form.append("docId", docId);
-			form.append("docName", docName);
-			form.append("docOwners", docOwners);
-			form.append("docOwnerName", docOwnerName);
-			form.append("approval", approval);
-			//form.append("docId", docId);
-
-			$.ajax({
-				url : "uploadFile2",
-				data : form,
-
-				dataType : 'text',
-
-				processData : false,
-				contentType : false,
-				type : 'POST',
-				success : function(data) {
-					alert('upload 성공');
-					window.open('docDetailList.do', '_self');
-				},
-				error : function(data) {
-					alert('Error:' + data);
-				}
-			});
-		});
 	</script>
 
 </body>
