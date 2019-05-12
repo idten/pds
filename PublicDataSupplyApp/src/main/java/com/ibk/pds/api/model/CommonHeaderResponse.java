@@ -4,6 +4,10 @@ public class CommonHeaderResponse {
 	private String resultCode = "";
 	private String resultMsg = "";
 	
-	private Integer numOfRows=0;
+	public CommonHeaderResponse(String resultCode,String resultMsg) {
+		this.resultCode= resultCode;
+		this.resultMsg = resultMsg;
+	}
+//	private Integer numOfRows=0;
 	
 }

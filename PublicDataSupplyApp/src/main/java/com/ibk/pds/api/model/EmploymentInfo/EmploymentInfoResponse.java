@@ -2,27 +2,55 @@ package com.ibk.pds.api.model.EmploymentInfo;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.ibk.pds.api.model.CommonHeaderResponse;
 import com.ibk.pds.data.model.JobWorldData;
 
 //채용정보 산업별 조회 응답 
 //조회조건: stdYm
 //등록일자: 2019.04.23 
 //등록자   : 박현조
+@JacksonXmlRootElement(localName="response")
 public class EmploymentInfoResponse {
-
-	//private
-	//공통 코드 
-	private String resultCode = "";
-	private String resultMsg = "";
 	
-	private Integer numOfRows=0;
+	
 	
 //	@JacksonXmlProperty(localName="items")
 	@JacksonXmlElementWrapper(localName="items" , useWrapping=true)
 	private List<EmploymentInfoResponseSub> item;
 
+	
+	
+	private String resultCode = "";
+	private String resultMsg = "";
+	private Integer totalCount = 0;
+	private Integer numOfRows=0;
+	private Integer pageNo=0;
+	
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
+
+
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	
 	public String toString() {
 
 		 String result = "resultCode="+resultCode+",resultMsg="+resultMsg+",numOfRows"+numOfRows;

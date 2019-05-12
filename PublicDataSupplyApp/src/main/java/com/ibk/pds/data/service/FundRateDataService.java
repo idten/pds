@@ -124,25 +124,6 @@ public class FundRateDataService {
 		return fundRateDataList;
 	}
 	
-//	public List<MonthlyExchangeRateData> findAll(Pageable page) {
-//		List<MonthlyExchangeRateData> list = monthlyExchangeRateDataRepository.findAll(page).getContent();
-//		logger.info("findAll ="+list.size());
-//		return list;
-//	}
-//	
-	
-	
-	//Key값에 해당되는걸로 조회  1번 api 
-//	public FundRateData findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd
-//	(String fundAstTcd, String fundInvmAecd,String pdrsGdcd,String idivFnptDcd)
-//	{
-//
-//		logger.info("find.조건="+fundAstTcd+","+fundInvmAecd+","+pdrsGdcd+","+idivFnptDcd);
-//
-//		FundRateData fundRateData = fundRateDataRepository.findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd(fundAstTcd, fundInvmAecd, pdrsGdcd, idivFnptDcd);
-//		logger.info("findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd.toString()"+fundRateData.toString());
-//		return fundRateData;
-//	}
 
 	public List<FundRateData> findOne
 	(String fundAstTcd, String fundInvmAecd,String pdrsGdcd,String idivFnptDcd,Pageable page)

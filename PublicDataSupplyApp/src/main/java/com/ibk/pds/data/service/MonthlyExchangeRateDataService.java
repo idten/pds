@@ -92,7 +92,7 @@ public class MonthlyExchangeRateDataService {
 		
 		MonthlyExchangeRateData monthlyExchangeRateData = new MonthlyExchangeRateData(dataId, stdCurrency, relativeCurrency,
 				monthly1Rate, monthly2Rate, monthly3Rate, monthly4Rate, monthly5Rate, monthly6Rate, 
-				monthly7Rate, monthly8Rate, monthly9Rate, monthly10Rate, monthly11Rate, monthl2y1Rate, 
+				monthly7Rate, monthly8Rate, monthly9Rate, monthly10Rate, monthly11Rate, monthly12Rate, 
 				approval,updateCode,uploadDate);
 		
 		addMonthlyExchangeRateData(monthlyExchangeRateData);

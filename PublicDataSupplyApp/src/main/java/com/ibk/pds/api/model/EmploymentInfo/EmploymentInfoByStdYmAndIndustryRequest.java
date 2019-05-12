@@ -11,6 +11,16 @@ public class EmploymentInfoByStdYmAndIndustryRequest {
 	private String stdYm;		    //기준 연월일(201903)
 	private String industryCode;
 	
+	public EmploymentInfoByStdYmAndIndustryRequest(String serviceKey, Integer numOfRows, Integer pageRows,
+			String stdYm, String industryCode
+			) {
+		this.serviceKey = serviceKey;
+		this.numOfRows = numOfRows;
+		this.pageNo = pageNo;
+		this.stdYm = stdYm;
+		this.industryCode = industryCode;
+	}
+	
 	public String getIndustryCode() {
 		return industryCode;
 	}
@@ -38,11 +48,9 @@ public class EmploymentInfoByStdYmAndIndustryRequest {
 	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
 	}
+	
 	public String getStdYm() {
 		return stdYm;
-	}
-	public void setStdYYYYmm(String stdYm) {
-		this.stdYm = stdYm;
 	}
 	public String toString() {
 		return "ServiceKey="+serviceKey+",numberOfRows="+numOfRows+",pageNo="+pageNo+",stdYm="+stdYm+",Industry="+industryCode;

@@ -84,9 +84,14 @@ public class EmploymentInfoDataService {
 	}
 	public List<EmploymentInfoData> findAll(){
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll();
+	//	employmentInfoDataRepository.c
 		return list;
 	}
 	
+	
+	public int getTotalCount() {
+		return (int)employmentInfoDataRepository.count();
+	}
 	
 	
 	
@@ -126,6 +131,14 @@ public class EmploymentInfoDataService {
 
 		logger.info("findByIndustryCode(Paging)e ="+list.size());
 		return list;
+	}
+	public int findByIndustryCodeTotalCount(String industryCode) {
+		logger.info("stdDate="+industryCode);
+		int size = employmentInfoDataRepository.findByIndustryCode(industryCode).size();
+		//.findByStdYM(stdDate);
+
+		logger.info("findByIndustryCode(Paging)e ="+size);
+		return size;
 	}
 
 }

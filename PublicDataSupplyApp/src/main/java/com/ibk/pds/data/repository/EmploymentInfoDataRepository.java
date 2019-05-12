@@ -15,5 +15,6 @@ public interface EmploymentInfoDataRepository  extends MongoRepository<Employmen
 	public List<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
 	public List<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode,Pageable pageable);
 	public List<EmploymentInfoData> findByIndustryCode(String industryCode,Pageable pageable);
+	public List<EmploymentInfoData> findByIndustryCode(String industryCode);
 	
 }

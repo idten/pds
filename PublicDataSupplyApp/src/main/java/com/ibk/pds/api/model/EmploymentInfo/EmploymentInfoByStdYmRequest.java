@@ -9,6 +9,17 @@ public class EmploymentInfoByStdYmRequest {
 	private Integer numOfRows;		//한 페이지 결과 수 (10)- 필수 입력 아님 
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
 	private String stdYm;		    //기준 연월일(201903)
+	
+	
+	
+	public EmploymentInfoByStdYmRequest(String serviceKey, Integer numOfRows, Integer pageNo, String stdYm) {
+		this.serviceKey = serviceKey;
+		this.numOfRows = numOfRows;
+		this.pageNo = pageNo;
+		this.stdYm = stdYm;
+	}
+	
+	
 	public String getServiceKey() {
 		return serviceKey;
 	}
@@ -27,10 +38,11 @@ public class EmploymentInfoByStdYmRequest {
 	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
 	}
+	
 	public String getStdYm() {
 		return stdYm;
 	}
-	public void setStdYYYYmm(String stdYm) {
+	public void setStdYm(String stdYm) {
 		this.stdYm = stdYm;
 	}
 	public String toString() {
