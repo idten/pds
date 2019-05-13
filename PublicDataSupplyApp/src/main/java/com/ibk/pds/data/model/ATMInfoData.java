@@ -15,7 +15,7 @@ public class ATMInfoData {
 	//문서 내용 
 	private String atmName;			//ATM명
 	private String atmCode;
-	private String atmDivision;  	//ATM구분  
+	//private String atmDivision;  	//ATM구분  
 	private String startTime;		//시작시간
 	private String endTime;			//종료시간
 	private String atmAddress;		//주소
@@ -33,7 +33,7 @@ public class ATMInfoData {
 		return "dataId" + dataId
 				+"atmName="+atmName
 				+"atmCode="+atmCode
-				+"atmDivision="+atmDivision
+//				+"atmDivision="+atmDivision
 				+"startTime="+startTime
 				+"endTime="+endTime
 				+"atmAddress="+atmAddress
@@ -52,7 +52,7 @@ public class ATMInfoData {
 			String dataId,
 			String atmName, 
 			String atmCode,
-			String atmDivision, 
+//			String atmDivision, 
 			String startTime, 
 			String endTime,
 			String atmAddress,
@@ -65,7 +65,7 @@ public class ATMInfoData {
 		this.dataId = dataId;	
 		this.atmName = atmName;
 		this.atmCode = atmCode;
-		this.atmDivision = atmDivision;
+//		this.atmDivision = atmDivision;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.atmAddress = atmAddress;
@@ -88,12 +88,7 @@ public class ATMInfoData {
 	public void setAtmName(String atmName) {
 		this.atmName = atmName;
 	}
-	public String getAtmDivision() {
-		return atmDivision;
-	}
-	public void setAtmDivision(String atmDivision) {
-		this.atmDivision = atmDivision;
-	}
+	
 	public String getStartTime() {
 		return startTime;
 	}

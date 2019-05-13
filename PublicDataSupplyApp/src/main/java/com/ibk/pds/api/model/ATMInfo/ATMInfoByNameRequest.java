@@ -9,6 +9,16 @@ public class ATMInfoByNameRequest {
 	private Integer numOfRows;		//한 페이지 결과 수 (10)- 필수 입력 아님 
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
 	private String  atmName;		    //기준 연월일(201903)
+	
+	public ATMInfoByNameRequest(String serviceKey, Integer numOfRows, Integer pageNo,String atmName) {
+		// TODO Auto-generated constructor stub
+		this.numOfRows = numOfRows;
+		this.pageNo = pageNo;
+		this.serviceKey = serviceKey;
+		this.atmName = atmName;
+	}
+	
+	
 	public String getServiceKey() {
 		return serviceKey;
 	}

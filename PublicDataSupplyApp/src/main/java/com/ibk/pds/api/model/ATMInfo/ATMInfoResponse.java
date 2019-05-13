@@ -14,29 +14,54 @@ public class ATMInfoResponse {
 
 	//private
 	//공통 코드 
+	//	private String resultCode = "";
+	//	private String resultMsg = "";
+	//	private Integer numOfRows=0;
+	//	
+
 	private String resultCode = "";
 	private String resultMsg = "";
-	
+	private Integer totalCount = 0;
 	private Integer numOfRows=0;
-	
-//	@JacksonXmlProperty(localName="items")
+	private Integer pageNo=0;
+
+
+
+	//	@JacksonXmlProperty(localName="items")
 	@JacksonXmlElementWrapper(localName="items" , useWrapping=true)
 	private List<ATMInfoResponseSub> item;
 
 	public String toString() {
 
-		 String result = "resultCode="+resultCode+",resultMsg="+resultMsg+",numOfRows"+numOfRows;
-		 String subResult = "";
-		 int size = item.size();
-		 for(int i = 0 ;i<size;i++) {
-			 ATMInfoResponseSub subItem = item.get(0);
-			 subResult += "["+(i+1)+"]"+subItem.toString()+"\n";
-		 }
-		 
-		 return result+subResult;
+		String result = "resultCode="+resultCode+",resultMsg="+resultMsg+",numOfRows"+numOfRows;
+		String subResult = "";
+		int size = item.size();
+		for(int i = 0 ;i<size;i++) {
+			ATMInfoResponseSub subItem = item.get(0);
+			subResult += "["+(i+1)+"]"+subItem.toString()+"\n";
+		}
+
+		return result+subResult;
 	}
-	
-	
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
+
 	public List<ATMInfoResponseSub> getItem() {
 		return item;
 	}
@@ -69,9 +94,9 @@ public class ATMInfoResponse {
 		this.numOfRows = numOfRows;
 	}
 
-	
-	
-	
-	
+
+
+
+
 
 }

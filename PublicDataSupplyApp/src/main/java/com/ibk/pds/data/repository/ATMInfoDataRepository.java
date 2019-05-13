@@ -13,6 +13,10 @@ import com.ibk.pds.data.model.JobWorldData;
 public interface ATMInfoDataRepository  extends MongoRepository<ATMInfoData,String>{
 
 	public Page<ATMInfoData> findAll(Pageable pageable);
+	public List<ATMInfoData> findByAtmName(String atmName);
 	public List<ATMInfoData> findByAtmName(String atmName, Pageable pageable);
+	
+	public List<ATMInfoData> findByAtmSectionCode(String atmSectionCode);	
 	public List<ATMInfoData> findByAtmSectionCode(String atmSectionCode, Pageable pageable);	
+
 }

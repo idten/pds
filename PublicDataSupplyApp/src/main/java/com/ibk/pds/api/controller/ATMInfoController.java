@@ -16,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibk.pds.api.model.ATMInfo.ATMInfoAllRequest;
@@ -62,21 +64,21 @@ public class ATMInfoController {
 
 	public ATMInfoResponseSub convertToResponseSub(ATMInfoData data) {
 		String atmName;			//ATM명
-		String atmDivision;  	//ATM구분  
+	//	String atmDivision;  	//ATM구분  
 		String startTime;		//시작시간
 		String endTime;			//종료시간
 		String atmAddress;		//주소
 		String atmSection;		//지역구분
 		String atmSectionCode;	//지역구분 코드 
 		atmName = data.getAtmName();
-		atmDivision = data.getAtmDivision();
+	//	atmDivision = data.getAtmDivision();
 		startTime = data.getStartTime() ;
 		endTime = data.getEndTime();
 		atmAddress = data.getAtmAddress();
 		atmSection = data.getAtmSection();
 		atmSectionCode = data.getAtmSectionCode();
 
-		ATMInfoResponseSub responseSub = new ATMInfoResponseSub(atmName, atmDivision, 
+		ATMInfoResponseSub responseSub = new ATMInfoResponseSub(atmName,  
 				startTime, endTime,
 				atmAddress,
 				atmSection, atmSectionCode
@@ -86,10 +88,27 @@ public class ATMInfoController {
 		return responseSub;
 	}
 
+	
+	@RequestMapping(value="/atmInfoAll",produces="application/xml", method=RequestMethod.POST)
+	public  ATMInfoResponse viewATMInfoAll(@RequestBody ATMInfoAllRequest request) {
+		ATMInfoResponse response = viewATMInfoAllCommon(request);
+		return response;
+	}
+	
+	@RequestMapping(value="/atmInfoAll",produces="application/xml", method=RequestMethod.GET)
+	public  ATMInfoResponse viewATMInfoAll(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey) {
+		ATMInfoAllRequest request = new ATMInfoAllRequest(serviceKey,numOfRows,pageNo);
+		ATMInfoResponse response = viewATMInfoAllCommon(request);
+		return response;
+	}
+	
+	
 	//검색기준: atmAll
 	//전체 목록 
-	@RequestMapping(value="/atmInfoAll",produces="application/xml")
-	public  ATMInfoResponse viewATMInfoAll(@RequestBody ATMInfoAllRequest request) {
+	//@RequestMapping(value="/atmInfoAll",produces="application/xml")
+	public  ATMInfoResponse viewATMInfoAllCommon(ATMInfoAllRequest request) {
 
 		logger.info("ATMInfoAll="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -128,7 +147,7 @@ public class ATMInfoController {
 			
 			
 			list = atmInfoDataService.findAll(paging);//.findByStdDatePaging(request.getStdYm(),paging);			
-
+			int totalCount = atmInfoDataService.getTotalCount();
 
 			for(ATMInfoData data : list) {
 				ATMInfoResponseSub responseSub = convertToResponseSub(data);
@@ -142,6 +161,14 @@ public class ATMInfoController {
 
 			}
 			response.setItem(responseSubList);
+			
+			//response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "atmInfoByName ";
@@ -173,11 +200,29 @@ public class ATMInfoController {
 
 		return response;			
 	}
-
+	
 
 	//검색기준: atmName
-	@RequestMapping(value="/atmInfoByName",produces="application/xml")
+	@RequestMapping(value="/atmInfoByName",produces="application/xml", method=RequestMethod.POST)
 	public  ATMInfoResponse viewATMInfoByNameRequest(@RequestBody ATMInfoByNameRequest request) {
+		ATMInfoResponse response = viewATMInfoByNameRequestCommon(request);
+		return response;
+	
+	}
+	
+	@RequestMapping(value="/atmInfoByName",produces="application/xml", method=RequestMethod.GET)
+	public  ATMInfoResponse viewATMInfoByNameRequest(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey,@RequestParam("atmName") String atmName
+			
+			) {
+		ATMInfoByNameRequest request = new ATMInfoByNameRequest(serviceKey,numOfRows,pageNo,atmName);
+		ATMInfoResponse response = viewATMInfoByNameRequestCommon(request);
+		return response;
+	
+	}
+	
+	public  ATMInfoResponse viewATMInfoByNameRequestCommon(ATMInfoByNameRequest request) {
 
 		logger.info("ATMInfoByNameRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -213,8 +258,8 @@ public class ATMInfoController {
 			}
 			Pageable paging = PageRequest.of(page, size);
 			list = atmInfoDataService.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);			
-
-
+			//int totalCount = atmInfoDataService.find
+			
 			for(ATMInfoData data : list) {
 				ATMInfoResponseSub responseSub = convertToResponseSub(data);
 				responseSubList.add(responseSub);
@@ -227,6 +272,20 @@ public class ATMInfoController {
 
 			}
 			response.setItem(responseSubList);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			//1개 이상은 아님 
+			response.setTotalCount(list.size());
+			
+			
+			
+			
+			
+			
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "atmInfoByName ";
@@ -259,9 +318,24 @@ public class ATMInfoController {
 		return response;			
 	}
 
-	//findByATMSectionCode
-	@RequestMapping(value="/atmInfoBySection",produces="application/xml")
+	@RequestMapping(value="/atmInfoBySection",produces="application/xml", method=RequestMethod.POST)
 	public  ATMInfoResponse viewATMInfoBySectionCode(@RequestBody ATMInfoBySectionRequest request) {
+		ATMInfoResponse response = viewATMInfoBySectionCodeCommon(request);
+		return response;
+	}
+	
+	@RequestMapping(value="/atmInfoBySection",produces="application/xml", method=RequestMethod.GET)
+	public  ATMInfoResponse viewATMInfoBySectionCode(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey,@RequestParam("atmSectionCode") String atmSectionCode
+			) {
+		ATMInfoBySectionRequest request =  new ATMInfoBySectionRequest(serviceKey,numOfRows,pageNo,atmSectionCode);
+		ATMInfoResponse response = viewATMInfoBySectionCodeCommon(request);
+		return response;
+
+	}
+	
+	public  ATMInfoResponse viewATMInfoBySectionCodeCommon(ATMInfoBySectionRequest request) {
 
 		logger.info("ATMInfoBySectionRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -296,9 +370,9 @@ public class ATMInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
-			list = atmInfoDataService.findByATMName(request.getAtmSectionCode(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
-
-
+			list = atmInfoDataService.findByATMSectionCode(request.getAtmSectionCode(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
+			int totalCount = atmInfoDataService.findByATMSectionCode(request.getAtmSectionCode()).size();
+			
 			logger.info("DB Result:"+list.size());
 
 			for(ATMInfoData data : list) {
@@ -310,7 +384,16 @@ public class ATMInfoController {
 				logger.info("select Result="+resSub.toString());
 
 			}
+		//	response.setItem(responseSubList);
 			response.setItem(responseSubList);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			//1개 이상은 아님 
+			response.setTotalCount(totalCount);
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "ATMatmInfoBySection ";

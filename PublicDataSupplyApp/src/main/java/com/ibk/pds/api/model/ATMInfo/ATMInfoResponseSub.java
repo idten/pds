@@ -4,7 +4,7 @@ package com.ibk.pds.api.model.ATMInfo;
 
 public class ATMInfoResponseSub {
 	String atmName = "";
-	String atmDivisiton= "";
+	//String atmDivisiton= "";
 	String startTime = "";
 	String endTime = "";
 	String atmAddress = "";
@@ -18,14 +18,13 @@ public class ATMInfoResponseSub {
 		
 	}
 	public String toString() {
-		return "[atmName="+atmName+",atmDivisiton="+atmDivisiton+",startTime="+startTime+
+		return "[atmName="+atmName+",startTime="+startTime+
 				",endTime="+endTime
 				+",atmAddress="+atmAddress+",atmSection="+atmSection+"]";
 	}
 	
 	public ATMInfoResponseSub(
 			String atmName, 
-			String atmDivisiton, 
 			String startTime,
 			String endTime,
 			String atmAddress ,
@@ -33,7 +32,6 @@ public class ATMInfoResponseSub {
 			String atmSectionCode
 			) {
 		this.atmName = atmName;
-		this.atmDivisiton = atmDivisiton;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.atmAddress = atmAddress;
@@ -46,12 +44,7 @@ public class ATMInfoResponseSub {
 	public void setAtmName(String atmName) {
 		this.atmName = atmName;
 	}
-	public String getAtmDivisiton() {
-		return atmDivisiton;
-	}
-	public void setAtmDivisiton(String atmDivisiton) {
-		this.atmDivisiton = atmDivisiton;
-	}
+	
 	public String getStartTime() {
 		return startTime;
 	}

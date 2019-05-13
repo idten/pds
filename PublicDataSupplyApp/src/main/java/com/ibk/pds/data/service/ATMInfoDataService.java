@@ -66,15 +66,15 @@ public class ATMInfoDataService {
 		uploadDate = today;
 		String atmName			= cellList.get(0);			//ATM명
 		String atmCode 			= cellList.get(1);
-		String atmDivision  	= cellList.get(2);//ATM구분  
-		String startTime		= cellList.get(3);//시작시간
-		String endTime			= cellList.get(4);//종료시간
+		//String atmDivision  	= cellList.get(2);//ATM구분  
+		String startTime		= cellList.get(2);//시작시간
+		String endTime			= cellList.get(3);//종료시간
 		String atmAddress       = cellList.get(5);		//주소
 		String atmSection       = cellList.get(6);		//지역구분
 		String atmSectionCode	= cellList.get(7);	//지역구분 코드 
 		String dataId=atmCode; 
 
-		ATMInfoData atmInfoData = new ATMInfoData(dataId,atmName,atmCode,atmDivision, startTime, endTime,atmAddress,
+		ATMInfoData atmInfoData = new ATMInfoData(dataId,atmName,atmCode, startTime, endTime,atmAddress,
 				atmSection,atmSectionCode,approval, updateCode, uploadDate);
 		
 		addATMInfoData(atmInfoData);
@@ -109,7 +109,9 @@ public class ATMInfoDataService {
 		List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll();
 		return atmInfoDataList;
 	}
-
+	public int getTotalCount() {
+		return (int)atmInfoDataRepository.count();
+	}
 
 	public List<ATMInfoData> findByATMName(String atmName,Pageable page) {
 		logger.info("atmName="+atmName);
@@ -118,10 +120,21 @@ public class ATMInfoDataService {
 		return list;
 	}
 
+	
+	
+	
 	public List<ATMInfoData> findByATMSectionCode(String atmSectionCode,Pageable page) {
 		logger.info("atmSectionCode="+atmSectionCode);
 		List<ATMInfoData> list = atmInfoDataRepository.findByAtmSectionCode(atmSectionCode, page);
 		logger.info("findByATMSectionCode(Paging) ="+list.size());
 		return list;
 	}
+	
+	public List<ATMInfoData> findByATMSectionCode(String atmSectionCode) {
+		logger.info("atmSectionCode="+atmSectionCode);
+		List<ATMInfoData> list = atmInfoDataRepository.findByAtmSectionCode(atmSectionCode);
+		logger.info("findByATMSectionCode(Paging) ="+list.size());
+		return list;
+	}
+	
 }

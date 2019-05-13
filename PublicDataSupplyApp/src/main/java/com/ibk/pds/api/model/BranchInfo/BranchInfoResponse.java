@@ -16,10 +16,12 @@ public class BranchInfoResponse {
 	//공통 코드 
 	private String resultCode = "";
 	private String resultMsg = "";
-	
+	private Integer totalCount = 0;
 	private Integer numOfRows=0;
-	
-//	@JacksonXmlProperty(localName="items")
+	private Integer pageNo=0;
+
+
+	//	@JacksonXmlProperty(localName="items")
 	@JacksonXmlElementWrapper(localName="items" , useWrapping=true)
 	private List<BranchInfoResponseSub> item;
 
@@ -36,7 +38,25 @@ public class BranchInfoResponse {
 		 return result+subResult;
 	}
 	
-	
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
+
 	public List<BranchInfoResponseSub> getItem() {
 		return item;
 	}
