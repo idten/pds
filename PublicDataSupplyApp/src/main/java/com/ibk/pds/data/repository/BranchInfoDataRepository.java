@@ -13,5 +13,9 @@ public interface BranchInfoDataRepository  extends MongoRepository<BranchInfoDat
 
 	public Page<BranchInfoData> findAll(Pageable pageable);
 	public List<BranchInfoData> findByBranchName(String branchName,Pageable pageable);
+	public List<BranchInfoData> findByBranchName(String branchName);
+
 	public List<BranchInfoData> findByBranchSectionCode(String branchSectionCode,Pageable pageable);	
+	public List<BranchInfoData> findByBranchSectionCode(String branchSectionCode);	
+	
 }

@@ -8,11 +8,19 @@ public class FundRateInfoByIdivFnptDcdTop5Request {
 	private String serviceKey;   	//서비스키(공공데이터포털에서 받은 인증키)
 	private Integer numOfRows;		//한 페이지 결과 수 (10)- 필수 입력 아님 
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
-//	private String fundAstTcd;	//펀드자산유형코드
-//	private String fundInvmAecd;//펀드투자지역코드 
-//	private String pdrsGdcd;	//상품리스크 등급코드 
 	private String idivFnptDcd;	//펀드유형구분코드
 	private String ernnRtDcd;
+
+	public FundRateInfoByIdivFnptDcdTop5Request(String serviceKey,Integer numOfRows, Integer pageNo,String idivFnptDcd, String ernnRtDcd) {
+		// TODO Auto-generated constructor stub
+		this.numOfRows = numOfRows;
+		this.pageNo = pageNo;
+		this.serviceKey = serviceKey;
+		this.idivFnptDcd = idivFnptDcd;
+		this.ernnRtDcd = ernnRtDcd;
+	}
+	
+	
 	
 	//private String  fundAstTcd;		    //기준 연월일(201903)
 	public String getServiceKey() {

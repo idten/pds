@@ -66,7 +66,6 @@ public class ATMInfoDataService {
 		uploadDate = today;
 		String atmName			= cellList.get(0);			//ATM명
 		String atmCode 			= cellList.get(1);
-		//String atmDivision  	= cellList.get(2);//ATM구분  
 		String startTime		= cellList.get(2);//시작시간
 		String endTime			= cellList.get(3);//종료시간
 		String atmAddress       = cellList.get(5);		//주소

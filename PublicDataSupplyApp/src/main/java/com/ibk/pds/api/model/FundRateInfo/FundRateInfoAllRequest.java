@@ -9,6 +9,12 @@ public class FundRateInfoAllRequest {
 	private Integer numOfRows;		//한 페이지 결과 수 (10)- 필수 입력 아님 
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
 	
+	public FundRateInfoAllRequest(String serviceKey,Integer numOfRows, Integer pageNo) {
+		// TODO Auto-generated constructor stub
+		this.numOfRows = numOfRows;
+		this.pageNo = pageNo;
+		this.serviceKey = serviceKey;
+	}
 	
 	//private String  fundAstTcd;		    //기준 연월일(201903)
 	public String getServiceKey() {

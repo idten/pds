@@ -16,10 +16,14 @@ public class MonthlyExchangeRateInfoResponse {
 	//공통 코드 
 	private String resultCode = "";
 	private String resultMsg = "";
-	
+	private Integer totalCount = 0;
 	private Integer numOfRows=0;
+	private Integer pageNo=0;
+
 	
-//	@JacksonXmlProperty(localName="items")
+
+
+	//	@JacksonXmlProperty(localName="items")
 	@JacksonXmlElementWrapper(localName="items" , useWrapping=true)
 	private List<MonthlyExchangeRateInfoResponseSub> item;
 
@@ -70,7 +74,24 @@ public class MonthlyExchangeRateInfoResponse {
 	}
 
 	
-	
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
 	
 	
 

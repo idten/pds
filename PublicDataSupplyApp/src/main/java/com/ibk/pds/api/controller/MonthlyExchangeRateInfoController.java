@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibk.pds.api.model.BranchInfo.BranchInfoResponseSub;
@@ -53,7 +55,7 @@ public class MonthlyExchangeRateInfoController {
 
 	public MonthlyExchangeRateInfoResponseSub convertToResponseSub(MonthlyExchangeRateData data) {
 		String stdCurrency;
-//		//상태 통화
+		//		//상태 통화
 		String relativeCurrency;
 		String monthly1Rate;
 		String monthly2Rate;
@@ -67,8 +69,8 @@ public class MonthlyExchangeRateInfoController {
 		String monthly10Rate;
 		String monthly11Rate;
 		String monthly12Rate;
-		
-		
+
+
 		stdCurrency = data.getStdCurrency();
 		relativeCurrency = data.getRelativeCurrency();
 		monthly1Rate = data.getMonthly1Rate();
@@ -83,7 +85,7 @@ public class MonthlyExchangeRateInfoController {
 		monthly10Rate = data.getMonthly10Rate();
 		monthly11Rate = data.getMonthly11Rate();
 		monthly12Rate = data.getMonthly12Rate();
-		
+
 		MonthlyExchangeRateInfoResponseSub responseSub = new MonthlyExchangeRateInfoResponseSub(
 				stdCurrency,relativeCurrency, 
 				monthly1Rate,
@@ -102,9 +104,28 @@ public class MonthlyExchangeRateInfoController {
 
 		return responseSub;
 	}
-	//기준 통화 조건 
-	@RequestMapping(value="/montlyExchangeRateAll",produces="application/xml")
+	@RequestMapping(value="/montlyExchangeRateAll",produces="application/xml",method=RequestMethod.POST)
 	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeAll(@RequestBody MonthlyExchangeRateInfoAllRequest request) {
+
+		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeAllCommon(request);
+		return response;
+	}
+
+	@RequestMapping(value="/montlyExchangeRateAll",produces="application/xml", method=RequestMethod.GET)
+	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeAll(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey
+			) {
+		MonthlyExchangeRateInfoAllRequest request =new MonthlyExchangeRateInfoAllRequest(serviceKey,numOfRows,pageNo);
+		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeAllCommon(request);
+		return response;
+
+
+	}
+
+	//기준 통화 조건 
+	//@RequestMapping(value="/montlyExchangeRateAll",produces="application/xml")
+	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeAllCommon(MonthlyExchangeRateInfoAllRequest request) {
 
 		logger.info("MonthlyExchangeRateInfoAllRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -114,7 +135,7 @@ public class MonthlyExchangeRateInfoController {
 
 		String apiId= "montlyExchangeRateAll";
 		String apiUrl=	"/monthlyExchangeRateInfo/montlyExchangeRateAll";
-//		ViewCareersResponse response = new ViewCareersResponse();
+		//		ViewCareersResponse response = new ViewCareersResponse();
 		MonthlyExchangeRateInfoResponse response = new MonthlyExchangeRateInfoResponse() ;
 		int result = 0;
 		if(authYN.contentEquals("Y"))
@@ -139,18 +160,30 @@ public class MonthlyExchangeRateInfoController {
 			}
 			Pageable paging = PageRequest.of(page, size);
 			list = monthlyExchangeRateDataService.findAll(paging);
-
+			int totalCount = monthlyExchangeRateDataService.totalCount();
 			String resultCode;// = resultCode;
 			String resultMsg;
 			Integer numOfRows = list.size();
-//			
+			//			
 			logger.info("DB Result:"+list.size());
-			
-			
+
+
 			for(MonthlyExchangeRateData data : list) {
 				MonthlyExchangeRateInfoResponseSub responseSub = convertToResponseSub(data);
 				responseSubList.add(responseSub);
 			}
+			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+
+
+
+
+
+
 
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
@@ -183,11 +216,27 @@ public class MonthlyExchangeRateInfoController {
 
 		return response;			
 	}
-
-	
 	//기준 통화 조건 
-	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml")
+	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml",method=RequestMethod.POST)
 	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrency(@RequestBody MonthlyExchangeRateInfoByStdCurrencyRequest request) {
+		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeByStdCurrencyCommon(request);
+		return response;
+	}
+	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml",method=RequestMethod.GET)
+	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrency(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey,
+			@RequestParam("stdCurrency") String stdCurrency
+			
+			) {
+		MonthlyExchangeRateInfoByStdCurrencyRequest request =new MonthlyExchangeRateInfoByStdCurrencyRequest(serviceKey,numOfRows,pageNo,stdCurrency);
+		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeByStdCurrencyCommon(request);
+		return response;
+	}
+
+	//기준 통화 조건 
+	//@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml")
+	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrencyCommon(MonthlyExchangeRateInfoByStdCurrencyRequest request) {
 
 		logger.info("viewMontlyExchangeByStdCurrency="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -197,7 +246,7 @@ public class MonthlyExchangeRateInfoController {
 
 		String apiId= "montlyExchangeRateAll";
 		String apiUrl=	"/monthlyExchangeRateInfo/montlyExchangeRateAll";
-//		ViewCareersResponse response = new ViewCareersResponse();
+		//		ViewCareersResponse response = new ViewCareersResponse();
 		MonthlyExchangeRateInfoResponse response = new MonthlyExchangeRateInfoResponse() ;
 		int result = 0;
 		if(authYN.contentEquals("Y"))
@@ -222,18 +271,25 @@ public class MonthlyExchangeRateInfoController {
 			}
 			Pageable paging = PageRequest.of(page, size);
 			list = monthlyExchangeRateDataService.findByStdCurrency(request.getStdCurrency(), paging);
-
+			int totalCount = monthlyExchangeRateDataService.findByStdCurrencyTotalCount(request.getStdCurrency());
 			String resultCode;// = resultCode;
 			String resultMsg;
 			Integer numOfRows = list.size();
-//			
+			//			
 			logger.info("DB Result:"+list.size());
-			
-			
+
+
 			for(MonthlyExchangeRateData data : list) {
 				MonthlyExchangeRateInfoResponseSub responseSub = convertToResponseSub(data);
 				responseSubList.add(responseSub);
 			}
+			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+
 
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
@@ -267,6 +323,6 @@ public class MonthlyExchangeRateInfoController {
 		return response;			
 	}
 
-	
+
 
 }

@@ -16,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibk.pds.api.model.ATMInfo.ATMInfoByNameRequest;
@@ -133,10 +135,27 @@ public class FundRateInfoController {
 		return responseSub;
 	}
 
-
-	//검색기준: atmName
-	@RequestMapping(value="/fundRateInfoAll",produces="application/xml")
+	@RequestMapping(value="/fundRateInfoAll",produces="application/xml",method=RequestMethod.POST )
 	public  FundRateInfoResponse viewFundRateInfoAll(@RequestBody FundRateInfoAllRequest request) {
+		FundRateInfoResponse response = viewFundRateInfoAllCommon(request);
+		return response;
+		
+	}
+	
+	@RequestMapping(value="/fundRateInfoAll",produces="application/xml",method=RequestMethod.GET )
+	public  FundRateInfoResponse viewFundRateInfoAll(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey
+			) {
+		FundRateInfoAllRequest request = new FundRateInfoAllRequest(serviceKey,numOfRows, pageNo);
+		FundRateInfoResponse response = viewFundRateInfoAllCommon(request);
+		return response;
+	
+	}
+	
+	
+	//검색기준: atmName
+	public  FundRateInfoResponse viewFundRateInfoAllCommon(FundRateInfoAllRequest request) {
 
 		logger.info("FundRateInfoAllRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -171,7 +190,7 @@ public class FundRateInfoController {
 			Pageable paging = PageRequest.of(page, size);
 			list = fundRateDataService.findAll(paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
-
+			int totalCount = fundRateDataService.findAllTotalCount();
 			logger.info("DB Result:"+list.size());
 
 			for(FundRateData data : list) {
@@ -183,7 +202,13 @@ public class FundRateInfoController {
 				logger.info("select Result="+resSub.toString());
 
 			}
+			
 			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = apiId;
@@ -216,10 +241,29 @@ public class FundRateInfoController {
 		return response;			
 	}
 
-
-	//검색기준: 1개검색 
-	@RequestMapping(value="/fundRateInfo",produces="application/xml")
+	@RequestMapping(value="/fundRateInfo",produces="application/xml",method=RequestMethod.POST )
 	public  FundRateInfoResponse viewFundRateInfo(@RequestBody FundRateInfoRequest request) {
+		FundRateInfoResponse response = viewFundRateInfoCommon(request);
+		return response;
+	}
+	@RequestMapping(value="/fundRateInfo",produces="application/xml",method=RequestMethod.GET )
+	public  FundRateInfoResponse viewFundRateInfo(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey,
+			@RequestParam("fundAstTcd") String fundAstTcd,
+			@RequestParam("fundInvmAecd") String fundInvmAecd,
+			@RequestParam("pdrsGdcd") String pdrsGdcd,
+			@RequestParam("idivFnptDcd") String idivFnptDcd
+			
+			) {
+		FundRateInfoRequest request = new FundRateInfoRequest(serviceKey,numOfRows,pageNo,
+				fundAstTcd,fundInvmAecd,pdrsGdcd,idivFnptDcd);
+		FundRateInfoResponse response = viewFundRateInfoCommon(request);
+		return response;
+	}
+	//검색기준: 1개검색 
+//	@RequestMapping(value="/fundRateInfo",produces="application/xml")
+	public  FundRateInfoResponse viewFundRateInfoCommon(FundRateInfoRequest request) {
 
 		logger.info("FundRateInfoRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -260,6 +304,7 @@ public class FundRateInfoController {
 			list = fundRateDataService.findOne(fundAstTcd, fundInvmAecd, pdrsGdcd, idivFnptDcd,paging)//.findAll(paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
 					//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 					;
+			
 			logger.info("DB Result:"+list.size());
 
 			for(FundRateData data : list) {
@@ -271,7 +316,18 @@ public class FundRateInfoController {
 				logger.info("select Result="+resSub.toString());
 
 			}
+			int totalCount = list.size();
 			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			
+			
+			
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = apiId;
@@ -304,9 +360,34 @@ public class FundRateInfoController {
 		return response;			
 	}
 
-	//검색기준: atmName
-	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml")
-	public  FundRateInfoResponse ViewFundRateInfoByIdivFnptDcdTop5(@RequestBody FundRateInfoByIdivFnptDcdTop5Request request) {
+	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml",method=RequestMethod.POST)
+	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5(@RequestBody FundRateInfoByIdivFnptDcdTop5Request request) {
+		FundRateInfoResponse response = viewFundRateInfoByIdivFnptDcdTop5Common(request);
+		return response;
+	}
+	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml",method=RequestMethod.GET)
+	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5(
+			@RequestParam("numOfRows") int numOfRows, 
+			@RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey,
+			@RequestParam("idivFnptDcd") String idivFnptDcd,
+			@RequestParam("ernnRtDcd") String ernnRtDcd
+			
+			) {
+		//public FundRateInfoByIdivFnptDcdTop5Request(String serviceKey,Integer numOfRows, Integer pageNo,String idivFnptDcd, String ernnRtDcd) {
+			
+		FundRateInfoByIdivFnptDcdTop5Request request = new FundRateInfoByIdivFnptDcdTop5Request(serviceKey,numOfRows, pageNo, idivFnptDcd,ernnRtDcd);
+		
+		FundRateInfoResponse response = viewFundRateInfoByIdivFnptDcdTop5Common(request);
+		return response;
+
+	
+	}
+	
+	
+	
+	//@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml")
+	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5Common( FundRateInfoByIdivFnptDcdTop5Request request) {
 
 		logger.info("FundRateInfoByIdivFnptDcdTop5Request="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -341,7 +422,7 @@ public class FundRateInfoController {
 			Pageable paging = PageRequest.of(page, size);
 			list = fundRateDataService.findByIdivFnptDcdTop5(request.getIdivFnptDcd(),request.getErnnRtDcd());//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
-
+			//int totalCount = list.size();
 			logger.info("DB Result:"+list.size());
 
 			for(FundRateData data : list) {
@@ -353,7 +434,17 @@ public class FundRateInfoController {
 				logger.info("select Result="+resSub.toString());
 
 			}
+			//response.setItem(responseSubList);
+			int totalCount = list.size();
 			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = apiId;
@@ -386,9 +477,35 @@ public class FundRateInfoController {
 		return response;			
 	}
 
+	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml",method=RequestMethod.POST)
+	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5(@RequestBody FundRateInfoByInvmAecdTop5Request request) {
+		FundRateInfoResponse response = viewFundRateInfoByInvmAecdTop5Common(request);
+		return response;
+
+	}
+	
+	
+	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml",method=RequestMethod.GET)
+	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5(
+			@RequestParam("numOfRows") int numOfRows, 
+			@RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey,
+			@RequestParam("fundInvmAecd") String fundInvmAecd,
+			@RequestParam("ernnRtDcd") String ernnRtDcd
+			
+			) {
+		FundRateInfoByInvmAecdTop5Request request = new FundRateInfoByInvmAecdTop5Request(
+				serviceKey,numOfRows, pageNo, fundInvmAecd, ernnRtDcd);
+		FundRateInfoResponse response = viewFundRateInfoByInvmAecdTop5Common(request);
+		return response;
+
+	
+	}
+	
+	
 	//검색기준: atmName
-	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml")
-	public  FundRateInfoResponse ViewFundRateInfoByInvmAecdTop5(@RequestBody FundRateInfoByInvmAecdTop5Request request) {
+	//@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml")
+	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5Common(FundRateInfoByInvmAecdTop5Request request) {
 
 		logger.info("FundRateInfoByInvmAecdTop5Request="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -435,7 +552,16 @@ public class FundRateInfoController {
 				logger.info("select Result="+resSub.toString());
 
 			}
+			//response.setItem(responseSubList);
+			int totalCount = list.size();
 			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = apiId;

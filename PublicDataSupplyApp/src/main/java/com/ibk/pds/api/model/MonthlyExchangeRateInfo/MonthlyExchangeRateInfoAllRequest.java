@@ -9,6 +9,12 @@ public class MonthlyExchangeRateInfoAllRequest {
 	private Integer numOfRows;		//한 페이지 결과 수 (10)- 필수 입력 아님 
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
 	
+	public MonthlyExchangeRateInfoAllRequest(String serviceKey, Integer numOfRows, Integer pageNo) {
+		this.serviceKey = serviceKey;
+		this.numOfRows = numOfRows;
+		this.pageNo = pageNo;
+		
+	}
 	
 	public String getServiceKey() {
 		return serviceKey;

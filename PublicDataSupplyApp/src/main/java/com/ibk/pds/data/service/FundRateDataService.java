@@ -184,5 +184,15 @@ public class FundRateDataService {
 		logger.info("list.size() ="+list.size());
 		return list;
 	}
+	
+	public int findAllTotalCount(){
+		return (int)fundRateDataRepository.count();
+		
+//		List<FundRateData> fundRateDataList = fundRateDataRepository.findAll();
+//		return fundRateDataList;
+	}
+	
+	
+	
 
 }

@@ -118,4 +118,19 @@ public class BranchInfoDataService {
 		logger.info("findByBranchSectionCode(Paging) ="+list.size());
 		return list;
 	}
+	public int getTotalCount() {
+		return (int)branchInfoDataRepository.count();
+	}
+	public int findByBranchNameTotalCount(String branchName) {
+		logger.info("branchName="+branchName);
+		return branchInfoDataRepository.findByBranchName(branchName).size();//.findByStdYM(stdDate,page);
+	}
+	
+	public int findByBranchSectionCodeTotalCount(String branchSectionCode) {
+		logger.info("branchSectionCode="+branchSectionCode);
+		return branchInfoDataRepository.findByBranchSectionCode(branchSectionCode).size();
+		//logger.info("findByBranchSectionCode(Paging) ="+list.size());
+		//return list;
+	}
+
 }

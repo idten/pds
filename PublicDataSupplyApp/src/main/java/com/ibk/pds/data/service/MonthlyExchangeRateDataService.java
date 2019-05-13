@@ -125,6 +125,15 @@ public class MonthlyExchangeRateDataService {
 		logger.info("findAll ="+list.size());
 		return list;
 	}
+	public int totalCount() {
+		return  (int)monthlyExchangeRateDataRepository.count();
+	}
+	
+	public int findByStdCurrencyTotalCount(String stdCurrency) {
+		return monthlyExchangeRateDataRepository.findByStdCurrency(stdCurrency).size();
+		
+	}
+	
 	
 //	public List<EmploymentInfoData> findAll(Pageable page){
 //		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll(page).getContent();

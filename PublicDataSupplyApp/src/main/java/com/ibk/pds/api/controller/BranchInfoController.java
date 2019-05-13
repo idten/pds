@@ -16,8 +16,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ibk.pds.api.model.ATMInfo.ATMInfoAllRequest;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoByNameRequest;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoBySectionRequest;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoResponse;
@@ -79,10 +82,25 @@ public class BranchInfoController {
 		return responseSub;
 	}
 
-
-	//검색기준: atmName
-	@RequestMapping(value="/branchInfoAll",produces="application/xml")
+	@RequestMapping(value="/branchInfoAll",produces="application/xml",method=RequestMethod.POST )
 	public  BranchInfoResponse viewBranchInfoAll(@RequestBody BranchInfoAllRequest request) {
+		
+		BranchInfoResponse response = viewBranchInfoAllCommon(request);
+		return response;
+	}
+	
+	@RequestMapping(value="/branchInfoAll",produces="application/xml",method=RequestMethod.GET )
+	public  BranchInfoResponse viewBranchInfoAll(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey
+			) {
+		BranchInfoAllRequest request = new BranchInfoAllRequest(serviceKey,numOfRows,pageNo);
+		BranchInfoResponse response = viewBranchInfoAllCommon(request);
+		return response;
+	}
+	
+	
+	public  BranchInfoResponse viewBranchInfoAllCommon(BranchInfoAllRequest request) {
 
 		logger.info("BranchInfoAllRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -116,6 +134,8 @@ public class BranchInfoController {
 			}
 			Pageable paging = PageRequest.of(page, size);
 			list = branchInfoDataService.findAll(paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
+			int totalCount = branchInfoDataService.getTotalCount();
+			
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 
 			logger.info("DB Result:"+list.size());
@@ -130,6 +150,17 @@ public class BranchInfoController {
 
 			}
 			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			
+			
+			
+			
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "branchInfoByName ";
@@ -161,9 +192,27 @@ public class BranchInfoController {
 
 		return response;			
 	}
-	//검색기준: atmName
-	@RequestMapping(value="/branchInfoByName",produces="application/xml")
+	
+
+	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.POST)
 	public  BranchInfoResponse viewBranchInfoByNameRequest(@RequestBody BranchInfoByNameRequest request) {
+		BranchInfoResponse response = viewBranchInfoByNameRequestCommon(request);
+		return response;
+	}
+	
+	
+	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.GET)
+	public  BranchInfoResponse viewBranchInfoByNameRequest(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey,@RequestParam("branchName") String branchName
+			
+			) {
+		BranchInfoByNameRequest request = new BranchInfoByNameRequest(serviceKey,numOfRows,pageNo,branchName);
+		BranchInfoResponse response = viewBranchInfoByNameRequestCommon(request);
+		return response;
+
+	}
+	public  BranchInfoResponse viewBranchInfoByNameRequestCommon( BranchInfoByNameRequest request) {
 
 		logger.info("BranchInfoByNameRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -198,7 +247,7 @@ public class BranchInfoController {
 			Pageable paging = PageRequest.of(page, size);
 			list = branchInfoDataService.findByBranchName(request.getBranchName(), paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
-
+			int totalCount = branchInfoDataService.findByBranchNameTotalCount(request.getBranchName());
 			logger.info("DB Result:"+list.size());
 
 			for(BranchInfoData data : list) {
@@ -211,6 +260,13 @@ public class BranchInfoController {
 
 			}
 			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "branchInfoByName ";
@@ -242,8 +298,29 @@ public class BranchInfoController {
 
 		return response;			
 	}
-	@RequestMapping(value="/branchInfoBySection",produces="application/xml")
+
+	
+	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.POST)
 	public  BranchInfoResponse viewBranchInfoBySectionRequest(@RequestBody BranchInfoBySectionRequest request) {
+		BranchInfoResponse response = viewBranchInfoBySectionRequestCommon(request);
+		return response;
+	}
+	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.GET)
+	public  BranchInfoResponse viewBranchInfoBySectionRequest(
+			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
+			@RequestParam("serviceKey") String serviceKey,@RequestParam("sectionCode") String sectionCode
+			) {
+		BranchInfoBySectionRequest request = new BranchInfoBySectionRequest(serviceKey,numOfRows,pageNo,sectionCode);
+		
+//		BranchInfoBySectionRequest request = new BranchInfoBySectionRequest()
+		BranchInfoResponse response = viewBranchInfoBySectionRequestCommon(request);
+		return response;
+
+		
+	}
+	
+//	@RequestMapping(value="/branchInfoBySection",produces="application/xml")
+	public  BranchInfoResponse viewBranchInfoBySectionRequestCommon(BranchInfoBySectionRequest request) {
 
 		logger.info("BranchInfoBySectionRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -280,7 +357,7 @@ public class BranchInfoController {
 			Pageable paging = PageRequest.of(page, size);
 			list = branchInfoDataService.findByBranchSectionCode(request.getSectionCode(), paging);
 			//.findByBranchName(request.(), paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
-
+			int totalCount = branchInfoDataService.findByBranchSectionCodeTotalCount(request.getSectionCode());
 
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 			logger.info("DB Result:"+list.size());
@@ -295,6 +372,15 @@ public class BranchInfoController {
 
 			}
 			response.setItem(responseSubList);
+			
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			
+			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "branchInfoByName ";

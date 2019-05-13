@@ -10,6 +10,13 @@ public class MonthlyExchangeRateInfoByStdCurrencyRequest {
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
 	private String stdCurrency;		    //기준 연월일(201903)
 	
+	
+	public MonthlyExchangeRateInfoByStdCurrencyRequest(String serviceKey, Integer numOfRows, Integer pageNo,String stdCurrency) {
+		this.serviceKey = serviceKey;
+		this.numOfRows = numOfRows;
+		this.pageNo = pageNo;
+		this.stdCurrency = stdCurrency;
+	}
 	public String getStdCurrency() {
 		return stdCurrency;
 	}
