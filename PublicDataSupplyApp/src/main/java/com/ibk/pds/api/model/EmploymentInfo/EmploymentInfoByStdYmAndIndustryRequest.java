@@ -11,7 +11,7 @@ public class EmploymentInfoByStdYmAndIndustryRequest {
 	private String stdYm;		    //기준 연월일(201903)
 	private String industryCode;
 	
-	public EmploymentInfoByStdYmAndIndustryRequest(String serviceKey, Integer numOfRows, Integer pageRows,
+	public EmploymentInfoByStdYmAndIndustryRequest(String serviceKey, Integer numOfRows, Integer pageNo,
 			String stdYm, String industryCode
 			) {
 		this.serviceKey = serviceKey;

@@ -374,7 +374,7 @@ public class EmploymentInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
-			
+			//paging.get
 	//		list = employmentInfoDataService.findByIndustryCode(request.getIndustryCode(), paging);
 			list = employmentInfoDataService.findByStdYMAndIndustryCode(request.getStdYm(), request.getIndustryCode(), paging);
 					//.findByIndustryCode(request.getIndustryCode(), paging);

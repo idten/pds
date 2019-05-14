@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.ibk.pds.data.model.JobWorldData;
 
 //채용정보 산업별 조회 응답 
 //조회조건: stdYm
 //등록일자: 2019.04.23 
 //등록자   : 박현조
+@JacksonXmlRootElement(localName = "response")
 public class FundRateInfoResponse {
 
 	//private

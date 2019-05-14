@@ -117,7 +117,8 @@ public class EmploymentInfoDataService {
 		return list;
 	}
 	public List<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode,Pageable page) {
-		logger.info("stdDate="+stdYM);
+		logger.info("stdDate="+stdYM+":"+industryCode+":");
+		
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findByStdYMAndIndustryCode(stdYM, industryCode,page);
 		//.findByStdYM(stdDate);
 
