@@ -91,12 +91,56 @@ public class BranchInfoController {
 	
 	@RequestMapping(value="/branchInfoAll",produces="application/xml",method=RequestMethod.GET )
 	public  BranchInfoResponse viewBranchInfoAll(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			
 			) {
-		BranchInfoAllRequest request = new BranchInfoAllRequest(serviceKey,numOfRows,pageNo);
+		BranchInfoAllRequest request = new BranchInfoAllRequest(serviceKey,numOfRows,pageNo,SG_APIM);
 		BranchInfoResponse response = viewBranchInfoAllCommon(request);
 		return response;
+	}
+
+	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.POST)
+	public  BranchInfoResponse viewBranchInfoByNameRequest(@RequestBody BranchInfoByNameRequest request) {
+		BranchInfoResponse response = viewBranchInfoByNameRequestCommon(request);
+		return response;
+	}
+	
+	
+	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.GET)
+	public  BranchInfoResponse viewBranchInfoByNameRequest(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM,
+			@RequestParam(value="branchName",	required=false, defaultValue="default")	 String branchName
+			
+			) {
+		BranchInfoByNameRequest request = new BranchInfoByNameRequest(serviceKey,numOfRows,pageNo,branchName,SG_APIM);
+		BranchInfoResponse response = viewBranchInfoByNameRequestCommon(request);
+		return response;
+
+	}
+	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.POST)
+	public  BranchInfoResponse viewBranchInfoBySectionRequest(@RequestBody BranchInfoBySectionRequest request) {
+		BranchInfoResponse response = viewBranchInfoBySectionRequestCommon(request);
+		return response;
+	}
+	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.GET)
+	public  BranchInfoResponse viewBranchInfoBySectionRequest(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM,
+			@RequestParam(value="sectionCode",  required=false, defaultValue="02") String sectionCode
+			) {
+		BranchInfoBySectionRequest request = new BranchInfoBySectionRequest(serviceKey,numOfRows,pageNo,sectionCode,SG_APIM);
+		BranchInfoResponse response = viewBranchInfoBySectionRequestCommon(request);
+		return response;
+
+		
 	}
 	
 	
@@ -114,7 +158,7 @@ public class BranchInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -156,11 +200,6 @@ public class BranchInfoController {
 			response.setNumOfRows(size);
 			response.setPageNo(page);
 			
-			
-			
-			
-			
-			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "branchInfoByName ";
@@ -194,24 +233,6 @@ public class BranchInfoController {
 	}
 	
 
-	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.POST)
-	public  BranchInfoResponse viewBranchInfoByNameRequest(@RequestBody BranchInfoByNameRequest request) {
-		BranchInfoResponse response = viewBranchInfoByNameRequestCommon(request);
-		return response;
-	}
-	
-	
-	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.GET)
-	public  BranchInfoResponse viewBranchInfoByNameRequest(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,@RequestParam("branchName") String branchName
-			
-			) {
-		BranchInfoByNameRequest request = new BranchInfoByNameRequest(serviceKey,numOfRows,pageNo,branchName);
-		BranchInfoResponse response = viewBranchInfoByNameRequestCommon(request);
-		return response;
-
-	}
 	public  BranchInfoResponse viewBranchInfoByNameRequestCommon( BranchInfoByNameRequest request) {
 
 		logger.info("BranchInfoByNameRequest="+request.toString());
@@ -226,7 +247,7 @@ public class BranchInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -300,24 +321,7 @@ public class BranchInfoController {
 	}
 
 	
-	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.POST)
-	public  BranchInfoResponse viewBranchInfoBySectionRequest(@RequestBody BranchInfoBySectionRequest request) {
-		BranchInfoResponse response = viewBranchInfoBySectionRequestCommon(request);
-		return response;
-	}
-	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.GET)
-	public  BranchInfoResponse viewBranchInfoBySectionRequest(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,@RequestParam("sectionCode") String sectionCode
-			) {
-		BranchInfoBySectionRequest request = new BranchInfoBySectionRequest(serviceKey,numOfRows,pageNo,sectionCode);
-		
-//		BranchInfoBySectionRequest request = new BranchInfoBySectionRequest()
-		BranchInfoResponse response = viewBranchInfoBySectionRequestCommon(request);
-		return response;
-
-		
-	}
+	
 	
 //	@RequestMapping(value="/branchInfoBySection",produces="application/xml")
 	public  BranchInfoResponse viewBranchInfoBySectionRequestCommon(BranchInfoBySectionRequest request) {
@@ -334,7 +338,7 @@ public class BranchInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");

@@ -10,18 +10,34 @@ public class FundRateInfoByIdivFnptDcdTop5Request {
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
 	private String idivFnptDcd;	//펀드유형구분코드
 	private String ernnRtDcd;
-
-	public FundRateInfoByIdivFnptDcdTop5Request(String serviceKey,Integer numOfRows, Integer pageNo,String idivFnptDcd, String ernnRtDcd) {
+	private String 	SG_APIM;
+	
+	
+	public FundRateInfoByIdivFnptDcdTop5Request(String serviceKey,Integer numOfRows, Integer pageNo,
+			String idivFnptDcd, String ernnRtDcd, String SG_APIM) {
 		// TODO Auto-generated constructor stub
 		this.numOfRows = numOfRows;
 		this.pageNo = pageNo;
 		this.serviceKey = serviceKey;
 		this.idivFnptDcd = idivFnptDcd;
 		this.ernnRtDcd = ernnRtDcd;
+		this.SG_APIM = SG_APIM;
 	}
 	
 	
 	
+	public String getSG_APIM() {
+		return SG_APIM;
+	}
+
+
+
+	public void setSG_APIM(String sG_APIM) {
+		SG_APIM = sG_APIM;
+	}
+
+
+
 	//private String  fundAstTcd;		    //기준 연월일(201903)
 	public String getServiceKey() {
 		return serviceKey;

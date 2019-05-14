@@ -85,23 +85,96 @@ public class EmploymentInfoController {
 
 
 
-	//전체 검색 
+	//전체 검색 POST방식 
 	@RequestMapping(value="/employmentInfoAll",produces="application/xml",method=RequestMethod.POST )
 	public  EmploymentInfoResponse viewEmploymentInfoAll(@RequestBody EmploymentInfoAllRequest request) {
 		EmploymentInfoResponse response = viewEmploymentInfoAllCommon(request);
 		return response;			
 	}
-	
-	//전체 검색 
+
+	//전체 검색  GET방식 
 	@RequestMapping(value="/employmentInfoAll",produces="application/xml",method=RequestMethod.GET )
 	public  EmploymentInfoResponse viewEmploymentInfoAll(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey) {
-		EmploymentInfoAllRequest request = new EmploymentInfoAllRequest(numOfRows,pageNo,serviceKey);
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			
+			) {
+		EmploymentInfoAllRequest request = new EmploymentInfoAllRequest(numOfRows,pageNo,serviceKey,SG_APIM);
 		EmploymentInfoResponse response = viewEmploymentInfoAllCommon(request);
 		return response;			
 	}
-	
+
+	@RequestMapping(value="/employmentInfoByIndustryCode",produces="application/xml", method=RequestMethod.POST)
+	public  EmploymentInfoResponse viewEmploymentInfoByIndustryCode(@RequestBody EmploymentInfoByIndustryCodeRequest request) {
+		EmploymentInfoResponse response = viewEmploymentInfoByIndustryCodeCommon(request);
+		return response;
+	}
+
+	@RequestMapping(value="/employmentInfoByIndustryCode",produces="application/xml", method=RequestMethod.GET)
+	public  EmploymentInfoResponse viewEmploymentInfoByIndustryCode(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="industryCode", required=false, defaultValue="J1") String industryCode,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			) {
+		EmploymentInfoByIndustryCodeRequest request = new EmploymentInfoByIndustryCodeRequest(numOfRows,pageNo,serviceKey,industryCode,SG_APIM);
+		EmploymentInfoResponse response = viewEmploymentInfoByIndustryCodeCommon(request);
+
+		return	response;
+
+	}
+
+	@RequestMapping(value="/employmentInfoByStdYmAndIndustryCode",produces="application/xml", method=RequestMethod.POST)
+	public  EmploymentInfoResponse viewEmploymentInfoByStdYmIndustryCode(@RequestBody EmploymentInfoByStdYmAndIndustryRequest request) {
+		EmploymentInfoResponse response = viewEmploymentInfoByStdYmIndustryCodeCommon(request);
+		//return response;(request);
+		return response;
+
+	}
+
+	@RequestMapping(value="/employmentInfoByStdYmAndIndustryCode",produces="application/xml", method=RequestMethod.GET)
+	public  EmploymentInfoResponse viewEmploymentInfoByStdYmIndustryCode(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="stdYm", 		required=false, defaultValue="201809") String stdYm,
+			@RequestParam(value="industryCode", required=false, defaultValue="J1") String industryCode,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			) {
+		EmploymentInfoByStdYmAndIndustryRequest request = new EmploymentInfoByStdYmAndIndustryRequest(
+				serviceKey, numOfRows, pageNo, stdYm, industryCode,SG_APIM);
+
+		EmploymentInfoResponse response = viewEmploymentInfoByStdYmIndustryCodeCommon(request);
+		//return response;(request);
+		return response;
+	}
+
+	@RequestMapping(value="/employmentInfoByStdYm",produces="application/xml", method=RequestMethod.POST)
+	public  EmploymentInfoResponse viewEmploymentInfoByStdYm(@RequestBody EmploymentInfoByStdYmRequest request) {
+		EmploymentInfoResponse response = viewEmploymentInfoByStdYmCommon(request);
+		//return response;(request);
+		return response;
+	}
+
+	@RequestMapping(value="/employmentInfoByStdYm",produces="application/xml", method=RequestMethod.GET)
+	public  EmploymentInfoResponse viewEmploymentInfoByStdYm(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="stdYm", 		required=false, defaultValue="201809") String stdYm,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			) {
+
+		EmploymentInfoByStdYmRequest request = new EmploymentInfoByStdYmRequest(
+				serviceKey, numOfRows, pageNo, stdYm, SG_APIM);
+		EmploymentInfoResponse response = viewEmploymentInfoByStdYmCommon(request);
+		//return response;(request);
+		return response;
+	}
+
 	
 	
 	public  EmploymentInfoResponse viewEmploymentInfoAllCommon(EmploymentInfoAllRequest request) {
@@ -116,7 +189,7 @@ public class EmploymentInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -156,60 +229,34 @@ public class EmploymentInfoController {
 
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "아이원잡채용정보월별조회";
+			String apiName = apiId;
 			String action = "CALL";
 			String statusCode ="0000";
 			String requestMessage = request.toString();
 			String responseMessage = response.toString();
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 			logApiDataService.saveApiData(logApiData);
 			//.saveLogApiData(logApiData);
 		}else {
-
-
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "아이원잡채용정보월별조회";
+			String apiName = apiId;
 			String action = "CALL";
 			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
 			String responseMessage = response.toString();
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 
 		}
 
 		return response;			
 	}
-	
-	
-	@RequestMapping(value="/employmentInfoByIndustryCode",produces="application/xml", method=RequestMethod.POST)
-	public  EmploymentInfoResponse viewEmploymentInfoByIndustryCode(@RequestBody EmploymentInfoByIndustryCodeRequest request) {
-		EmploymentInfoResponse response = viewEmploymentInfoByIndustryCodeCommon(request);
-		return response;
-	}
-	
-	@RequestMapping(value="/employmentInfoByIndustryCode",produces="application/xml", method=RequestMethod.GET)
-	public  EmploymentInfoResponse viewEmploymentInfoByIndustryCode(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,@RequestParam("industryCode") String industryCode) {
-			
-		
-		//industryCode
-		//	@RequestBody EmploymentInfoByIndustryCodeRequest request) {
-		EmploymentInfoByIndustryCodeRequest request = new EmploymentInfoByIndustryCodeRequest(numOfRows,pageNo,serviceKey,industryCode);
-		EmploymentInfoResponse response = viewEmploymentInfoByIndustryCodeCommon(request);
-		
-		return	response;
-	
-	}
-	
-	
-	
+
+
+
+
+
 	//산업분야별 공고 정보 
 	//@RequestMapping(value="/employmentInfoByIndustryCode",produces="application/xml", method=RequestMethod.POST)
 	public  EmploymentInfoResponse viewEmploymentInfoByIndustryCodeCommon(EmploymentInfoByIndustryCodeRequest request) {
@@ -226,7 +273,7 @@ public class EmploymentInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -259,20 +306,17 @@ public class EmploymentInfoController {
 				logger.info("select Result="+resSub.toString());
 			}
 			response.setItem(responseSubList);
-		//	CommonHeaderResponse headers = new CommonHeaderResponse("00","OK");
-			
+			//	CommonHeaderResponse headers = new CommonHeaderResponse("00","OK");
+
 			response.setTotalCount(totalCount);
 			response.setResultCode("00");
 			response.setResultMsg("OK");
 			response.setNumOfRows(size);
 			response.setPageNo(page);
-
-			
-			
-		//	response.setTotalCount(list.size());
+			//	response.setTotalCount(list.size());
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "아이원잡채용정보월별조회";
+			String apiName = apiId;
 			String action = "CALL";
 			String statusCode ="0000";
 			String requestMessage = request.toString();
@@ -287,7 +331,7 @@ public class EmploymentInfoController {
 
 
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "아이원잡채용정보월별조회";
+			String apiName = apiId;
 			String action = "CALL";
 			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
@@ -301,42 +345,8 @@ public class EmploymentInfoController {
 
 		return response;			
 	}
-	
-	
-	
-	
-	
-	
-	
-	@RequestMapping(value="/employmentInfoByStdYmAndIndustryCode",produces="application/xml", method=RequestMethod.POST)
-	public  EmploymentInfoResponse viewEmploymentInfoByStdYmIndustryCode(@RequestBody EmploymentInfoByStdYmAndIndustryRequest request) {
-		EmploymentInfoResponse response = viewEmploymentInfoByStdYmIndustryCodeCommon(request);
-		//return response;(request);
-		return response;
-		
-	}
-	
-	@RequestMapping(value="/employmentInfoByStdYmAndIndustryCode",produces="application/xml", method=RequestMethod.GET)
-	public  EmploymentInfoResponse viewEmploymentInfoByStdYmIndustryCode(
-			@RequestParam("serviceKey") String serviceKey,
-			@RequestParam("numOfRows") int numOfRows, 
-			@RequestParam("pageNo") int pageNo,
-			@RequestParam("stdYm") String stdYm,
-			@RequestParam("industryCode") String industryCode
-			) {
-		EmploymentInfoByStdYmAndIndustryRequest request = new EmploymentInfoByStdYmAndIndustryRequest(
-				serviceKey, numOfRows, pageNo, stdYm, industryCode
-				);
-				
-		EmploymentInfoResponse response = viewEmploymentInfoByStdYmIndustryCodeCommon(request);
-		//return response;(request);
-		return response;
-		
-		
 
-	}
-	
-	
+
 	//산업분야별 공고 정보 
 	//@RequestMapping(value="/employmentInfoByStdYmAndIndustryCode",produces="application/xml")
 	public  EmploymentInfoResponse viewEmploymentInfoByStdYmIndustryCodeCommon(EmploymentInfoByStdYmAndIndustryRequest request) {
@@ -353,7 +363,7 @@ public class EmploymentInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -374,11 +384,14 @@ public class EmploymentInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
+			logger.info("Page:"+page+":Size:"+size);
 			//paging.get
-	//		list = employmentInfoDataService.findByIndustryCode(request.getIndustryCode(), paging);
+			//		list = employmentInfoDataService.findByIndustryCode(request.getIndustryCode(), paging);
 			list = employmentInfoDataService.findByStdYMAndIndustryCode(request.getStdYm(), request.getIndustryCode(), paging);
-					//.findByIndustryCode(request.getIndustryCode(), paging);
-			
+			int totalCount = employmentInfoDataService.findByStdYMAndIndustryCodeTotalCount(request.getStdYm(), request.getIndustryCode());
+
+			//.findByIndustryCode(request.getIndustryCode(), paging);
+
 			logger.info("DB Result:"+list.size());
 			for(EmploymentInfoData data : list) {
 				EmploymentInfoResponseSub responseSub = convertToResponseSub(data);				
@@ -389,9 +402,14 @@ public class EmploymentInfoController {
 				logger.info("select Result="+resSub.toString());
 			}
 			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "아이원잡채용정보월별/산업별 조회";
+			String apiName = apiId;
 			String action = "CALL";
 			String statusCode ="0000";
 			String requestMessage = request.toString();
@@ -406,7 +424,7 @@ public class EmploymentInfoController {
 
 
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "아이원잡채용정보월별/산업별 조회";
+			String apiName = apiId;
 			String action = "CALL";
 			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
@@ -421,42 +439,6 @@ public class EmploymentInfoController {
 		return response;			
 	}
 
-	
-	
-	
-	
-	
-	
-	@RequestMapping(value="/employmentInfoByStdYm",produces="application/xml", method=RequestMethod.POST)
-	public  EmploymentInfoResponse viewEmploymentInfoByStdYm(@RequestBody EmploymentInfoByStdYmRequest request) {
-		EmploymentInfoResponse response = viewEmploymentInfoByStdYmCommon(request);
-		//return response;(request);
-		return response;
-	}
-	
-	@RequestMapping(value="/employmentInfoByStdYm",produces="application/xml", method=RequestMethod.GET)
-	public  EmploymentInfoResponse viewEmploymentInfoByStdYm(
-			@RequestParam("serviceKey") String serviceKey,
-			@RequestParam("numOfRows") int numOfRows, 
-			@RequestParam("pageNo") int pageNo,
-			@RequestParam("stdYm") String stdYm) {
-		
-		EmploymentInfoByStdYmRequest request = new EmploymentInfoByStdYmRequest(
-				serviceKey, numOfRows, pageNo, stdYm);
-		EmploymentInfoResponse response = viewEmploymentInfoByStdYmCommon(request);
-		//return response;(request);
-		return response;
-		
-		
-	
-	}
-	
-	
-	
-	
-	
-	
-//	@RequestMapping(value="/employmentInfoByStdYm",produces="application/xml")
 	public  EmploymentInfoResponse viewEmploymentInfoByStdYmCommon(EmploymentInfoByStdYmRequest request) {
 
 		logger.info("EmploymentInfoByStdYmRequest="+request.toString());
@@ -471,7 +453,7 @@ public class EmploymentInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -492,11 +474,9 @@ public class EmploymentInfoController {
 				logger.info("Paging:"+page+",size="+size);
 			}
 			Pageable paging = PageRequest.of(page, size);
-			
-	//		list = employmentInfoDataService.findByIndustryCode(request.getIndustryCode(), paging);
-			list = employmentInfoDataService.findByStdDatePaging(request.getStdYm(), paging);
-					//.findByIndustryCode(request.getIndustryCode(), paging);
-			
+			list = employmentInfoDataService.findByStdDate(request.getStdYm(), paging);
+			//.findByIndustryCode(request.getIndustryCode(), paging);
+			int totalCount = employmentInfoDataService.findByStdDateTotalCount(request.getStdYm());
 			logger.info("DB Result:"+list.size());
 			for(EmploymentInfoData data : list) {
 				EmploymentInfoResponseSub responseSub = convertToResponseSub(data);				
@@ -507,9 +487,15 @@ public class EmploymentInfoController {
 				logger.info("select Result="+resSub.toString());
 			}
 			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "아이원잡채용정보월별 조회";
+			String apiName = apiId;
 			String action = "CALL";
 			String statusCode ="0000";
 			String requestMessage = request.toString();
@@ -524,14 +510,12 @@ public class EmploymentInfoController {
 
 
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "아이원잡채용정보월별  조회";
+			String apiName = apiId;
 			String action = "CALL";
 			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
 			String responseMessage = response.toString();
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 
 		}

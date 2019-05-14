@@ -113,16 +113,35 @@ public class MonthlyExchangeRateInfoController {
 
 	@RequestMapping(value="/montlyExchangeRateAll",produces="application/xml", method=RequestMethod.GET)
 	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeAll(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+	
 			) {
-		MonthlyExchangeRateInfoAllRequest request =new MonthlyExchangeRateInfoAllRequest(serviceKey,numOfRows,pageNo);
+		MonthlyExchangeRateInfoAllRequest request =new MonthlyExchangeRateInfoAllRequest(serviceKey,numOfRows,pageNo,SG_APIM);
 		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeAllCommon(request);
 		return response;
-
-
 	}
-
+	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml",method=RequestMethod.POST)
+	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrency(@RequestBody MonthlyExchangeRateInfoByStdCurrencyRequest request) {
+		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeByStdCurrencyCommon(request);
+		return response;
+	}
+	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml",method=RequestMethod.GET)
+	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrency(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM,
+			@RequestParam(value="stdCurrency",	required=false, defaultValue="USD") String stdCurrency
+			
+			) {
+		MonthlyExchangeRateInfoByStdCurrencyRequest request =new MonthlyExchangeRateInfoByStdCurrencyRequest(
+				serviceKey,numOfRows,pageNo,stdCurrency,SG_APIM);
+		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeByStdCurrencyCommon(request);
+		return response;
+	}
 	//기준 통화 조건 
 	//@RequestMapping(value="/montlyExchangeRateAll",produces="application/xml")
 	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeAllCommon(MonthlyExchangeRateInfoAllRequest request) {
@@ -139,7 +158,7 @@ public class MonthlyExchangeRateInfoController {
 		MonthlyExchangeRateInfoResponse response = new MonthlyExchangeRateInfoResponse() ;
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -217,22 +236,7 @@ public class MonthlyExchangeRateInfoController {
 		return response;			
 	}
 	//기준 통화 조건 
-	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml",method=RequestMethod.POST)
-	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrency(@RequestBody MonthlyExchangeRateInfoByStdCurrencyRequest request) {
-		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeByStdCurrencyCommon(request);
-		return response;
-	}
-	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml",method=RequestMethod.GET)
-	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrency(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,
-			@RequestParam("stdCurrency") String stdCurrency
-			
-			) {
-		MonthlyExchangeRateInfoByStdCurrencyRequest request =new MonthlyExchangeRateInfoByStdCurrencyRequest(serviceKey,numOfRows,pageNo,stdCurrency);
-		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeByStdCurrencyCommon(request);
-		return response;
-	}
+	
 
 	//기준 통화 조건 
 	//@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml")
@@ -250,7 +254,7 @@ public class MonthlyExchangeRateInfoController {
 		MonthlyExchangeRateInfoResponse response = new MonthlyExchangeRateInfoResponse() ;
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");

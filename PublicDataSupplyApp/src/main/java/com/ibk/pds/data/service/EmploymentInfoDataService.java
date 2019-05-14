@@ -80,6 +80,7 @@ public class EmploymentInfoDataService {
 
 	public List<EmploymentInfoData> findAll(Pageable page){
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll(page).getContent();
+		//employmentInfoDataRepository.findAll
 		return list;
 	}
 	public List<EmploymentInfoData> findAll(){
@@ -101,11 +102,16 @@ public class EmploymentInfoDataService {
 		logger.info("getByStdDate ="+list.size());
 		return list;
 	}
-	public List<EmploymentInfoData> findByStdDatePaging(String stdDate,Pageable page) {
+	
+	public List<EmploymentInfoData> findByStdDate(String stdDate,Pageable page) {
 		logger.info("stdDate="+stdDate);
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findByStdYM(stdDate,page);
 		logger.info("getByStdDate(Paging) ="+list.size());
 		return list;
+	}
+	public int findByStdDateTotalCount(String stdDate) {
+		logger.info("stdDate="+stdDate);
+		return employmentInfoDataRepository.findByStdYM(stdDate).size();
 	}
 	//public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
 	public List<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode) {
@@ -138,8 +144,16 @@ public class EmploymentInfoDataService {
 		int size = employmentInfoDataRepository.findByIndustryCode(industryCode).size();
 		//.findByStdYM(stdDate);
 
-		logger.info("findByIndustryCode(Paging)e ="+size);
+		logger.info("findByIndustryCodeTotalCount(Paging)e ="+size);
 		return size;
 	}
+	public int findByStdYMAndIndustryCodeTotalCount(String stdYM, String industryCode) {
+		logger.info("stdDate="+industryCode);
+		int size = employmentInfoDataRepository.findByStdYMAndIndustryCode(stdYM, industryCode).size();
+		//.findByStdYM(stdDate);
 
+		logger.info("findByStdYMAndIndustryCodeTotalCount(Paging)e ="+size);
+		return size;
+	}
+	
 }

@@ -15,9 +15,12 @@ public class AuthService {
 	private Logger logger = LoggerFactory.getLogger(AuthService.class);
 	
 	
-	public int auth() {
+	public int auth(String apimKey) {
 	//	mav.setViewName("authTest");
-		String apimKey = "lNWxryx-e4WE2ibp6SzLQknGNlQCcMfA8LHYjAE75iU";
+		if(apimKey.contentEquals("testKey")) {
+			apimKey = "lNWxryx-e4WE2ibp6SzLQknGNlQCcMfA8LHYjAE75iU";
+		}
+		//String apimKey = "lNWxryx-e4WE2ibp6SzLQknGNlQCcMfA8LHYjAE75iU";
 		int checkResult = -1;
 		if(apimKey!=null)checkResult = APIMGatewayUtil.SG_APIM_Check(apimKey);
 		if(checkResult==1) {
@@ -29,4 +32,22 @@ public class AuthService {
 		return checkResult;
 		//return mav;
 	}
+	
+	public int auth() {
+		//	mav.setViewName("authTest");
+			//if(apimKey.contentEquals("testKey")) {
+			String 	apimKey = "lNWxryx-e4WE2ibp6SzLQknGNlQCcMfA8LHYjAE75iU";
+			//}
+			//String apimKey = "lNWxryx-e4WE2ibp6SzLQknGNlQCcMfA8LHYjAE75iU";
+			int checkResult = -1;
+			if(apimKey!=null)checkResult = APIMGatewayUtil.SG_APIM_Check(apimKey);
+			if(checkResult==1) {
+				logger.info("인증 성공");
+			}else {
+				logger.info("인증 실패");
+			}
+			
+			return checkResult;
+			//return mav;
+		}
 }

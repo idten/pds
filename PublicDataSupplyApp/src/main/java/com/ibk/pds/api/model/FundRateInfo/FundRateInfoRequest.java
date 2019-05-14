@@ -14,9 +14,11 @@ public class FundRateInfoRequest {
 	private String fundInvmAecd;//펀드투자지역코드 
 	private String pdrsGdcd;	//상품리스크 등급코드 
 	private String idivFnptDcd;	//펀드유형구분코드
+	private String 	SG_APIM;
+	
 	
 	public FundRateInfoRequest(String serviceKey,Integer numOfRows, Integer pageNo
-			,String fundAstTcd, String fundInvmAecd, String pdrsGdcd, String idivFnptDcd)
+			,String fundAstTcd, String fundInvmAecd, String pdrsGdcd, String idivFnptDcd,String SG_APIM)
 		{
 		// TODO Auto-generated constructor stub
 		this.numOfRows = numOfRows;
@@ -26,6 +28,13 @@ public class FundRateInfoRequest {
 		this.fundInvmAecd = fundInvmAecd;
 		this.pdrsGdcd = pdrsGdcd;
 		this.idivFnptDcd = idivFnptDcd;
+		this.SG_APIM = SG_APIM;
+	}
+	public String getSG_APIM() {
+		return SG_APIM;
+	}
+	public void setSG_APIM(String sG_APIM) {
+		SG_APIM = sG_APIM;
 	}
 	//private String  fundAstTcd;		    //기준 연월일(201903)
 	public String getServiceKey() {

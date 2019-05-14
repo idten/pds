@@ -72,12 +72,6 @@ public class FundRateInfoController {
 	@Autowired
 	FundRateDataService fundRateDataService;
 	public FundRateInfoResponseSub convertToResponseSub(FundRateData data) {
-		//		String branchName = "";
-		//		String branchPhoneNumber= "";
-		//		String branchAddress = "";
-		//		String branchSection = "";
-		//		String branchSectionCode = "";
-		//		
 		String baseYmd;		//기준 년월일
 		String opcmNm;  	//운용사명 
 		String fundNm;		//펀드명
@@ -144,14 +138,94 @@ public class FundRateInfoController {
 	
 	@RequestMapping(value="/fundRateInfoAll",produces="application/xml",method=RequestMethod.GET )
 	public  FundRateInfoResponse viewFundRateInfoAll(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			
 			) {
-		FundRateInfoAllRequest request = new FundRateInfoAllRequest(serviceKey,numOfRows, pageNo);
+		FundRateInfoAllRequest request = new FundRateInfoAllRequest(serviceKey,numOfRows, pageNo,SG_APIM);
 		FundRateInfoResponse response = viewFundRateInfoAllCommon(request);
 		return response;
 	
 	}
+	
+	@RequestMapping(value="/fundRateInfo",produces="application/xml",method=RequestMethod.POST )
+	public  FundRateInfoResponse viewFundRateInfo(@RequestBody FundRateInfoRequest request) {
+		FundRateInfoResponse response = viewFundRateInfoCommon(request);
+		return response;
+	}
+	@RequestMapping(value="/fundRateInfo",produces="application/xml",method=RequestMethod.GET )
+	public  FundRateInfoResponse viewFundRateInfo(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM,
+			@RequestParam(value="fundAstTcd",	required=false, defaultValue="00") String fundAstTcd,
+			@RequestParam(value="fundInvmAecd",	required=false, defaultValue="00") String fundInvmAecd,
+			@RequestParam(value="pdrsGdcd",		required=false, defaultValue="00") String pdrsGdcd,
+			@RequestParam(value="idivFnptDcd",	required=false, defaultValue="11") String idivFnptDcd
+			
+			) {
+		FundRateInfoRequest request = new FundRateInfoRequest(serviceKey,numOfRows,pageNo,
+				fundAstTcd,fundInvmAecd,pdrsGdcd,idivFnptDcd,SG_APIM);
+		FundRateInfoResponse response = viewFundRateInfoCommon(request);
+		return response;
+	}
+	
+
+	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml",method=RequestMethod.POST)
+	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5(@RequestBody FundRateInfoByIdivFnptDcdTop5Request request) {
+		FundRateInfoResponse response = viewFundRateInfoByIdivFnptDcdTop5Common(request);
+		return response;
+	}
+	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml",method=RequestMethod.GET)
+	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM,
+			@RequestParam(value="idivFnptDcd", 	required=false, defaultValue="11") String idivFnptDcd,
+			@RequestParam(value="ernnRtDcd", 	required=false, defaultValue="01") String ernnRtDcd
+			
+			) {
+		//public FundRateInfoByIdivFnptDcdTop5Request(String serviceKey,Integer numOfRows, Integer pageNo,String idivFnptDcd, String ernnRtDcd) {
+			
+		FundRateInfoByIdivFnptDcdTop5Request request = new FundRateInfoByIdivFnptDcdTop5Request(serviceKey,numOfRows, pageNo, idivFnptDcd,ernnRtDcd,SG_APIM);
+		
+		FundRateInfoResponse response = viewFundRateInfoByIdivFnptDcdTop5Common(request);
+		return response;
+
+	
+	}
+	
+	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml",method=RequestMethod.POST)
+	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5(@RequestBody FundRateInfoByInvmAecdTop5Request request) {
+		FundRateInfoResponse response = viewFundRateInfoByInvmAecdTop5Common(request);
+		return response;
+
+	}
+	
+	
+	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml",method=RequestMethod.GET)
+	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM,
+			@RequestParam(value="fundInvmAecd",	required=false, defaultValue="01") String fundInvmAecd,
+			@RequestParam(value="ernnRtDcd", 	required=false, defaultValue="01") String ernnRtDcd
+			
+			) {
+		FundRateInfoByInvmAecdTop5Request request = new FundRateInfoByInvmAecdTop5Request(
+				serviceKey,numOfRows, pageNo, fundInvmAecd, ernnRtDcd,SG_APIM);
+		FundRateInfoResponse response = viewFundRateInfoByInvmAecdTop5Common(request);
+		return response;
+
+	
+	}
+	
+	
 	
 	
 	//검색기준: atmName
@@ -169,7 +243,7 @@ public class FundRateInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -241,26 +315,7 @@ public class FundRateInfoController {
 		return response;			
 	}
 
-	@RequestMapping(value="/fundRateInfo",produces="application/xml",method=RequestMethod.POST )
-	public  FundRateInfoResponse viewFundRateInfo(@RequestBody FundRateInfoRequest request) {
-		FundRateInfoResponse response = viewFundRateInfoCommon(request);
-		return response;
-	}
-	@RequestMapping(value="/fundRateInfo",produces="application/xml",method=RequestMethod.GET )
-	public  FundRateInfoResponse viewFundRateInfo(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,
-			@RequestParam("fundAstTcd") String fundAstTcd,
-			@RequestParam("fundInvmAecd") String fundInvmAecd,
-			@RequestParam("pdrsGdcd") String pdrsGdcd,
-			@RequestParam("idivFnptDcd") String idivFnptDcd
-			
-			) {
-		FundRateInfoRequest request = new FundRateInfoRequest(serviceKey,numOfRows,pageNo,
-				fundAstTcd,fundInvmAecd,pdrsGdcd,idivFnptDcd);
-		FundRateInfoResponse response = viewFundRateInfoCommon(request);
-		return response;
-	}
+	
 	//검색기준: 1개검색 
 //	@RequestMapping(value="/fundRateInfo",produces="application/xml")
 	public  FundRateInfoResponse viewFundRateInfoCommon(FundRateInfoRequest request) {
@@ -277,7 +332,7 @@ public class FundRateInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -360,29 +415,6 @@ public class FundRateInfoController {
 		return response;			
 	}
 
-	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml",method=RequestMethod.POST)
-	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5(@RequestBody FundRateInfoByIdivFnptDcdTop5Request request) {
-		FundRateInfoResponse response = viewFundRateInfoByIdivFnptDcdTop5Common(request);
-		return response;
-	}
-	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml",method=RequestMethod.GET)
-	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5(
-			@RequestParam("numOfRows") int numOfRows, 
-			@RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,
-			@RequestParam("idivFnptDcd") String idivFnptDcd,
-			@RequestParam("ernnRtDcd") String ernnRtDcd
-			
-			) {
-		//public FundRateInfoByIdivFnptDcdTop5Request(String serviceKey,Integer numOfRows, Integer pageNo,String idivFnptDcd, String ernnRtDcd) {
-			
-		FundRateInfoByIdivFnptDcdTop5Request request = new FundRateInfoByIdivFnptDcdTop5Request(serviceKey,numOfRows, pageNo, idivFnptDcd,ernnRtDcd);
-		
-		FundRateInfoResponse response = viewFundRateInfoByIdivFnptDcdTop5Common(request);
-		return response;
-
-	
-	}
 	
 	
 	
@@ -401,7 +433,7 @@ public class FundRateInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -477,30 +509,6 @@ public class FundRateInfoController {
 		return response;			
 	}
 
-	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml",method=RequestMethod.POST)
-	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5(@RequestBody FundRateInfoByInvmAecdTop5Request request) {
-		FundRateInfoResponse response = viewFundRateInfoByInvmAecdTop5Common(request);
-		return response;
-
-	}
-	
-	
-	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml",method=RequestMethod.GET)
-	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5(
-			@RequestParam("numOfRows") int numOfRows, 
-			@RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,
-			@RequestParam("fundInvmAecd") String fundInvmAecd,
-			@RequestParam("ernnRtDcd") String ernnRtDcd
-			
-			) {
-		FundRateInfoByInvmAecdTop5Request request = new FundRateInfoByInvmAecdTop5Request(
-				serviceKey,numOfRows, pageNo, fundInvmAecd, ernnRtDcd);
-		FundRateInfoResponse response = viewFundRateInfoByInvmAecdTop5Common(request);
-		return response;
-
-	
-	}
 	
 	
 	//검색기준: atmName
@@ -519,7 +527,7 @@ public class FundRateInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");

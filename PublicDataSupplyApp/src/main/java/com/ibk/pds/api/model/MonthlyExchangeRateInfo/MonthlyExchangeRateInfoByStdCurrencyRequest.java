@@ -9,13 +9,21 @@ public class MonthlyExchangeRateInfoByStdCurrencyRequest {
 	private Integer numOfRows;		//한 페이지 결과 수 (10)- 필수 입력 아님 
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
 	private String stdCurrency;		    //기준 연월일(201903)
+	private String SG_APIM;
 	
-	
-	public MonthlyExchangeRateInfoByStdCurrencyRequest(String serviceKey, Integer numOfRows, Integer pageNo,String stdCurrency) {
+	public MonthlyExchangeRateInfoByStdCurrencyRequest(String serviceKey, Integer numOfRows, 
+			Integer pageNo,String stdCurrency,String SG_APIM) {
 		this.serviceKey = serviceKey;
 		this.numOfRows = numOfRows;
 		this.pageNo = pageNo;
 		this.stdCurrency = stdCurrency;
+		this.SG_APIM = SG_APIM;
+	}
+	public String getSG_APIM() {
+		return SG_APIM;
+	}
+	public void setSG_APIM(String sG_APIM) {
+		SG_APIM = sG_APIM;
 	}
 	public String getStdCurrency() {
 		return stdCurrency;

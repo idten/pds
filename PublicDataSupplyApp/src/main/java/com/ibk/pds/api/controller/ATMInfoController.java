@@ -58,33 +58,21 @@ public class ATMInfoController {
 	//필터
 	@Autowired
 	ATMInfoDataService atmInfoDataService;
-
-
-
-
 	public ATMInfoResponseSub convertToResponseSub(ATMInfoData data) {
 		String atmName;			//ATM명
-	//	String atmDivision;  	//ATM구분  
 		String startTime;		//시작시간
 		String endTime;			//종료시간
 		String atmAddress;		//주소
 		String atmSection;		//지역구분
 		String atmSectionCode;	//지역구분 코드 
 		atmName = data.getAtmName();
-	//	atmDivision = data.getAtmDivision();
 		startTime = data.getStartTime() ;
 		endTime = data.getEndTime();
 		atmAddress = data.getAtmAddress();
 		atmSection = data.getAtmSection();
 		atmSectionCode = data.getAtmSectionCode();
 
-		ATMInfoResponseSub responseSub = new ATMInfoResponseSub(atmName,  
-				startTime, endTime,
-				atmAddress,
-				atmSection, atmSectionCode
-				);
-
-
+		ATMInfoResponseSub responseSub = new ATMInfoResponseSub(atmName,startTime, endTime,atmAddress,atmSection, atmSectionCode);
 		return responseSub;
 	}
 
@@ -97,14 +85,57 @@ public class ATMInfoController {
 	
 	@RequestMapping(value="/atmInfoAll",produces="application/xml", method=RequestMethod.GET)
 	public  ATMInfoResponse viewATMInfoAll(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey) {
-		ATMInfoAllRequest request = new ATMInfoAllRequest(serviceKey,numOfRows,pageNo);
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			) {
+		ATMInfoAllRequest request = new ATMInfoAllRequest(serviceKey,numOfRows,pageNo,SG_APIM);
 		ATMInfoResponse response = viewATMInfoAllCommon(request);
 		return response;
 	}
+	//검색기준: atmName
+	@RequestMapping(value="/atmInfoByName",produces="application/xml", method=RequestMethod.POST)
+	public  ATMInfoResponse viewATMInfoByNameRequest(@RequestBody ATMInfoByNameRequest request) {
+		ATMInfoResponse response = viewATMInfoByNameRequestCommon(request);
+		return response;
 	
+	}
 	
+	@RequestMapping(value="/atmInfoByName",produces="application/xml", method=RequestMethod.GET)
+	public  ATMInfoResponse viewATMInfoByNameRequest(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="atmName",      required=false, defaultValue="atmName") String atmName,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			) {
+		ATMInfoByNameRequest request = new ATMInfoByNameRequest(serviceKey,numOfRows,pageNo,atmName,SG_APIM);
+		ATMInfoResponse response = viewATMInfoByNameRequestCommon(request);
+		return response;
+	
+	}
+	@RequestMapping(value="/atmInfoBySection",produces="application/xml", method=RequestMethod.POST)
+	public  ATMInfoResponse viewATMInfoBySectionCode(@RequestBody ATMInfoBySectionRequest request) {
+		ATMInfoResponse response = viewATMInfoBySectionCodeCommon(request);
+		return response;
+	}
+	
+	@RequestMapping(value="/atmInfoBySection",produces="application/xml", method=RequestMethod.GET)
+	public  ATMInfoResponse viewATMInfoBySectionCode(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="atmSectionCode",required=false, defaultValue="02") String atmSectionCode,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+				
+			) {
+		ATMInfoBySectionRequest request =  new ATMInfoBySectionRequest(serviceKey,numOfRows,pageNo,atmSectionCode,SG_APIM);
+		ATMInfoResponse response = viewATMInfoBySectionCodeCommon(request);
+		return response;
+
+	}
+			
 	//검색기준: atmAll
 	//전체 목록 
 	//@RequestMapping(value="/atmInfoAll",produces="application/xml")
@@ -122,7 +153,7 @@ public class ATMInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -202,26 +233,6 @@ public class ATMInfoController {
 	}
 	
 
-	//검색기준: atmName
-	@RequestMapping(value="/atmInfoByName",produces="application/xml", method=RequestMethod.POST)
-	public  ATMInfoResponse viewATMInfoByNameRequest(@RequestBody ATMInfoByNameRequest request) {
-		ATMInfoResponse response = viewATMInfoByNameRequestCommon(request);
-		return response;
-	
-	}
-	
-	@RequestMapping(value="/atmInfoByName",produces="application/xml", method=RequestMethod.GET)
-	public  ATMInfoResponse viewATMInfoByNameRequest(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,@RequestParam("atmName") String atmName
-			
-			) {
-		ATMInfoByNameRequest request = new ATMInfoByNameRequest(serviceKey,numOfRows,pageNo,atmName);
-		ATMInfoResponse response = viewATMInfoByNameRequestCommon(request);
-		return response;
-	
-	}
-	
 	public  ATMInfoResponse viewATMInfoByNameRequestCommon(ATMInfoByNameRequest request) {
 
 		logger.info("ATMInfoByNameRequest="+request.toString());
@@ -236,7 +247,7 @@ public class ATMInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -280,12 +291,6 @@ public class ATMInfoController {
 			//1개 이상은 아님 
 			response.setTotalCount(list.size());
 			
-			
-			
-			
-			
-			
-			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
 			String apiName = "atmInfoByName ";
@@ -318,22 +323,6 @@ public class ATMInfoController {
 		return response;			
 	}
 
-	@RequestMapping(value="/atmInfoBySection",produces="application/xml", method=RequestMethod.POST)
-	public  ATMInfoResponse viewATMInfoBySectionCode(@RequestBody ATMInfoBySectionRequest request) {
-		ATMInfoResponse response = viewATMInfoBySectionCodeCommon(request);
-		return response;
-	}
-	
-	@RequestMapping(value="/atmInfoBySection",produces="application/xml", method=RequestMethod.GET)
-	public  ATMInfoResponse viewATMInfoBySectionCode(
-			@RequestParam("numOfRows") int numOfRows, @RequestParam("pageNo") int pageNo,
-			@RequestParam("serviceKey") String serviceKey,@RequestParam("atmSectionCode") String atmSectionCode
-			) {
-		ATMInfoBySectionRequest request =  new ATMInfoBySectionRequest(serviceKey,numOfRows,pageNo,atmSectionCode);
-		ATMInfoResponse response = viewATMInfoBySectionCodeCommon(request);
-		return response;
-
-	}
 	
 	public  ATMInfoResponse viewATMInfoBySectionCodeCommon(ATMInfoBySectionRequest request) {
 
@@ -349,7 +338,7 @@ public class ATMInfoController {
 
 		int result = 0;
 		if(authYN.contentEquals("Y"))
-			result = authService.auth();
+			result = authService.auth(request.getSG_APIM());
 
 		if(result!=-1) {
 			logger.info("인증성공");
@@ -384,7 +373,6 @@ public class ATMInfoController {
 				logger.info("select Result="+resSub.toString());
 
 			}
-		//	response.setItem(responseSubList);
 			response.setItem(responseSubList);
 			response.setResultCode("00");
 			response.setResultMsg("OK");

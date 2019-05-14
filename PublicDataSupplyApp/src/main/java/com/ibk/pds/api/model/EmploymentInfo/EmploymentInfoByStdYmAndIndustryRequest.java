@@ -10,17 +10,28 @@ public class EmploymentInfoByStdYmAndIndustryRequest {
 	private Integer pageNo;			//페이지 번호(1)     - 필수 입력 아님 
 	private String stdYm;		    //기준 연월일(201903)
 	private String industryCode;
+	private String SG_APIM;
+	
 	
 	public EmploymentInfoByStdYmAndIndustryRequest(String serviceKey, Integer numOfRows, Integer pageNo,
-			String stdYm, String industryCode
+			String stdYm, String industryCode,String SG_APIM
 			) {
 		this.serviceKey = serviceKey;
 		this.numOfRows = numOfRows;
 		this.pageNo = pageNo;
 		this.stdYm = stdYm;
 		this.industryCode = industryCode;
+		this.SG_APIM = SG_APIM;
 	}
 	
+	public String getSG_APIM() {
+		return SG_APIM;
+	}
+
+	public void setSG_APIM(String sG_APIM) {
+		SG_APIM = sG_APIM;
+	}
+
 	public String getIndustryCode() {
 		return industryCode;
 	}
