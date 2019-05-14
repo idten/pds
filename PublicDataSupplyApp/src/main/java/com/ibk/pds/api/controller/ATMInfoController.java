@@ -221,11 +221,13 @@ public class ATMInfoController {
 			String action = "CALL";
 			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
-			String responseMessage = response.toString();
+			String responseMessage = "Error";
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
 
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			response.setResultCode("99");
+			response.setResultMsg("인증실패");
 
 		}
 
@@ -312,11 +314,13 @@ public class ATMInfoController {
 			String action = "CALL";
 			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
-			String responseMessage = response.toString();
+			String responseMessage = "Error";
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
 
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			response.setResultCode("99");
+			response.setResultMsg("인증실패");
 
 		}
 
@@ -403,11 +407,13 @@ public class ATMInfoController {
 			String action = "CALL";
 			String statusCode ="1111";//코드 확인필요 
 			String requestMessage = request.toString();
-			String responseMessage = response.toString();
+			String responseMessage = "Error";
 			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
 
 
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			response.setResultCode("99");
+			response.setResultMsg("인증실패");
 
 		}
 
