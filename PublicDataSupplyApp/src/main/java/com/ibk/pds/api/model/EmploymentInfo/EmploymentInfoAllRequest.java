@@ -43,6 +43,7 @@ public class EmploymentInfoAllRequest {
 		this.pageNo = pageNo;
 	}
 	public String toString() {
-		return "K";
+		return "serviceKey="+serviceKey+",numOfRows="+numOfRows+",pageNo="+pageNo+"SG_APIM="+SG_APIM;
+		
 	}
 }

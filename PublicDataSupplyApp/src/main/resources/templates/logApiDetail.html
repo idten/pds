@@ -92,16 +92,13 @@ modal-body {
 		<div class="col-md-12">
 			<div class="panel with-nav-tabs panel-primary">
 				<div class="panel-heading" id="apiLogDetail">
+				    로그 상세 정보 
 				</div>
 				<div class="panel-body">
 
 					<h1>
-						<span th:text="${logApiData.logId}">
-						</span><span> <a href="#"
-							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-							id="editDocButton"> <i
-								class="fas fa-download fa-sm text-white-50"></i> 수정
-						</a>
+						  로그 상세 정보 <span th:text="${logApiData.logId}">
+						</span><span> 
 
 						</span>
 					</h1>
@@ -111,7 +108,7 @@ modal-body {
 					<div class="panel panel-primary">
 						<div class="panel-heading">
 							<h3 class="panel-title">
-								문서정보
+								API 로그 상세 정보 
 								</p>
 							</h3>
 						</div>
@@ -120,20 +117,63 @@ modal-body {
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
-											<td class="text-center gr col-md-2 col-xs-3"><strong>문서ID</strong></td>
-											<td class="col-md-4 col-xs-3" th:text="${logApiData.logId}"
+										
+
+	
+											<td class="text-center gr col-md-2 col-xs-3"><strong>로그ID</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.logId}"
 												id="docId"></td>
-											<td class="text-center gr col-md-2 col-xs-3"><strong>담당자(직원번호)</strong></td>
-											<td class="col-md-4 col-xs-3" th:text="${logApiData.logId}"
-												id="docOwners"></td>
 										</tr>
 										<tr>
-											<td class="text-center gr col-md-2 col-xs-3"><strong>담당자(이름)</strong></td>
-											<td th:text="${logApiData.logId}" id="docOwnerName"></td>
-											<td class="text-center gr col-md-2 col-xs-3"><strong>담당부서</strong></td>
-											<td th:text="${logApiData.logId}" id="depName"></td>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>API ID</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.apiId}"
+												id="docOwners"></td>
+										
+										</tr>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>API 이름</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.apiName}"
+												id="docOwners"></td>
+										
+										</tr>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>API URL</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.apiUrl}"
+												id="docOwners"></td>
+										
+										</tr>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>API Action</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.action}"
+												id="docOwners"></td>
+										
+										</tr>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>API statusCode</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.statusCode}"
+												id="docOwners"></td>
+										
+										</tr>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>요청</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.request}"
+												id="docOwners"></td>
+										
+										</tr>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>응답</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.response}"
+												id="docOwners"></td>
+										
+										</tr>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>처리시간</strong></td>
+											<td class="col-md-10 col-xs-3" th:text="${logApiData.trxDate}"
+												id="docOwners"></td>
+										
 										</tr>
 										
+											
 									</tbody>
 								</table>
 							</div>

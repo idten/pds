@@ -99,7 +99,8 @@
 									cellspacing="0">
 									<thead>
 										<tr align="center">
-											<th >로그 ID</th>
+											<th style="display: none">로그 ID</th>
+											<th >문서 ID</th>
 											<th >API ID</th>
 											<th>API 명 </th>
 											<th>Action</th>
@@ -116,7 +117,8 @@
 									</tfoot>
 									<tbody>
 										<tr th:each="obj : ${logApiDataList}" align="center">
-											<td th:text="${obj.logId}" ></td>
+											<td th:text="${obj.logId}" style="display: none"></td>
+											<td th:text="${obj.docId}" ></td>
 											<td th:text="${obj.apiId}" ></td>
 											<td th:text="${obj.apiName}"></td>
 											<td th:text="${obj.action}"></td>
