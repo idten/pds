@@ -437,7 +437,8 @@ public class EmploymentInfoController {
 
 
 			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-
+			response.setResultCode("99");
+			response.setResultMsg("인증실패");
 		}
 
 		return response;			
