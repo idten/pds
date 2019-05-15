@@ -56,7 +56,7 @@ public class LogApiController {
 	@RequestMapping(value = "/logApi.do", method = RequestMethod.GET)
 	public ModelAndView logDoc(ModelAndView mav) {
 		logger.info("Doc Api List logApi.do");
-		List<LogApiData> logApiDataList = logApiDataService.getLogDocDataList();//.getLogDocDataList();
+		List<LogApiData> logApiDataList = logApiDataService.getLogApiDataList();//.getLogDocDataList();
 				//getDocStatusList();
 		LogApiData logApiData = null;
 		
@@ -77,5 +77,18 @@ public class LogApiController {
 		mav.setViewName("logApi");
 		return mav;
 	}
+	
+	//1건에 대한 상세 정보 
+	@RequestMapping(value = "/apiLogDetail.do", method = RequestMethod.GET)
+	public ModelAndView apiLogDetail(
+			@RequestParam(value="logId",required=false) String logId,
+			ModelAndView mav) {
+		LogApiData logApiData = logApiDataService.getLogApiData(logId);
+		
+		mav.addObject("logApiData",logApiData);
+		mav.setViewName("logApiDetail");
+		return mav;
+	}
+		
 
 }

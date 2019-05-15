@@ -44,7 +44,8 @@ import com.ibk.pds.log.service.LogApiDataService;
 @RestController
 @RequestMapping("/api/atmInfo")
 public class ATMInfoController {
-
+	
+	private String docId = "atmInfo";
 	@Autowired
 	LogApiDataService logApiDataService;
 	private Logger logger = LoggerFactory.getLogger(ATMInfoController.class);
@@ -149,6 +150,13 @@ public class ATMInfoController {
 
 		String apiId= "atmInfoByName";
 		String apiUrl=	"/atmInfo/atmInfoByName";
+		String apiName = "ATM정보조회(ALL)";
+		String action = "CALL";
+		String statusCode ="0000";//코드 확인필요 
+		String requestMessage = request.toString();
+		String responseMessage = "";
+		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+		
 		ATMInfoResponse response = new ATMInfoResponse();
 
 		int result = 0;
@@ -202,35 +210,22 @@ public class ATMInfoController {
 			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "atmInfoByName ";
-			String action = "CALL";
-			String statusCode ="0000";
-			String requestMessage = request.toString();
-			String responseMessage = response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-			logApiDataService.saveApiData(logApiData);
+			statusCode ="0000";
+			responseMessage = response.toString();
+			//	LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 			//.saveLogApiData(logApiData);
 		}else {
-
-
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "atmInfoByName";
-			String action = "CALL";
-			String statusCode ="1111";//코드 확인필요 
-			String requestMessage = request.toString();
-			String responseMessage = "Error";
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			statusCode ="1111";//코드 확인필요 
+			responseMessage = "Error";
 			response.setResultCode("99");
 			response.setResultMsg("인증실패");
 
 		}
-
+		
+		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+		logApiDataService.saveApiData(logApiData);
+		
 		return response;			
 	}
 	
@@ -245,6 +240,14 @@ public class ATMInfoController {
 
 		String apiId= "atmInfoByName";
 		String apiUrl=	"/atmInfo/atmInfoByName";
+		String apiName = "ATM정보조회(이름)";
+		String action = "CALL";
+		String statusCode ="0000";//코드 확인필요 
+		String requestMessage = request.toString();
+		String responseMessage = "";
+		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+		
 		ATMInfoResponse response = new ATMInfoResponse();
 
 		int result = 0;
@@ -295,35 +298,21 @@ public class ATMInfoController {
 			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "atmInfoByName ";
-			String action = "CALL";
-			String statusCode ="0000";
-			String requestMessage = request.toString();
-			String responseMessage = response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-			logApiDataService.saveApiData(logApiData);
-			//.saveLogApiData(logApiData);
+			statusCode ="0000";
+			responseMessage = response.toString();
+		
 		}else {
-
-
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "atmInfoByName";
-			String action = "CALL";
-			String statusCode ="1111";//코드 확인필요 
-			String requestMessage = request.toString();
-			String responseMessage = "Error";
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			statusCode ="1111";//코드 확인필요 
+			responseMessage = "Error";
+			
 			response.setResultCode("99");
 			response.setResultMsg("인증실패");
 
 		}
-
+		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+		logApiDataService.saveApiData(logApiData);
+	
 		return response;			
 	}
 
@@ -336,8 +325,16 @@ public class ATMInfoController {
 		int num= generator.nextInt(100);    
 		String logId = key + Integer.toString(num);
 
-		String apiId= "atmInfoByName";
-		String apiUrl=	"/atmInfo/atmInfoBySection";
+		String apiId= "atmInfoBySectionCode";
+		String apiUrl=	"/atmInfo/atmInfoBySectionCode";
+		String apiName = "ATM정보조회(지역코드)  ";
+		String action = "CALL";
+		String statusCode ="0000";
+		String requestMessage = request.toString();
+		String responseMessage = "";
+		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+		
 		ATMInfoResponse response = new ATMInfoResponse();
 
 		int result = 0;
@@ -388,34 +385,21 @@ public class ATMInfoController {
 			
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "ATMatmInfoBySection ";
-			String action = "CALL";
-			String statusCode ="0000";
-			String requestMessage = request.toString();
-			String responseMessage = response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+			statusCode ="0000";
+			responseMessage = response.toString();
+			
 
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-			logApiDataService.saveApiData(logApiData);
 			//.saveLogApiData(logApiData);
 		}else {
-
-
-			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = "ATM정보";
-			String action = "CALL";
-			String statusCode ="1111";//코드 확인필요 
-			String requestMessage = request.toString();
-			String responseMessage = "Error";
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			statusCode ="1111";//코드 확인필요 
+			responseMessage = "Error";
 			response.setResultCode("99");
 			response.setResultMsg("인증실패");
 
 		}
+		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+		logApiDataService.saveApiData(logApiData);
+		
 
 		return response;			
 	}

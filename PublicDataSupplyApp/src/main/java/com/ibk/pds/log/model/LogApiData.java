@@ -12,6 +12,7 @@ public class LogApiData {
 	
 	@Id
 	private String logId;//생성	
+	private String docId;
 	//LogId
 	private String apiId;//API ID
 	private String apiName;//API 명칭 
@@ -36,6 +37,7 @@ public class LogApiData {
 	}
 	public LogApiData(
 			String logId,
+			String docId,
 			String apiId, 
 			String apiName,
 			String apiUrl,
@@ -46,6 +48,7 @@ public class LogApiData {
 			String trxDate) 
 	{
 		this.logId = logId;
+		this.docId = docId;
 		this.apiId = apiId;
 		this.apiName = apiName;
 		this.apiUrl = apiUrl;
@@ -55,6 +58,12 @@ public class LogApiData {
 		this.response = response;
 		this.trxDate = trxDate;
 		
+	}
+	public String getDocId() {
+		return docId;
+	}
+	public void setDocId(String docId) {
+		this.docId = docId;
 	}
 	public String getApiUrl() {
 		return apiUrl;

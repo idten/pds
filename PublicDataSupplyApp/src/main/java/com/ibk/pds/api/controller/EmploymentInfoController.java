@@ -43,7 +43,7 @@ import com.ibk.pds.log.service.LogApiDataService;
 @RestController
 @RequestMapping("/api/employmentInfo")
 public class EmploymentInfoController {
-
+	private String docId = "employmentInfo";
 	@Autowired
 	LogApiDataService logApiDataService;
 	private Logger logger = LoggerFactory.getLogger(EmploymentInfoController.class);
@@ -185,6 +185,14 @@ public class EmploymentInfoController {
 
 		String apiId= "employmentInfoAll";
 		String apiUrl=	"/employmentInfo/employmentInfoAll";
+		String apiName = "채용정보조회(전체)";
+		String action = "CALL";
+		String statusCode ="";
+		String requestMessage = request.toString();
+		String responseMessage = "";
+		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+	
+		
 		EmploymentInfoResponse response = new EmploymentInfoResponse();
 
 		int result = 0;
@@ -229,29 +237,20 @@ public class EmploymentInfoController {
 
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = apiId;
-			String action = "CALL";
-			String statusCode ="0000";
-			String requestMessage = request.toString();
-			String responseMessage = response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-			logApiDataService.saveApiData(logApiData);
+			statusCode ="0000";
+			responseMessage = response.toString();
 			//.saveLogApiData(logApiData);
 		}else {
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = apiId;
-			String action = "CALL";
-			String statusCode ="1111";//코드 확인필요 
-			String requestMessage = request.toString();
-			String responseMessage = "Error";//response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			statusCode ="1111";//코드 확인필요 
+			responseMessage = "Error";//response.toString();
 			response.setResultCode("99");
 			response.setResultMsg("인증실패");
 			
 		}
-
+		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+		logApiDataService.saveApiData(logApiData);
+		
 		return response;			
 	}
 
@@ -269,8 +268,17 @@ public class EmploymentInfoController {
 		int num= generator.nextInt(100);    
 		String logId = key + Integer.toString(num);
 
-		String apiId= "employmentInfoByIndustryCode";
-		String apiUrl=	"/employmentInfo/employmentInfoByIndustryCode";
+		String apiId	= "employmentInfoByIndustryCode";
+		String apiUrl	= "/employmentInfo/employmentInfoByIndustryCode";
+		String apiName 	= "산업채용정보";
+		String action 	= "CALL";
+		String statusCode ="";
+		String responseMessage = "";
+		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+
+		String requestMessage = request.toString();
+
 		EmploymentInfoResponse response = new EmploymentInfoResponse();
 
 		int result = 0;
@@ -318,35 +326,23 @@ public class EmploymentInfoController {
 			//	response.setTotalCount(list.size());
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = apiId;
-			String action = "CALL";
-			String statusCode ="0000";
-			String requestMessage = request.toString();
-			String responseMessage = response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-			logApiDataService.saveApiData(logApiData);
+			statusCode ="0000";
+			responseMessage = response.toString();
+			
 			//.saveLogApiData(logApiData);
 		}else {
 
 
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = apiId;
-			String action = "CALL";
-			String statusCode ="1111";//코드 확인필요 
-			String requestMessage = request.toString();
-			String responseMessage = "Error";//response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			statusCode ="1111";//코드 확인필요 
+			responseMessage = "Error";//response.toString();
 			response.setResultCode("99");
 			response.setResultMsg("인증실패");
 
 		}
-
+		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+		logApiDataService.saveApiData(logApiData);
+		
 		return response;			
 	}
 
@@ -363,6 +359,13 @@ public class EmploymentInfoController {
 
 		String apiId= "employmentInfoByIndustryCode";
 		String apiUrl=	"/employmentInfo/employmentInfoByIndustryCode";
+		String apiName = "월별산업별채용공고";
+		String action = "CALL";
+		String requestMessage = request.toString();
+		String statusCode ="";
+		String responseMessage = "";//response.toString();
+		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
 		EmploymentInfoResponse response = new EmploymentInfoResponse();
 
 		int result = 0;
@@ -413,33 +416,18 @@ public class EmploymentInfoController {
 			response.setPageNo(page);
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = apiId;
-			String action = "CALL";
-			String statusCode ="0000";
-			String requestMessage = request.toString();
-			String responseMessage = response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-			logApiDataService.saveApiData(logApiData);
+			statusCode ="0000";
+			responseMessage = response.toString();
 			//.saveLogApiData(logApiData);
 		}else {
-
-
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = apiId;
-			String action = "CALL";
-			String statusCode ="1111";//코드 확인필요 
-			String requestMessage = request.toString();
-			String responseMessage = "Error";//response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			statusCode ="1111";//코드 확인필요 
+			responseMessage = "Error";//response.toString();
 			response.setResultCode("99");
 			response.setResultMsg("인증실패");
 		}
+		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+		logApiDataService.saveApiData(logApiData);
 
 		return response;			
 	}
@@ -454,6 +442,14 @@ public class EmploymentInfoController {
 
 		String apiId= "employmentInfoByStdYm";
 		String apiUrl=	"/employmentInfo/employmentInfoByStdYm";
+		String apiName = apiId;
+		String action = "CALL";
+		String statusCode ="";
+		String responseMessage = "";
+		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+		String requestMessage = request.toString();
+
 		EmploymentInfoResponse response = new EmploymentInfoResponse();
 
 		int result = 0;
@@ -500,32 +496,23 @@ public class EmploymentInfoController {
 
 			logger.info("인증수행 여부 ="+authYN);
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = apiId;
-			String action = "CALL";
-			String statusCode ="0000";
-			String requestMessage = request.toString();
-			String responseMessage = response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+			statusCode ="0000";
+			responseMessage = response.toString();
+			
 
-
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
-			logApiDataService.saveApiData(logApiData);
 			//.saveLogApiData(logApiData);
 		}else {
 
 
 			//추후 apiInfo 조회를 통해서 처리 
-			String apiName = apiId;
-			String action = "CALL";
-			String statusCode ="1111";//코드 확인필요 
-			String requestMessage = request.toString();
-			String responseMessage = "Error";//response.toString();
-			String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-			LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			statusCode ="1111";//코드 확인필요 
+			responseMessage = "Error";//response.toString();
 			response.setResultCode("99");
 			response.setResultMsg("인증실패");
 
 		}
+		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+		logApiDataService.saveApiData(logApiData);
 
 		return response;			
 	}

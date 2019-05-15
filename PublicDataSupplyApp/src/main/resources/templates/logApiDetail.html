@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ko-kr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문서 상세정보</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+	font-family: "Malgun gothic", sans-serif;
+}
+
+.table>tbody>tr>.no-line {
+	border-top: none;
+}
+/*.table > thead > tr > .no-line {border-bottom: none;}*/
+.table>tbody>tr>.thick-line {
+	border-top: 2px solid;
+}
+
+.gr {
+	background-color: #F2F2F0
+}
+
+.panel-title {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 16px;
+	color: black;
+}
+
+.panel-primary>.panel-heading {
+	color: #fff;
+	background-color: oldLace;
+	border-color: #428bca;
+}
+
+.container {
+	width: 100%;
+}
+
+.modal-content {
+	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	width: 100%;
+	pointer-events: auto;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: .3rem;
+	outline: 0;
+}
+
+modal-body {
+	position: relative;
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
+	padding: 1rem;
+}
+
+.form-group {
+	margin-bottom: 1rem;
+	height: 30px;
+}
+</style>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script src="vendor/jquery/jquery.min.js"></script>
+
+
+
+
+
+
+</head>
+<body>
+	<div class="container">
+		<div class="col-md-12">
+			<div class="panel with-nav-tabs panel-primary">
+				<div class="panel-heading" id="apiLogDetail">
+				</div>
+				<div class="panel-body">
+
+					<h1>
+						<span th:text="${logApiData.logId}">
+						</span><span> <a href="#"
+							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+							id="editDocButton"> <i
+								class="fas fa-download fa-sm text-white-50"></i> 수정
+						</a>
+
+						</span>
+					</h1>
+
+					<hr>
+					<hr>
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								문서정보
+								</p>
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<tbody>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>문서ID</strong></td>
+											<td class="col-md-4 col-xs-3" th:text="${logApiData.logId}"
+												id="docId"></td>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>담당자(직원번호)</strong></td>
+											<td class="col-md-4 col-xs-3" th:text="${logApiData.logId}"
+												id="docOwners"></td>
+										</tr>
+										<tr>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>담당자(이름)</strong></td>
+											<td th:text="${logApiData.logId}" id="docOwnerName"></td>
+											<td class="text-center gr col-md-2 col-xs-3"><strong>담당부서</strong></td>
+											<td th:text="${logApiData.logId}" id="depName"></td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+
+
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src='js/bootstrap.min.js'></script>
+	
+
+</body>
+
+</html>
