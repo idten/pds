@@ -442,7 +442,7 @@ public class EmploymentInfoController {
 
 		String apiId= "employmentInfoByStdYm";
 		String apiUrl=	"/employmentInfo/employmentInfoByStdYm";
-		String apiName = apiId;
+		String apiName = "월별채용공고조회";
 		String action = "CALL";
 		String statusCode ="";
 		String responseMessage = "";
