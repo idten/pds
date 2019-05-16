@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.csrf().disable()
 		 .headers().disable()
 		.authorizeRequests()
-			.antMatchers("/", "/api/**","/create","/pdsapi/**","/pds/**").permitAll()		
+			.antMatchers("/", "/api/**","/css/**","/vendor/**","/img/**","/pdsapi/**","/pds/**").permitAll()		
 		.anyRequest().authenticated()				//나머지 모든건 인증이 필요하다 
 		.and()
 		.formLogin()
