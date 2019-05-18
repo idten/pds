@@ -39,9 +39,16 @@ import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 //아이원잡 채용공고 통계 조회 서비스 
 @RestController
 @RequestMapping("/api/employmentInfo")
+@Api(value = "employmentInfo", description = "채용공고 통계 조회")
 public class EmploymentInfoController {
 	private String docId = "employmentInfo";
 	@Autowired
@@ -53,65 +60,59 @@ public class EmploymentInfoController {
 	AuthService authService;
 	@Value("${authYN}")
 	private String authYN;
-
+	
 
 	@Autowired
 	EmploymentInfoDataService employmentInfoDataService;
 
-	public EmploymentInfoResponseSub convertToResponseSub(EmploymentInfoData data) {
-
-		String stdYm = "";
-		String industryName = "";
-		String industryCode = "";
-
-		String detailIndustryName = "";
-		int careersCount=0;
-		String careersPer="";
-
-		stdYm = data.getStdYM();
-		industryName = data.getIndustryName();
-		industryCode = data.getIndustryCode();
-		detailIndustryName = data.getDetailIndustryName();
-		careersCount = data.getCareersCount();
-		careersPer = data.getCareersPer();
-
-		EmploymentInfoResponseSub responseSub = 
-				new EmploymentInfoResponseSub(stdYm, industryName, industryCode, detailIndustryName,careersCount,careersPer);
-
-
-
-		return responseSub;
-	}
-
 
 
 	//전체 검색 POST방식 
+	@ApiOperation(value = "월별채용공고 전체조회(POST)")
 	@RequestMapping(value="/employmentInfoAll",produces="application/xml",method=RequestMethod.POST )
 	public  EmploymentInfoResponse viewEmploymentInfoAll(@RequestBody EmploymentInfoAllRequest request) {
 		EmploymentInfoResponse response = viewEmploymentInfoAllCommon(request);
 		return response;			
 	}
 
+	
+	
 	//전체 검색  GET방식 
+	@ApiOperation(value = "월별채용공고 전체조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",paramType = "query")
+
+	})
 	@RequestMapping(value="/employmentInfoAll",produces="application/xml",method=RequestMethod.GET )
 	public  EmploymentInfoResponse viewEmploymentInfoAll(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
 			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
 			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
 			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
-			
+
 			) {
 		EmploymentInfoAllRequest request = new EmploymentInfoAllRequest(numOfRows,pageNo,serviceKey,SG_APIM);
 		EmploymentInfoResponse response = viewEmploymentInfoAllCommon(request);
 		return response;			
 	}
-
+	@ApiOperation(value = "월별채용공고 산업별통계조회(POST)")
 	@RequestMapping(value="/employmentInfoByIndustryCode",produces="application/xml", method=RequestMethod.POST)
 	public  EmploymentInfoResponse viewEmploymentInfoByIndustryCode(@RequestBody EmploymentInfoByIndustryCodeRequest request) {
 		EmploymentInfoResponse response = viewEmploymentInfoByIndustryCodeCommon(request);
 		return response;
 	}
+	@ApiOperation(value = "월별채용공고 산업별통계조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 		value = "한페이지 결과수",	required=false, defaultValue="10",paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 			value = "페이지수 ",		required=false, defaultValue="0",paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 		value = "인증키",			required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "industryCode", 	value = "산업코드",	required=false, defaultValue="J1",paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 		value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",paramType = "query")
 
+	})
 	@RequestMapping(value="/employmentInfoByIndustryCode",produces="application/xml", method=RequestMethod.GET)
 	public  EmploymentInfoResponse viewEmploymentInfoByIndustryCode(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -126,7 +127,7 @@ public class EmploymentInfoController {
 		return	response;
 
 	}
-
+	@ApiOperation(value = "월별채용공고 월별/산업별 통계조회(POST)")
 	@RequestMapping(value="/employmentInfoByStdYmAndIndustryCode",produces="application/xml", method=RequestMethod.POST)
 	public  EmploymentInfoResponse viewEmploymentInfoByStdYmIndustryCode(@RequestBody EmploymentInfoByStdYmAndIndustryRequest request) {
 		EmploymentInfoResponse response = viewEmploymentInfoByStdYmIndustryCodeCommon(request);
@@ -135,6 +136,16 @@ public class EmploymentInfoController {
 
 	}
 
+	@ApiOperation(value = "월별채용공고 월별/산업별 통계조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 		value = "한페이지 결과수",	required=false, defaultValue="10",			paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 			value = "페이지수 ",		required=false, defaultValue="0",			paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 		value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
+		@ApiImplicitParam(name = "stdYm", 			value = "기준년월",		required=false, defaultValue="201903",		paramType = "query"),
+		@ApiImplicitParam(name = "industryCode", 	value = "산업코드",		required=false, defaultValue="J1",			paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 		value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
+
+	})
 	@RequestMapping(value="/employmentInfoByStdYmAndIndustryCode",produces="application/xml", method=RequestMethod.GET)
 	public  EmploymentInfoResponse viewEmploymentInfoByStdYmIndustryCode(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -152,13 +163,21 @@ public class EmploymentInfoController {
 		return response;
 	}
 
+	@ApiOperation(value = "월별채용공고 월별 통계조회(POST)")
 	@RequestMapping(value="/employmentInfoByStdYm",produces="application/xml", method=RequestMethod.POST)
 	public  EmploymentInfoResponse viewEmploymentInfoByStdYm(@RequestBody EmploymentInfoByStdYmRequest request) {
 		EmploymentInfoResponse response = viewEmploymentInfoByStdYmCommon(request);
 		//return response;(request);
 		return response;
 	}
-
+	@ApiOperation(value = "월별채용공고 월별 통계조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 		value = "한페이지 결과수",	required=false, defaultValue="10",			paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 			value = "페이지수 ",		required=false, defaultValue="0",			paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 		value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
+		@ApiImplicitParam(name = "stdYm", 			value = "기준년월",		required=false, defaultValue="201903",		paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 		value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
+	})
 	@RequestMapping(value="/employmentInfoByStdYm",produces="application/xml", method=RequestMethod.GET)
 	public  EmploymentInfoResponse viewEmploymentInfoByStdYm(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -175,8 +194,8 @@ public class EmploymentInfoController {
 		return response;
 	}
 
-	
-	
+
+
 	public  EmploymentInfoResponse viewEmploymentInfoAllCommon(EmploymentInfoAllRequest request) {
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
 		Random generator = new Random();   
@@ -191,8 +210,8 @@ public class EmploymentInfoController {
 		String requestMessage = request.toString();
 		String responseMessage = "";
 		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
-	
-		
+
+
 		EmploymentInfoResponse response = new EmploymentInfoResponse();
 
 		int result = 0;
@@ -246,18 +265,13 @@ public class EmploymentInfoController {
 			responseMessage = "Error";//response.toString();
 			response.setResultCode("99");
 			response.setResultMsg("인증실패");
-			
+
 		}
 		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 		logApiDataService.saveApiData(logApiData);
-		
+
 		return response;			
 	}
-
-
-
-
-
 	//산업분야별 공고 정보 
 	//@RequestMapping(value="/employmentInfoByIndustryCode",produces="application/xml", method=RequestMethod.POST)
 	public  EmploymentInfoResponse viewEmploymentInfoByIndustryCodeCommon(EmploymentInfoByIndustryCodeRequest request) {
@@ -328,7 +342,7 @@ public class EmploymentInfoController {
 			//추후 apiInfo 조회를 통해서 처리 
 			statusCode ="0000";
 			responseMessage = response.toString();
-			
+
 			//.saveLogApiData(logApiData);
 		}else {
 
@@ -342,7 +356,7 @@ public class EmploymentInfoController {
 		}
 		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
 		logApiDataService.saveApiData(logApiData);
-		
+
 		return response;			
 	}
 
@@ -498,7 +512,7 @@ public class EmploymentInfoController {
 			//추후 apiInfo 조회를 통해서 처리 
 			statusCode ="0000";
 			responseMessage = response.toString();
-			
+
 
 			//.saveLogApiData(logApiData);
 		}else {
@@ -517,6 +531,31 @@ public class EmploymentInfoController {
 		return response;			
 	}
 
+
+	public EmploymentInfoResponseSub convertToResponseSub(EmploymentInfoData data) {
+
+		String stdYm = "";
+		String industryName = "";
+		String industryCode = "";
+
+		String detailIndustryName = "";
+		int careersCount=0;
+		String careersPer="";
+
+		stdYm = data.getStdYM();
+		industryName = data.getIndustryName();
+		industryCode = data.getIndustryCode();
+		detailIndustryName = data.getDetailIndustryName();
+		careersCount = data.getCareersCount();
+		careersPer = data.getCareersPer();
+
+		EmploymentInfoResponseSub responseSub = 
+				new EmploymentInfoResponseSub(stdYm, industryName, industryCode, detailIndustryName,careersCount,careersPer);
+
+
+
+		return responseSub;
+	}
 
 
 }

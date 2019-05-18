@@ -1,13 +1,21 @@
 
 package com.ibk.pds.api.model.EmploymentInfo;
 
+import io.swagger.annotations.ApiModelProperty;
 
 public class EmploymentInfoResponseSub {
+	
+	@ApiModelProperty(notes = "기준년월")
 	String stdYm = "";
+	@ApiModelProperty(notes = "업종명")
 	String industryName = "";
+	@ApiModelProperty(notes = "업종코드")
 	String industryCode = "";
+	@ApiModelProperty(notes = "상세업종명")
 	String detailIndustryName = "";
+	@ApiModelProperty(notes = "공고수")
 	int careersCount=0;
+	@ApiModelProperty(notes = "업종내비중")
 	String careersPer="";
 	
 	public EmploymentInfoResponseSub() {

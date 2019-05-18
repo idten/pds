@@ -36,6 +36,9 @@ import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 //ATM정보 
 //1. ATM정보 전체 리스트
 //2. ATM명칭에 따른 조회
@@ -43,6 +46,7 @@ import com.ibk.pds.log.service.LogApiDataService;
 
 @RestController
 @RequestMapping("/api/atmInfo")
+@Api(value = "atmInfo", description = "ATM 정보 조회")
 public class ATMInfoController {
 	
 	private String docId = "atmInfo";
@@ -59,31 +63,16 @@ public class ATMInfoController {
 	//필터
 	@Autowired
 	ATMInfoDataService atmInfoDataService;
-	public ATMInfoResponseSub convertToResponseSub(ATMInfoData data) {
-		String atmName;			//ATM명
-		String startTime;		//시작시간
-		String endTime;			//종료시간
-		String atmAddress;		//주소
-		String atmSection;		//지역구분
-		String atmSectionCode;	//지역구분 코드 
-		atmName = data.getAtmName();
-		startTime = data.getStartTime() ;
-		endTime = data.getEndTime();
-		atmAddress = data.getAtmAddress();
-		atmSection = data.getAtmSection();
-		atmSectionCode = data.getAtmSectionCode();
 
-		ATMInfoResponseSub responseSub = new ATMInfoResponseSub(atmName,startTime, endTime,atmAddress,atmSection, atmSectionCode);
-		return responseSub;
-	}
 
-	
+	@ApiOperation(value = "ATM 전체 목록 조회(POST)")
 	@RequestMapping(value="/atmInfoAll",produces="application/xml", method=RequestMethod.POST)
 	public  ATMInfoResponse viewATMInfoAll(@RequestBody ATMInfoAllRequest request) {
 		ATMInfoResponse response = viewATMInfoAllCommon(request);
 		return response;
 	}
 	
+	@ApiOperation(value = "ATM 전체 목록 조회(GET)")
 	@RequestMapping(value="/atmInfoAll",produces="application/xml", method=RequestMethod.GET)
 	public  ATMInfoResponse viewATMInfoAll(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -403,5 +392,21 @@ public class ATMInfoController {
 
 		return response;			
 	}
+	public ATMInfoResponseSub convertToResponseSub(ATMInfoData data) {
+		String atmName;			//ATM명
+		String startTime;		//시작시간
+		String endTime;			//종료시간
+		String atmAddress;		//주소
+		String atmSection;		//지역구분
+		String atmSectionCode;	//지역구분 코드 
+		atmName = data.getAtmName();
+		startTime = data.getStartTime() ;
+		endTime = data.getEndTime();
+		atmAddress = data.getAtmAddress();
+		atmSection = data.getAtmSection();
+		atmSectionCode = data.getAtmSectionCode();
 
+		ATMInfoResponseSub responseSub = new ATMInfoResponseSub(atmName,startTime, endTime,atmAddress,atmSection, atmSectionCode);
+		return responseSub;
+	}
 }

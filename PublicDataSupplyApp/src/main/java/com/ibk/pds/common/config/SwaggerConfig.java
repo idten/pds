@@ -1,8 +1,11 @@
 package com.ibk.pds.common.config;
 
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.models.Contact;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -18,8 +21,23 @@ public class SwaggerConfig {
 	    public Docket api() {
 	        return new Docket(DocumentationType.SWAGGER_2)
 	                .select()
+	                
 	                .apis(RequestHandlerSelectors.any()) // 현재 RequestMapping으로 할당된 모든 URL 리스트를 추출
 	                .paths(PathSelectors.ant("/api/**")) // 그중 /api/** 인 URL들만 필터링
-	                .build();
+	                .build()
+	                .apiInfo(apiInfo())
+	                ;
 	    }
+	   private ApiInfo apiInfo() {
+		   
+		    return new ApiInfo(
+		      "기업은행 공공데이터포털 API", 
+		      "- 공공데이터포털을 통해서 제공하는 API 목록", 
+		      "API 1.0", 
+		      "Terms of service", 
+		      "",
+		      "",
+		      ""
+		    		);
+		}
 }
