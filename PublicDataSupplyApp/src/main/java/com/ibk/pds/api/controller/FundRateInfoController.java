@@ -1,17 +1,14 @@
 package com.ibk.pds.api.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibk.pds.api.model.ATMInfo.ATMInfoByNameRequest;
-import com.ibk.pds.api.model.ATMInfo.ATMInfoBySectionRequest;
-import com.ibk.pds.api.model.ATMInfo.ATMInfoResponse;
-import com.ibk.pds.api.model.ATMInfo.ATMInfoResponseSub;
-import com.ibk.pds.api.model.BranchInfo.BranchInfoAllRequest;
-import com.ibk.pds.api.model.BranchInfo.BranchInfoByNameRequest;
-import com.ibk.pds.api.model.BranchInfo.BranchInfoBySectionRequest;
-import com.ibk.pds.api.model.BranchInfo.BranchInfoResponse;
-import com.ibk.pds.api.model.BranchInfo.BranchInfoResponseSub;
 import com.ibk.pds.api.model.FundRateInfo.FundRateInfoAllRequest;
 import com.ibk.pds.api.model.FundRateInfo.FundRateInfoByIdivFnptDcdTop5Request;
 import com.ibk.pds.api.model.FundRateInfo.FundRateInfoByInvmAecdTop5Request;
@@ -37,31 +25,26 @@ import com.ibk.pds.api.model.FundRateInfo.FundRateInfoResponse;
 import com.ibk.pds.api.model.FundRateInfo.FundRateInfoResponseSub;
 import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
-import com.ibk.pds.data.model.ATMInfoData;
-import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.FundRateData;
-import com.ibk.pds.data.service.ATMInfoDataService;
-import com.ibk.pds.data.service.BranchInfoDataService;
 import com.ibk.pds.data.service.FundRateDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 //아이원잡 채용공고 통계 조회 서비스 
 @RestController
 @RequestMapping("/api/fundRateInfo")
+@Api(value = "fundRateInfo", description = "펀드수익률정보 조회")
 public class FundRateInfoController {
 	
 	private String docId = "fundRateInfo";
 	@Autowired
 	LogApiDataService logApiDataService;
 	private Logger logger = LoggerFactory.getLogger(FundRateInfoController.class);
-	//전처리
-	//	//Key값에 해당되는걸로 조회  1번 api 
-	//		public FundRateData findByFundAstTcdAndFundInvmAecdAndPdrsGdcdAndIdivFnptDcd
-	//		(String fundAstTcd, String fundInvmAecd,String pdrsGdcd,String idivFnptDcd)
-	////수익률별 TOP5 
-	//		public List<FundRateData> findByIdivFnptDcd(String idivFnptDcd, String ernnRtDcd) {
-	//		public List<FundRateData> findByFundInvmAecd(String fundInvmAecd, String ernnRtDcd) {
 	@Autowired
 	AuthService authService;
 	@Value("${authYN}")
@@ -70,64 +53,9 @@ public class FundRateInfoController {
 	//필터
 	@Autowired
 	FundRateDataService fundRateDataService;
-	public FundRateInfoResponseSub convertToResponseSub(FundRateData data) {
-		String baseYmd;		//기준 년월일
-		String opcmNm;  	//운용사명 
-		String fundNm;		//펀드명
-		String ascnFundCd;	//협회펀드코드 
-		String fundAstTcd;	//펀드자산유형코드
-		String fundInvmAecd;//펀드투자지역코드 
-		String trmMn1ErnnRt;//1개월 수익률
-		String trmMn3ErnnRt;//3개월 수익률
-		String trmMn6ErnnRt;//6개월 수익률
-		String trmMn12ErnnRt;//12개월 수익률
-		String pdrsGdcd;	//상품리스크 등급코드 
-		String idivFnptDcd;	//펀드유형구분코드
-		String prcqFeeRt;	//선취수수료율
-		String ttalRmnrRt;	//총보수료;
+	
 
-
-
-
-		baseYmd = data.getBaseYmd();
-		opcmNm = data.getOpcmNm();
-		fundNm = data.getFundNm();
-		ascnFundCd = data.getAscnFundCd();
-		fundAstTcd = data.getFundAstTcd();
-		fundInvmAecd = data.getFundInvmAecd();
-
-		trmMn1ErnnRt = data.getTrmMn1ErnnRt();
-		trmMn3ErnnRt = data.getTrmMn3ErnnRt();
-		trmMn6ErnnRt = data.getTrmMn6ErnnRt();
-		trmMn12ErnnRt = data.getTrmMn12ErnnRt();
-		pdrsGdcd = data.getPdrsGdcd();
-		idivFnptDcd = data.getIdivFnptDcd();
-		prcqFeeRt = data.getPrcqFeeRt();
-		ttalRmnrRt = data.getTtalRmnrRt();
-
-
-
-		FundRateInfoResponseSub responseSub = new FundRateInfoResponseSub(
-
-				baseYmd, opcmNm, 
-				fundNm, ascnFundCd,
-				fundAstTcd,
-				fundInvmAecd,
-				trmMn1ErnnRt,
-				trmMn3ErnnRt,
-				trmMn6ErnnRt,
-				trmMn12ErnnRt,
-				pdrsGdcd,
-				idivFnptDcd,
-
-				prcqFeeRt,
-				ttalRmnrRt
-
-				);
-
-		return responseSub;
-	}
-
+	@ApiOperation(value = "펀드누적수익률 전체 조회(POST)")
 	@RequestMapping(value="/fundRateInfoAll",produces="application/xml",method=RequestMethod.POST )
 	public  FundRateInfoResponse viewFundRateInfoAll(@RequestBody FundRateInfoAllRequest request) {
 		FundRateInfoResponse response = viewFundRateInfoAllCommon(request);
@@ -135,6 +63,13 @@ public class FundRateInfoController {
 		
 	}
 	
+	@ApiOperation(value = "펀드누적수익률 전체 조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",paramType = "query")
+	})
 	@RequestMapping(value="/fundRateInfoAll",produces="application/xml",method=RequestMethod.GET )
 	public  FundRateInfoResponse viewFundRateInfoAll(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -148,21 +83,33 @@ public class FundRateInfoController {
 		return response;
 	
 	}
-	
+	@ApiOperation(value = "펀드누적수익률 조건별 조회(POST)")
 	@RequestMapping(value="/fundRateInfo",produces="application/xml",method=RequestMethod.POST )
 	public  FundRateInfoResponse viewFundRateInfo(@RequestBody FundRateInfoRequest request) {
 		FundRateInfoResponse response = viewFundRateInfoCommon(request);
 		return response;
 	}
+
+	@ApiOperation(value = "펀드누적수익률 조건별 조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "fundAstTcd", 	value = "펀드자산유형코드",	required=false, defaultValue="10",paramType = "query"),
+		@ApiImplicitParam(name = "fundInvmAecd",value = "펀드투자지역코드",	required=false, defaultValue="01",paramType = "query"),
+		@ApiImplicitParam(name = "pdrsGdcd", 	value = "상품리스크등급코드",	required=false, defaultValue="01",paramType = "query"),
+		@ApiImplicitParam(name = "idivFnptDcd", value = "펀드유형구분코드",	required=false, defaultValue="11",paramType = "query")
+	})
 	@RequestMapping(value="/fundRateInfo",produces="application/xml",method=RequestMethod.GET )
 	public  FundRateInfoResponse viewFundRateInfo(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
 			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
 			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
 			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM,
-			@RequestParam(value="fundAstTcd",	required=false, defaultValue="00") String fundAstTcd,
-			@RequestParam(value="fundInvmAecd",	required=false, defaultValue="00") String fundInvmAecd,
-			@RequestParam(value="pdrsGdcd",		required=false, defaultValue="00") String pdrsGdcd,
+			@RequestParam(value="fundAstTcd",	required=false, defaultValue="10") String fundAstTcd,
+			@RequestParam(value="fundInvmAecd",	required=false, defaultValue="01") String fundInvmAecd,
+			@RequestParam(value="pdrsGdcd",		required=false, defaultValue="01") String pdrsGdcd,
 			@RequestParam(value="idivFnptDcd",	required=false, defaultValue="11") String idivFnptDcd
 			
 			) {
@@ -172,12 +119,21 @@ public class FundRateInfoController {
 		return response;
 	}
 	
-
+	@ApiOperation(value = "펀드유형별 누적수익률 TOP 5(POST)")
 	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml",method=RequestMethod.POST)
 	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5(@RequestBody FundRateInfoByIdivFnptDcdTop5Request request) {
 		FundRateInfoResponse response = viewFundRateInfoByIdivFnptDcdTop5Common(request);
 		return response;
 	}
+	@ApiOperation(value = "펀드유형별 누적수익률 TOP 5(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "idivFnptDcd", value = "펀드유형구분코드",	required=false, defaultValue="11",paramType = "query"),
+		@ApiImplicitParam(name = "ernnRtDcd",	value = "수익률구분코드",	required=false, defaultValue="01",paramType = "query")
+	})
 	@RequestMapping(value="/fundRateInfoByIdivFnptDcdTop5",produces="application/xml",method=RequestMethod.GET)
 	public  FundRateInfoResponse viewFundRateInfoByIdivFnptDcdTop5(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -197,7 +153,7 @@ public class FundRateInfoController {
 
 	
 	}
-	
+	@ApiOperation(value = "펀드투자지역별 누적수익률 TOP 5(POST)")
 	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml",method=RequestMethod.POST)
 	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5(@RequestBody FundRateInfoByInvmAecdTop5Request request) {
 		FundRateInfoResponse response = viewFundRateInfoByInvmAecdTop5Common(request);
@@ -205,7 +161,15 @@ public class FundRateInfoController {
 
 	}
 	
-	
+	@ApiOperation(value = "펀드투자지역별 누적수익률 TOP 5(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "fundInvmAecd", value = "펀드투자지역코드",	required=false, defaultValue="01",paramType = "query"),
+		@ApiImplicitParam(name = "ernnRtDcd",	value = "수익률구분코드",	required=false, defaultValue="01",paramType = "query")
+	})
 	@RequestMapping(value="/fundRateInfoByInvmAecdTop5",produces="application/xml",method=RequestMethod.GET)
 	public  FundRateInfoResponse viewFundRateInfoByInvmAecdTop5(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -454,8 +418,8 @@ public class FundRateInfoController {
 			}
 			Pageable paging = PageRequest.of(page, size);
 			list = fundRateDataService.findByIdivFnptDcdTop5(request.getIdivFnptDcd(),request.getErnnRtDcd());//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
-			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
-			//int totalCount = list.size();
+			int totalCount = list.size();
+
 			logger.info("DB Result:"+list.size());
 
 			for(FundRateData data : list) {
@@ -468,7 +432,6 @@ public class FundRateInfoController {
 
 			}
 			//response.setItem(responseSubList);
-			int totalCount = list.size();
 			response.setItem(responseSubList);
 			response.setTotalCount(totalCount);
 			response.setResultCode("00");
@@ -590,6 +553,62 @@ public class FundRateInfoController {
 	}
 
 
+	public FundRateInfoResponseSub convertToResponseSub(FundRateData data) {
+		String baseYmd;		//기준 년월일
+		String opcmNm;  	//운용사명 
+		String fundNm;		//펀드명
+		String ascnFundCd;	//협회펀드코드 
+		String fundAstTcd;	//펀드자산유형코드
+		String fundInvmAecd;//펀드투자지역코드 
+		String trmMn1ErnnRt;//1개월 수익률
+		String trmMn3ErnnRt;//3개월 수익률
+		String trmMn6ErnnRt;//6개월 수익률
+		String trmMn12ErnnRt;//12개월 수익률
+		String pdrsGdcd;	//상품리스크 등급코드 
+		String idivFnptDcd;	//펀드유형구분코드
+		String prcqFeeRt;	//선취수수료율
+		String ttalRmnrRt;	//총보수료;
 
+
+
+
+		baseYmd = data.getBaseYmd();
+		opcmNm = data.getOpcmNm();
+		fundNm = data.getFundNm();
+		ascnFundCd = data.getAscnFundCd();
+		fundAstTcd = data.getFundAstTcd();
+		fundInvmAecd = data.getFundInvmAecd();
+
+		trmMn1ErnnRt = data.getTrmMn1ErnnRt();
+		trmMn3ErnnRt = data.getTrmMn3ErnnRt();
+		trmMn6ErnnRt = data.getTrmMn6ErnnRt();
+		trmMn12ErnnRt = data.getTrmMn12ErnnRt();
+		pdrsGdcd = data.getPdrsGdcd();
+		idivFnptDcd = data.getIdivFnptDcd();
+		prcqFeeRt = data.getPrcqFeeRt();
+		ttalRmnrRt = data.getTtalRmnrRt();
+
+
+
+		FundRateInfoResponseSub responseSub = new FundRateInfoResponseSub(
+
+				baseYmd, opcmNm, 
+				fundNm, ascnFundCd,
+				fundAstTcd,
+				fundInvmAecd,
+				trmMn1ErnnRt,
+				trmMn3ErnnRt,
+				trmMn6ErnnRt,
+				trmMn12ErnnRt,
+				pdrsGdcd,
+				idivFnptDcd,
+
+				prcqFeeRt,
+				ttalRmnrRt
+
+				);
+
+		return responseSub;
+	}
 
 }

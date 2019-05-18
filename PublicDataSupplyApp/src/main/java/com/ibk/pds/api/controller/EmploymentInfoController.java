@@ -1,11 +1,9 @@
 package com.ibk.pds.api.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,15 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibk.pds.api.model.ATMInfo.ATMInfoResponseSub;
-import com.ibk.pds.api.model.BranchInfo.BranchInfoResponseSub;
 import com.ibk.pds.api.model.EmploymentInfo.EmploymentInfoAllRequest;
 import com.ibk.pds.api.model.EmploymentInfo.EmploymentInfoByIndustryCodeRequest;
 import com.ibk.pds.api.model.EmploymentInfo.EmploymentInfoByStdYmAndIndustryRequest;
@@ -30,7 +25,6 @@ import com.ibk.pds.api.model.EmploymentInfo.EmploymentInfoResponse;
 import com.ibk.pds.api.model.EmploymentInfo.EmploymentInfoResponseSub;
 import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
-import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.EmploymentInfoData;
 import com.ibk.pds.data.service.EmploymentInfoDataService;
 import com.ibk.pds.log.model.LogApiData;
@@ -40,7 +34,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 
 //아이원잡 채용공고 통계 조회 서비스 
 @RestController

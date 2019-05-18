@@ -1,11 +1,9 @@
 package com.ibk.pds.api.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,22 +17,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibk.pds.api.model.BranchInfo.BranchInfoResponseSub;
 import com.ibk.pds.api.model.MonthlyExchangeRateInfo.MonthlyExchangeRateInfoAllRequest;
 import com.ibk.pds.api.model.MonthlyExchangeRateInfo.MonthlyExchangeRateInfoByStdCurrencyRequest;
 import com.ibk.pds.api.model.MonthlyExchangeRateInfo.MonthlyExchangeRateInfoResponse;
 import com.ibk.pds.api.model.MonthlyExchangeRateInfo.MonthlyExchangeRateInfoResponseSub;
 import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
-import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.MonthlyExchangeRateData;
 import com.ibk.pds.data.service.MonthlyExchangeRateDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 //아이원잡 채용공고 통계 조회 서비스 
 @RestController
 @RequestMapping("/api/monthlyExchangeRateInfo")
+@Api(value = "monthlyExchangeRateInfo", description = "월평균 환율정보")
 public class MonthlyExchangeRateInfoController {
 
 	private String docId = "monthlyExchangeRateInfo";
@@ -52,64 +54,22 @@ public class MonthlyExchangeRateInfoController {
 	@Autowired
 	MonthlyExchangeRateDataService monthlyExchangeRateDataService;
 
-	public MonthlyExchangeRateInfoResponseSub convertToResponseSub(MonthlyExchangeRateData data) {
-		String stdCurrency;
-		//		//상태 통화
-		String relativeCurrency;
-		String monthly1Rate;
-		String monthly2Rate;
-		String monthly3Rate;
-		String monthly4Rate;
-		String monthly5Rate;
-		String monthly6Rate;
-		String monthly7Rate;
-		String monthly8Rate;
-		String monthly9Rate;
-		String monthly10Rate;
-		String monthly11Rate;
-		String monthly12Rate;
-
-
-		stdCurrency = data.getStdCurrency();
-		relativeCurrency = data.getRelativeCurrency();
-		monthly1Rate = data.getMonthly1Rate();
-		monthly2Rate = data.getMonthly2Rate();
-		monthly3Rate = data.getMonthly3Rate();
-		monthly4Rate = data.getMonthly4Rate();
-		monthly5Rate = data.getMonthly5Rate();
-		monthly6Rate = data.getMonthly6Rate();
-		monthly7Rate = data.getMonthly7Rate();
-		monthly8Rate = data.getMonthly8Rate();
-		monthly9Rate = data.getMonthly9Rate();
-		monthly10Rate = data.getMonthly10Rate();
-		monthly11Rate = data.getMonthly11Rate();
-		monthly12Rate = data.getMonthly12Rate();
-
-		MonthlyExchangeRateInfoResponseSub responseSub = new MonthlyExchangeRateInfoResponseSub(
-				stdCurrency,relativeCurrency, 
-				monthly1Rate,
-				monthly2Rate,
-				monthly3Rate,
-				monthly4Rate,
-				monthly5Rate,
-				monthly6Rate,
-				monthly7Rate,
-				monthly8Rate,
-				monthly9Rate,
-				monthly10Rate,
-				monthly11Rate,
-				monthly12Rate
-				);
-
-		return responseSub;
-	}
+	
+	@ApiOperation(value = "월평균환율 전체 통화 조회(POST)")		
 	@RequestMapping(value="/montlyExchangeRateAll",produces="application/xml",method=RequestMethod.POST)
 	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeAll(@RequestBody MonthlyExchangeRateInfoAllRequest request) {
 
 		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeAllCommon(request);
 		return response;
 	}
+	@ApiOperation(value = "월평균환율 전체 통화 조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",			paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",			paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
 
+	})
 	@RequestMapping(value="/montlyExchangeRateAll",produces="application/xml", method=RequestMethod.GET)
 	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeAll(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -122,11 +82,23 @@ public class MonthlyExchangeRateInfoController {
 		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeAllCommon(request);
 		return response;
 	}
+	
+	
+	@ApiOperation(value = "기준통화별 월평균환율 조회 (POST)")
 	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml",method=RequestMethod.POST)
 	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrency(@RequestBody MonthlyExchangeRateInfoByStdCurrencyRequest request) {
 		MonthlyExchangeRateInfoResponse response = viewMontlyExchangeByStdCurrencyCommon(request);
 		return response;
 	}
+	@ApiOperation(value = "기준통화별 월평균환율 조회 (GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",			paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",			paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
+		@ApiImplicitParam(name = "stdCurrency", 	value = "기준통화",	required=false, defaultValue="USD",			paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
+
+	})
 	@RequestMapping(value="/montlyExchangeRateByStdCurrency",produces="application/xml",method=RequestMethod.GET)
 	public  MonthlyExchangeRateInfoResponse viewMontlyExchangeByStdCurrency(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -188,9 +160,6 @@ public class MonthlyExchangeRateInfoController {
 			Pageable paging = PageRequest.of(page, size);
 			list = monthlyExchangeRateDataService.findAll(paging);
 			int totalCount = monthlyExchangeRateDataService.totalCount();
-			String resultCode;// = resultCode;
-			String resultMsg;
-			Integer numOfRows = list.size();
 			//			
 			logger.info("DB Result:"+list.size());
 
@@ -275,10 +244,7 @@ public class MonthlyExchangeRateInfoController {
 			Pageable paging = PageRequest.of(page, size);
 			list = monthlyExchangeRateDataService.findByStdCurrency(request.getStdCurrency(), paging);
 			int totalCount = monthlyExchangeRateDataService.findByStdCurrencyTotalCount(request.getStdCurrency());
-			String resultCode;// = resultCode;
-			String resultMsg;
-			Integer numOfRows = list.size();
-			//			
+						
 			logger.info("DB Result:"+list.size());
 
 
@@ -317,7 +283,57 @@ public class MonthlyExchangeRateInfoController {
 
 		return response;			
 	}
+	public MonthlyExchangeRateInfoResponseSub convertToResponseSub(MonthlyExchangeRateData data) {
+		String stdCurrency;
+		//		//상태 통화
+		String relativeCurrency;
+		String monthly1Rate;
+		String monthly2Rate;
+		String monthly3Rate;
+		String monthly4Rate;
+		String monthly5Rate;
+		String monthly6Rate;
+		String monthly7Rate;
+		String monthly8Rate;
+		String monthly9Rate;
+		String monthly10Rate;
+		String monthly11Rate;
+		String monthly12Rate;
 
+
+		stdCurrency = data.getStdCurrency();
+		relativeCurrency = data.getRelativeCurrency();
+		monthly1Rate = data.getMonthly1Rate();
+		monthly2Rate = data.getMonthly2Rate();
+		monthly3Rate = data.getMonthly3Rate();
+		monthly4Rate = data.getMonthly4Rate();
+		monthly5Rate = data.getMonthly5Rate();
+		monthly6Rate = data.getMonthly6Rate();
+		monthly7Rate = data.getMonthly7Rate();
+		monthly8Rate = data.getMonthly8Rate();
+		monthly9Rate = data.getMonthly9Rate();
+		monthly10Rate = data.getMonthly10Rate();
+		monthly11Rate = data.getMonthly11Rate();
+		monthly12Rate = data.getMonthly12Rate();
+
+		MonthlyExchangeRateInfoResponseSub responseSub = new MonthlyExchangeRateInfoResponseSub(
+				stdCurrency,relativeCurrency, 
+				monthly1Rate,
+				monthly2Rate,
+				monthly3Rate,
+				monthly4Rate,
+				monthly5Rate,
+				monthly6Rate,
+				monthly7Rate,
+				monthly8Rate,
+				monthly9Rate,
+				monthly10Rate,
+				monthly11Rate,
+				monthly12Rate
+				);
+
+		return responseSub;
+	}
 
 
 }

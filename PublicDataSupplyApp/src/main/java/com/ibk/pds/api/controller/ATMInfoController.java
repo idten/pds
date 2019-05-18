@@ -1,17 +1,14 @@
 package com.ibk.pds.api.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,11 +23,9 @@ import com.ibk.pds.api.model.ATMInfo.ATMInfoByNameRequest;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoBySectionRequest;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoResponse;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoResponseSub;
-import com.ibk.pds.api.model.BranchInfo.BranchInfoResponseSub;
 import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.ATMInfoData;
-import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.service.ATMInfoDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
@@ -79,7 +74,6 @@ public class ATMInfoController {
 		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",paramType = "query" 	),
 		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",paramType = "query"),
 		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",paramType = "query")
-
 	})
 	@RequestMapping(value="/atmInfoAll",produces="application/xml", method=RequestMethod.GET)
 	public  ATMInfoResponse viewATMInfoAll(
@@ -107,7 +101,6 @@ public class ATMInfoController {
 		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
 		@ApiImplicitParam(name = "atmName", 	value = "ATM코너명",		required=false, defaultValue="",	paramType = "query"),
 		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
-
 	})
 	@RequestMapping(value="/atmInfoByName",produces="application/xml", method=RequestMethod.GET)
 	public  ATMInfoResponse viewATMInfoByName(

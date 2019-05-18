@@ -40,6 +40,10 @@ import com.ibk.pds.data.service.BranchInfoDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 //아이원잡 채용공고 통계 조회 서비스 
 @RestController
 @RequestMapping("/api/branchInfo")
@@ -60,13 +64,20 @@ public class BranchInfoController {
 	BranchInfoDataService branchInfoDataService;
 
 	
-
+	@ApiOperation(value = "영업점 전체 목록 조회(POST)")
 	@RequestMapping(value="/branchInfoAll",produces="application/xml",method=RequestMethod.POST )
 	public  BranchInfoResponse viewBranchInfoAll(@RequestBody BranchInfoAllRequest request) {
 		BranchInfoResponse response = viewBranchInfoAllCommon(request);
 		return response;
 	}
 	
+	@ApiOperation(value = "영업점 전체 목록 조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",paramType = "query" 	),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",paramType = "query")
+	})
 	@RequestMapping(value="/branchInfoAll",produces="application/xml",method=RequestMethod.GET )
 	public  BranchInfoResponse viewBranchInfoAll(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -80,35 +91,49 @@ public class BranchInfoController {
 		return response;
 	}
 
+	@ApiOperation(value = "영업점 이름 조회(POST)")
 	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.POST)
 	public  BranchInfoResponse viewBranchInfoByName(@RequestBody BranchInfoByNameRequest request) {
 		BranchInfoResponse response = viewBranchInfoByNameCommon(request);
 		return response;
 	}
 	
-	
+	@ApiOperation(value = "영업점 이름 조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",			paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",			paramType = "query"),
+		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
+		@ApiImplicitParam(name = "branchName", 	value = "영업점명",		required=false, defaultValue="",			paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
+	})
 	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.GET)
 	public  BranchInfoResponse viewBranchInfoByName(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
 			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
 			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
-			@RequestParam(value="branchName",	required=false, defaultValue="default")	 String branchName,
+			@RequestParam(value="branchName",	required=false, defaultValue="")	 String branchName,
 			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
-			
 			) {
 		BranchInfoByNameRequest request = new BranchInfoByNameRequest(serviceKey,numOfRows,pageNo,branchName,SG_APIM);
 		BranchInfoResponse response = viewBranchInfoByNameCommon(request);
 		return response;
 
 	}
-	
+	@ApiOperation(value = "영업점 주소 조회(POST)")
 	@RequestMapping(value="/branchInfoByAddress",produces="application/xml",method=RequestMethod.POST)
 	public  BranchInfoResponse viewBranchInfoByAddress(@RequestBody BranchInfoByAddressRequest request) {
 		BranchInfoResponse response = viewBranchInfoByAddressCommon(request);
 		return response;
 	}
 	
-	
+	@ApiOperation(value = "영업점 주소 조회(GET)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 		value = "한페이지 결과수",	required=false, defaultValue="10",			paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 			value = "페이지수 ",		required=false, defaultValue="0",			paramType = "query"),
+		@ApiImplicitParam(name = "serviceKey", 		value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
+		@ApiImplicitParam(name = "branchAddress", 	value = "영업점 주소",		required=false, defaultValue="",			paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 		value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
+	})
 	@RequestMapping(value="/branchInfoByAddress",produces="application/xml",method=RequestMethod.GET)
 	public  BranchInfoResponse viewBranchInfoByAddress(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
@@ -123,14 +148,21 @@ public class BranchInfoController {
 		return response;
 
 	}
-	
-	
-	
+	@ApiOperation(value = "영업점 지역별 목록 조회(POST)")
 	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.POST)
 	public  BranchInfoResponse viewBranchInfoBySectionRequest(@RequestBody BranchInfoBySectionRequest request) {
 		BranchInfoResponse response = viewBranchInfoBySectionRequestCommon(request);
 		return response;
 	}
+
+	@ApiOperation(value = "영업점 지역별 목록 조회(POST)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "numOfRows", 		value = "한페이지 결과수",	required=false, defaultValue="10",			paramType = "query"),
+		@ApiImplicitParam(name = "pageNo", 			value = "페이지수 ",		required=false, defaultValue="0",			paramType = "query"),
+		@ApiImplicitParam(name = "serviceKey", 		value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
+		@ApiImplicitParam(name = "sectionCode", 	value = "행정구역코드",		required=false, defaultValue="02",			paramType = "query"),
+		@ApiImplicitParam(name = "SG_APIM", 		value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
+	})
 	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.GET)
 	public  BranchInfoResponse viewBranchInfoBySectionRequest(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
