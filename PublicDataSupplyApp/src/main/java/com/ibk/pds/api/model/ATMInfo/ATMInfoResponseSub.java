@@ -1,18 +1,22 @@
 
 package com.ibk.pds.api.model.ATMInfo;
 
+import io.swagger.annotations.ApiModelProperty;
 
 public class ATMInfoResponseSub {
+	@ApiModelProperty(notes = "ATM코너명")
 	String atmName = "";
 	//String atmDivisiton= "";
+	@ApiModelProperty(notes = "시작시간")
 	String startTime = "";
+	@ApiModelProperty(notes = "마감시간")
 	String endTime = "";
+	@ApiModelProperty(notes = "주소")
 	String atmAddress = "";
+	@ApiModelProperty(notes = "행정구역")
 	String atmSection = "";
+	@ApiModelProperty(notes = "행정구역코드")
 	String atmSectionCode = "";
-	
-	
-	
 	
 	public ATMInfoResponseSub() {
 		

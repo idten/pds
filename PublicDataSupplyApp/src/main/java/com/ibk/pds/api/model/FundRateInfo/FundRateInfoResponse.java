@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.ibk.pds.data.model.JobWorldData;
 
 import io.swagger.annotations.ApiModelProperty;
 

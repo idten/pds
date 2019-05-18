@@ -14,10 +14,8 @@ import com.ibk.pds.common.controller.ApiInfoController;
 import com.ibk.pds.common.model.ApiInfo;
 import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.data.model.ATMInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.model.MonthlyExchangeRateData;
 import com.ibk.pds.data.service.ATMInfoDataService;
-import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.data.service.MonthlyExchangeRateDataService;
 @Controller
 public class MonthlyExchangeRateDataController {

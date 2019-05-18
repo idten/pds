@@ -19,7 +19,6 @@ import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.EmploymentInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.repository.ATMInfoDataRepository;
 import com.ibk.pds.data.repository.BranchInfoDataRepository;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
@@ -46,7 +45,7 @@ public class ATMInfoDataService {
 
 	public DocTrxStatus deleteATMInfoDataAll(){
 		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
-		
+
 		try {
 			atmInfoDataRepository.deleteAll();
 		}catch(Exception e) {
@@ -58,7 +57,7 @@ public class ATMInfoDataService {
 	public DocTrxStatus addATMInfodDataFromExcel(List<String> cellList,String approval) {
 		String today = DateUtil.getDateYYYYMMDD();
 		String key = DateUtil.getDateYYYYMMDDHHMMSS();
-		
+
 		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
 		String updateCode;
 		String uploadDate;
@@ -68,18 +67,18 @@ public class ATMInfoDataService {
 		String atmCode 			= cellList.get(1);
 		String startTime		= cellList.get(2);//시작시간
 		String endTime			= cellList.get(3);//종료시간
-		String atmAddress       = cellList.get(5);		//주소
-		String atmSection       = cellList.get(6);		//지역구분
-		String atmSectionCode	= cellList.get(7);	//지역구분 코드 
+		String atmAddress       = cellList.get(4);		//주소
+		String atmSection       = cellList.get(5);		//지역구분
+		String atmSectionCode	= cellList.get(6);	//지역구분 코드 
 		String dataId=atmCode; 
 
 		ATMInfoData atmInfoData = new ATMInfoData(dataId,atmName,atmCode, startTime, endTime,atmAddress,
 				atmSection,atmSectionCode,approval, updateCode, uploadDate);
-		
+
 		addATMInfoData(atmInfoData);
 		logger.info("ATMInfoData Data insert:"+atmInfoData.toString());
 		return docTrxStatus;
-		
+
 	}
 
 
@@ -108,19 +107,22 @@ public class ATMInfoDataService {
 		List<ATMInfoData> atmInfoDataList = atmInfoDataRepository.findAll();
 		return atmInfoDataList;
 	}
-	public int getTotalCount() {
-		return (int)atmInfoDataRepository.count();
-	}
+	
 
 	public List<ATMInfoData> findByATMName(String atmName,Pageable page) {
 		logger.info("atmName="+atmName);
-		List<ATMInfoData> list = atmInfoDataRepository.findByAtmName(atmName, page);//.findByStdYM(stdDate,page);
+		List<ATMInfoData> list = atmInfoDataRepository.findByAtmNameLike(atmName, page);//.findByStdYM(stdDate,page);
 		logger.info("findByBranchName(Paging) ="+list.size());
 		return list;
 	}
+	//주소기준 조회 Like 검색 
+	public List<ATMInfoData> findByATMAddress(String atmAddress,Pageable page) {
+		logger.info("atmAddress="+atmAddress);
+		List<ATMInfoData> list = atmInfoDataRepository.findByAtmAddressLike(atmAddress, page);//.findByStdYM(stdDate,page);
+		logger.info("findByATMAddress(Paging) ="+list.size());
+		return list;
+	}
 
-	
-	
 	
 	public List<ATMInfoData> findByATMSectionCode(String atmSectionCode,Pageable page) {
 		logger.info("atmSectionCode="+atmSectionCode);
@@ -128,12 +130,23 @@ public class ATMInfoDataService {
 		logger.info("findByATMSectionCode(Paging) ="+list.size());
 		return list;
 	}
-	
-	public List<ATMInfoData> findByATMSectionCode(String atmSectionCode) {
+	public int findAllTotalCount(){
+		return  (int)atmInfoDataRepository.count();
+	}
+	public int findByATMNameTotalCount(String atmName) {
+		logger.info("atmName="+atmName);
+		return (int)atmInfoDataRepository.countByAtmNameLike(atmName);//.findByAtmNameLike(atmName).size();//.findByStdYM(stdDate,page);
+	}
+	public int findByATMSectionCodeTotalCount(String atmSectionCode) {
 		logger.info("atmSectionCode="+atmSectionCode);
-		List<ATMInfoData> list = atmInfoDataRepository.findByAtmSectionCode(atmSectionCode);
-		logger.info("findByATMSectionCode(Paging) ="+list.size());
-		return list;
+		return (int)atmInfoDataRepository.countByAtmSectionCode(atmSectionCode);
 	}
 	
+	public int findByATMAddressTotalCount(String atmAddress) {
+		logger.info("atmAddress="+atmAddress);
+		return (int)atmInfoDataRepository.countByAtmAddressLike(atmAddress);//.findByStdYM(stdDate,page);
+	}
+	
+	
+
 }

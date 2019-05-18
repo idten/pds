@@ -18,7 +18,6 @@ import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.FundRateData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.model.MonthlyExchangeRateData;
 import com.ibk.pds.data.repository.FundRateDataRepository;
 import com.ibk.pds.data.repository.JobWorldDataRepository;

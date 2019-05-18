@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.ibk.pds.data.model.JobWorldData;
 
 //채용정보 산업별 조회 응답 
 //조회조건: stdYm

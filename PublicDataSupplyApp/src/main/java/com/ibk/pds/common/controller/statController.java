@@ -34,58 +34,56 @@ import com.ibk.pds.common.repository.UserInfoRepository;
 import com.ibk.pds.common.service.DocumentInfoService;
 import com.ibk.pds.common.service.DocumentStatusService;
 import com.ibk.pds.common.service.UserInfoService;
-import com.ibk.pds.data.model.JobWorldData;
-import com.ibk.pds.data.service.JobWorldDataService;
 
 @Controller
 public class statController {
 
-	@Autowired
-	DocumentStatusService documentStatusService;
-	//UserInfoRepository userInfoRepository;
-
-	@Autowired
-	JobWorldDataService jobWorldDataService;
-
-	
-	private Logger logger = LoggerFactory.getLogger(statController.class);
-
-	@RequestMapping(value = "/stat.do", method = RequestMethod.GET)
-	public ModelAndView upload(ModelAndView mav) {
-		logger.info("Doc Approval Test");
-		List<DocumentStatus> docStatusList = documentStatusService.getDocStatusList();
-		DocumentStatus docStatus = null;
-		int len = docStatusList.size();
-		for(int i = 0; i<len ; i++){
-			docStatus = docStatusList.get(i);
-
-			logger.info("docStatus OUTPUT"+docStatus.toString());
-		}
-
-		mav.addObject("doclist",docStatusList);
-
-
-		logger.info("jobWorld Test");
-		List<JobWorldData> jobWorldDataList = jobWorldDataService.getJobWorldDataList();
-		//.getApiInfoList();
-		JobWorldData jobWorldData=null;
-		len = jobWorldDataList.size();
-		for(int i = 0; i<len ; i++){
-			jobWorldData = jobWorldDataList.get(i);
-			logger.info(jobWorldData.toString());
-		}
-
-		mav.addObject("datalist",jobWorldDataList);
-		//	mav.setViewName("jobworld");
-		logger.info("Api Test End");
-		//mav.setViewName("approval");
-		logger.info("Doc Approval Test End");
-
-		//return mav;
-		
-		mav.setViewName("stat");
-		return mav; 
-		
-	}
+//	@Autowired
+//	DocumentStatusService documentStatusService;
+//	//UserInfoRepository userInfoRepository;
+//
+//	@Autowired
+//	JobWorldDataService jobWorldDataService;
+//
+//	
+//	private Logger logger = LoggerFactory.getLogger(statController.class);
+//
+//	@RequestMapping(value = "/stat.do", method = RequestMethod.GET)
+//	public ModelAndView upload(ModelAndView mav) {
+//		logger.info("Doc Approval Test");
+//		List<DocumentStatus> docStatusList = documentStatusService.getDocStatusList();
+//		DocumentStatus docStatus = null;
+//		int len = docStatusList.size();
+//		for(int i = 0; i<len ; i++){
+//			docStatus = docStatusList.get(i);
+//
+//			logger.info("docStatus OUTPUT"+docStatus.toString());
+//		}
+//
+//		mav.addObject("doclist",docStatusList);
+//
+//
+//		logger.info("jobWorld Test");
+//		List<JobWorldData> jobWorldDataList = jobWorldDataService.getJobWorldDataList();
+//		//.getApiInfoList();
+//		JobWorldData jobWorldData=null;
+//		len = jobWorldDataList.size();
+//		for(int i = 0; i<len ; i++){
+//			jobWorldData = jobWorldDataList.get(i);
+//			logger.info(jobWorldData.toString());
+//		}
+//
+//		mav.addObject("datalist",jobWorldDataList);
+//		//	mav.setViewName("jobworld");
+//		logger.info("Api Test End");
+//		//mav.setViewName("approval");
+//		logger.info("Doc Approval Test End");
+//
+//		//return mav;
+//		
+//		mav.setViewName("stat");
+//		return mav; 
+//		
+//	}
 
 }

@@ -15,10 +15,8 @@ import com.ibk.pds.common.model.ApiInfo;
 import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.BranchInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.service.ATMInfoDataService;
 import com.ibk.pds.data.service.BranchInfoDataService;
-import com.ibk.pds.data.service.JobWorldDataService;
 @Controller
 public class BranchInfoDataController {
 	//

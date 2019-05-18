@@ -1,4 +1,4 @@
-package com.ibk.pds.data.model;
+package com.ibk.pds.data.repository;
 
 import java.util.Date;
 

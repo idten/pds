@@ -1,13 +1,20 @@
 
 package com.ibk.pds.api.model.BranchInfo;
 
+import io.swagger.annotations.ApiModelProperty;
 
 public class BranchInfoResponseSub {
 	
+	@ApiModelProperty(notes = "영업점명")
 	String branchName = "";
+	@ApiModelProperty(notes = "전화번호")
 	String branchPhoneNumber= "";
+	@ApiModelProperty(notes = "주소")
 	String branchAddress = "";
+	
+	@ApiModelProperty(notes = "행정구역")
 	String branchSection = "";
+	@ApiModelProperty(notes = "행정구역코드")
 	String branchSectionCode = "";
 	
 	

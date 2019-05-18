@@ -7,18 +7,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.ibk.pds.data.model.EmploymentInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 
 public interface EmploymentInfoDataRepository  extends MongoRepository<EmploymentInfoData,String>{
-	public  List<EmploymentInfoData> findByStdYM(String stdYM);
-	public  List<EmploymentInfoData> findByStdYM(String stdYM,Pageable pageable);
 	
-	public List<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
+	public long countByStdYM(String  stdYm);
+	public List<EmploymentInfoData> findByStdYM(String stdYM,Pageable pageable);
+	
+	public long countByStdYMAndIndustryCode(String stdYM, String industryCode);
 	public List<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode,Pageable pageRequest);
-	//public Page<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode,Pageable pageable);
-	
-	
+
+	public long countByIndustryCode(String industryCode);
 	public List<EmploymentInfoData> findByIndustryCode(String industryCode,Pageable pageable);
-	public List<EmploymentInfoData> findByIndustryCode(String industryCode);
 	
 }

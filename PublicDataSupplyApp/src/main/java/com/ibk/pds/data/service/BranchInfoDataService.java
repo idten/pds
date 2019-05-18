@@ -18,7 +18,6 @@ import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.BranchInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.repository.BranchInfoDataRepository;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
 import com.ibk.pds.log.model.DocTrxStatus;
@@ -107,10 +106,18 @@ public class BranchInfoDataService {
 	
 	public List<BranchInfoData> findByBranchName(String branchName,Pageable page) {
 		logger.info("branchName="+branchName);
-		List<BranchInfoData> list = branchInfoDataRepository.findByBranchName(branchName, page);//.findByStdYM(stdDate,page);
+		List<BranchInfoData> list = branchInfoDataRepository.findByBranchNameLike(branchName, page);//.findByStdYM(stdDate,page);
 		logger.info("findByBranchName(Paging) ="+list.size());
 		return list;
 	}
+	
+	public List<BranchInfoData> findByBranchAddress(String branchAddress,Pageable page) {
+		logger.info("branchAddress="+branchAddress);
+		List<BranchInfoData> list = branchInfoDataRepository.findByBranchAddressLike(branchAddress, page);//.findByBranchAddressLike(branchAddress, page);//.findByStdYM(stdDate,page);
+		logger.info("findByBranchName(Paging) ="+list.size());
+		return list;
+	}
+	
 	
 	public List<BranchInfoData> findByBranchSectionCode(String branchSectionCode,Pageable page) {
 		logger.info("branchSectionCode="+branchSectionCode);
@@ -118,19 +125,21 @@ public class BranchInfoDataService {
 		logger.info("findByBranchSectionCode(Paging) ="+list.size());
 		return list;
 	}
-	public int getTotalCount() {
+	public int findAllTotalCount() {
 		return (int)branchInfoDataRepository.count();
 	}
 	public int findByBranchNameTotalCount(String branchName) {
 		logger.info("branchName="+branchName);
-		return branchInfoDataRepository.findByBranchName(branchName).size();//.findByStdYM(stdDate,page);
+		return (int)branchInfoDataRepository.countByBranchNameLike(branchName);
 	}
-	
+	public int findByBranchAddressTotalCount(String branchAddress) {
+		logger.info("branchAddress="+branchAddress);
+		return (int)branchInfoDataRepository.countByBranchNameLike(branchAddress);
+	}
 	public int findByBranchSectionCodeTotalCount(String branchSectionCode) {
 		logger.info("branchSectionCode="+branchSectionCode);
-		return branchInfoDataRepository.findByBranchSectionCode(branchSectionCode).size();
-		//logger.info("findByBranchSectionCode(Paging) ="+list.size());
-		//return list;
+		return (int) branchInfoDataRepository.countByBranchSectionCode(branchSectionCode);
 	}
+	
 
 }

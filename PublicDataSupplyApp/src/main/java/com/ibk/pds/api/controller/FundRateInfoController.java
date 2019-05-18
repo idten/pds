@@ -40,11 +40,9 @@ import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.FundRateData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.service.ATMInfoDataService;
 import com.ibk.pds.data.service.BranchInfoDataService;
 import com.ibk.pds.data.service.FundRateDataService;
-import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 

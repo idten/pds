@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibk.pds.api.model.CommonHeaderResponse;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoResponseSub;
 import com.ibk.pds.api.model.BranchInfo.BranchInfoResponseSub;
 import com.ibk.pds.api.model.EmploymentInfo.EmploymentInfoAllRequest;
@@ -33,9 +32,7 @@ import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.EmploymentInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.service.EmploymentInfoDataService;
-import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 

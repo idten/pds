@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.ibk.pds.data.model.JobWorldData;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,8 +14,6 @@ import io.swagger.annotations.ApiModelProperty;
 //등록자   : 박현조
 @JacksonXmlRootElement(localName = "response")
 public class BranchInfoResponse {
-
-	//private
 	//공통 코드 
 	@ApiModelProperty(notes = "응답코드")
 	private String resultCode = "";//결과코드 

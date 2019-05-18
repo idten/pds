@@ -34,8 +34,6 @@ import com.ibk.pds.common.repository.UserInfoRepository;
 import com.ibk.pds.common.service.DocumentInfoService;
 import com.ibk.pds.common.service.DocumentStatusService;
 import com.ibk.pds.common.service.UserInfoService;
-import com.ibk.pds.data.model.JobWorldData;
-import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.model.LogDocData;
 import com.ibk.pds.log.service.LogApiDataService;

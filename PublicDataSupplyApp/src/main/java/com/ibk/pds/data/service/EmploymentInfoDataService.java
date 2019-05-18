@@ -17,7 +17,6 @@ import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.BranchInfoData;
 import com.ibk.pds.data.model.EmploymentInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.repository.EmploymentInfoDataRepository;
 import com.ibk.pds.data.repository.JobWorldDataRepository;
 import com.ibk.pds.log.model.DocTrxStatus;
@@ -42,41 +41,41 @@ public class EmploymentInfoDataService {
 			return docTrxStatus;
 		}
 		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
-		
+
 		//정상일 경우 
 		return docTrxStatus;
 	}
-	
-	
+
+
 	public DocTrxStatus addEmploymentInfodDataFromExcel(List<String> cellList,String approval) {
 		String today = DateUtil.getDateYYYYMMDD();
 		String key = DateUtil.getDateYYYYMMDDHHMMSS();
-		
+
 		DocTrxStatus docTrxStatus = new DocTrxStatus("000","");
 		String updateCode;
 		String uploadDate;
 		updateCode = "D"+key;
 		uploadDate = today;
-		
+
 		String stdYM 				= cellList.get(0);
 		String industryName 		= cellList.get(1);
 		String industryCode 		= cellList.get(2);
 		String detailIndustryName   = cellList.get(3);
 		String detailIndustryCode   = cellList.get(4);
-		
+
 		int careersCount			= Integer.parseInt(cellList.get(5));
 		String careersPer			= cellList.get(6);
 		String dataId = stdYM + detailIndustryCode;
-		
+
 		EmploymentInfoData employmentInfoData = new EmploymentInfoData(dataId,stdYM,industryName,industryCode,detailIndustryName,detailIndustryCode,careersCount,careersPer,approval,updateCode,uploadDate);
 		addEmploymentInfodData(employmentInfoData);
 		logger.info("EmploymentInfoData Data insert:"+employmentInfoData.toString());
 
 		return docTrxStatus;
-		
+
 	}
 	//public DocTrxStatus DocTrxStatus()
-	
+
 
 	public List<EmploymentInfoData> findAll(Pageable page){
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll(page).getContent();
@@ -85,46 +84,25 @@ public class EmploymentInfoDataService {
 	}
 	public List<EmploymentInfoData> findAll(){
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findAll();
-	//	employmentInfoDataRepository.c
 		return list;
 	}
-	
-	
+
+
 	public int getTotalCount() {
 		return (int)employmentInfoDataRepository.count();
 	}
-	
-	
-	
-	public List<EmploymentInfoData> findByStdDate(String stdDate) {
-		logger.info("stdDate="+stdDate);
-		List<EmploymentInfoData> list = employmentInfoDataRepository.findByStdYM(stdDate);
-		logger.info("getByStdDate ="+list.size());
-		return list;
-	}
-	
+
 	public List<EmploymentInfoData> findByStdDate(String stdDate,Pageable page) {
 		logger.info("stdDate="+stdDate);
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findByStdYM(stdDate,page);
 		logger.info("getByStdDate(Paging) ="+list.size());
 		return list;
 	}
-	public int findByStdDateTotalCount(String stdDate) {
-		logger.info("stdDate="+stdDate);
-		return employmentInfoDataRepository.findByStdYM(stdDate).size();
-	}
-	//public List<JobWorldData> findByStdYMAndIndustryCode(String stdYM, String industryCode);
-	public List<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode) {
-		logger.info("stdDate="+stdYM);
-		List<EmploymentInfoData> list = employmentInfoDataRepository.findByStdYMAndIndustryCode(stdYM, industryCode);
-		//.findByStdYM(stdDate);
 
-		logger.info("getByStdDate ="+list.size());
-		return list;
-	}
+
 	public List<EmploymentInfoData> findByStdYMAndIndustryCode(String stdYM, String industryCode,Pageable page) {
 		logger.info("stdDate="+stdYM+":"+industryCode+":");
-		
+
 		List<EmploymentInfoData> list = employmentInfoDataRepository.findByStdYMAndIndustryCode(stdYM, industryCode,page);
 		//.findByStdYM(stdDate);
 
@@ -141,7 +119,7 @@ public class EmploymentInfoDataService {
 	}
 	public int findByIndustryCodeTotalCount(String industryCode) {
 		logger.info("stdDate="+industryCode);
-		int size = employmentInfoDataRepository.findByIndustryCode(industryCode).size();
+		int size = (int) employmentInfoDataRepository.countByIndustryCode(industryCode);//.findByIndustryCode(industryCode).size();
 		//.findByStdYM(stdDate);
 
 		logger.info("findByIndustryCodeTotalCount(Paging)e ="+size);
@@ -149,11 +127,16 @@ public class EmploymentInfoDataService {
 	}
 	public int findByStdYMAndIndustryCodeTotalCount(String stdYM, String industryCode) {
 		logger.info("stdDate="+industryCode);
-		int size = employmentInfoDataRepository.findByStdYMAndIndustryCode(stdYM, industryCode).size();
-		//.findByStdYM(stdDate);
-
+		int size = (int) employmentInfoDataRepository.countByStdYMAndIndustryCode(stdYM, industryCode);
 		logger.info("findByStdYMAndIndustryCodeTotalCount(Paging)e ="+size);
 		return size;
 	}
-	
+
+	public int findByStdDateTotalCount(String stdDate) {
+		logger.info("stdDate="+stdDate);
+		return (int) employmentInfoDataRepository.countByStdYM(stdDate);//.findByStdYM(stdDate).size();
+	}
+
+
+
 }

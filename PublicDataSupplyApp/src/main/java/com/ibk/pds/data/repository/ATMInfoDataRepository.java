@@ -8,15 +8,19 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.BranchInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 
 public interface ATMInfoDataRepository  extends MongoRepository<ATMInfoData,String>{
 
 	public Page<ATMInfoData> findAll(Pageable pageable);
-	public List<ATMInfoData> findByAtmName(String atmName);
-	public List<ATMInfoData> findByAtmName(String atmName, Pageable pageable);
-	
-	public List<ATMInfoData> findByAtmSectionCode(String atmSectionCode);	
-	public List<ATMInfoData> findByAtmSectionCode(String atmSectionCode, Pageable pageable);	
 
+	public List<ATMInfoData> findByAtmNameLike(String atmName, Pageable pageable);
+	public long countByAtmNameLike(String atmName);
+	
+	
+	public List<ATMInfoData> findByAtmSectionCode(String atmSectionCode, Pageable pageable);	
+	public long countByAtmSectionCode(String atmSectionCode);
+	
+	
+	public List<ATMInfoData> findByAtmAddressLike(String atmAddress, Pageable pageable);	
+	public long countByAtmAddressLike(String atmAddress);
 }

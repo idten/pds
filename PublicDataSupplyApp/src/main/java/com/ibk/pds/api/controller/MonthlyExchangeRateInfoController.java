@@ -27,9 +27,7 @@ import com.ibk.pds.api.model.MonthlyExchangeRateInfo.MonthlyExchangeRateInfoResp
 import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.BranchInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.model.MonthlyExchangeRateData;
-import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.data.service.MonthlyExchangeRateDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;

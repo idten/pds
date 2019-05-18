@@ -26,6 +26,7 @@ import com.ibk.pds.api.model.ATMInfo.ATMInfoBySectionRequest;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoResponse;
 import com.ibk.pds.api.model.ATMInfo.ATMInfoResponseSub;
 import com.ibk.pds.api.model.BranchInfo.BranchInfoAllRequest;
+import com.ibk.pds.api.model.BranchInfo.BranchInfoByAddressRequest;
 import com.ibk.pds.api.model.BranchInfo.BranchInfoByNameRequest;
 import com.ibk.pds.api.model.BranchInfo.BranchInfoBySectionRequest;
 import com.ibk.pds.api.model.BranchInfo.BranchInfoResponse;
@@ -34,10 +35,8 @@ import com.ibk.pds.auth.service.AuthService;
 import com.ibk.pds.common.util.DateUtil;
 import com.ibk.pds.data.model.ATMInfoData;
 import com.ibk.pds.data.model.BranchInfoData;
-import com.ibk.pds.data.model.JobWorldData;
 import com.ibk.pds.data.service.ATMInfoDataService;
 import com.ibk.pds.data.service.BranchInfoDataService;
-import com.ibk.pds.data.service.JobWorldDataService;
 import com.ibk.pds.log.model.LogApiData;
 import com.ibk.pds.log.service.LogApiDataService;
 
@@ -60,31 +59,10 @@ public class BranchInfoController {
 	@Autowired
 	BranchInfoDataService branchInfoDataService;
 
-	public BranchInfoResponseSub convertToResponseSub(BranchInfoData data) {
-		String branchName = "";
-		String branchPhoneNumber= "";
-		String branchAddress = "";
-		String branchSection = "";
-		String branchSectionCode = "";
-
-		branchName = data.getBranchName();
-		branchPhoneNumber = data.getBranchPhoneNumber();
-		branchAddress = data.getBranchPhoneNumber();
-		branchSection = data.getBranchSection();
-		branchSectionCode = data.getBranchSectionCode();
-
-		BranchInfoResponseSub responseSub = new BranchInfoResponseSub(branchName, branchPhoneNumber, 
-				branchAddress, branchSection,
-				branchSectionCode
-				);
-
-
-		return responseSub;
-	}
+	
 
 	@RequestMapping(value="/branchInfoAll",produces="application/xml",method=RequestMethod.POST )
 	public  BranchInfoResponse viewBranchInfoAll(@RequestBody BranchInfoAllRequest request) {
-		
 		BranchInfoResponse response = viewBranchInfoAllCommon(request);
 		return response;
 	}
@@ -103,26 +81,51 @@ public class BranchInfoController {
 	}
 
 	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.POST)
-	public  BranchInfoResponse viewBranchInfoByNameRequest(@RequestBody BranchInfoByNameRequest request) {
-		BranchInfoResponse response = viewBranchInfoByNameRequestCommon(request);
+	public  BranchInfoResponse viewBranchInfoByName(@RequestBody BranchInfoByNameRequest request) {
+		BranchInfoResponse response = viewBranchInfoByNameCommon(request);
 		return response;
 	}
 	
 	
 	@RequestMapping(value="/branchInfoByName",produces="application/xml",method=RequestMethod.GET)
-	public  BranchInfoResponse viewBranchInfoByNameRequest(
+	public  BranchInfoResponse viewBranchInfoByName(
+			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
+			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
+			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
+			@RequestParam(value="branchName",	required=false, defaultValue="default")	 String branchName,
+			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
+			
+			) {
+		BranchInfoByNameRequest request = new BranchInfoByNameRequest(serviceKey,numOfRows,pageNo,branchName,SG_APIM);
+		BranchInfoResponse response = viewBranchInfoByNameCommon(request);
+		return response;
+
+	}
+	
+	@RequestMapping(value="/branchInfoByAddress",produces="application/xml",method=RequestMethod.POST)
+	public  BranchInfoResponse viewBranchInfoByAddress(@RequestBody BranchInfoByAddressRequest request) {
+		BranchInfoResponse response = viewBranchInfoByAddressCommon(request);
+		return response;
+	}
+	
+	
+	@RequestMapping(value="/branchInfoByAddress",produces="application/xml",method=RequestMethod.GET)
+	public  BranchInfoResponse viewBranchInfoByAddress(
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
 			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
 			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
 			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM,
-			@RequestParam(value="branchName",	required=false, defaultValue="default")	 String branchName
+			@RequestParam(value="branchAddress",	required=false, defaultValue="default")	 String branchAddress
 			
 			) {
-		BranchInfoByNameRequest request = new BranchInfoByNameRequest(serviceKey,numOfRows,pageNo,branchName,SG_APIM);
-		BranchInfoResponse response = viewBranchInfoByNameRequestCommon(request);
+		BranchInfoByAddressRequest request = new BranchInfoByAddressRequest(serviceKey,numOfRows,pageNo,branchAddress,SG_APIM);
+		BranchInfoResponse response = viewBranchInfoByAddressCommon(request);
 		return response;
 
 	}
+	
+	
+	
 	@RequestMapping(value="/branchInfoBySection",produces="application/xml",method=RequestMethod.POST)
 	public  BranchInfoResponse viewBranchInfoBySectionRequest(@RequestBody BranchInfoBySectionRequest request) {
 		BranchInfoResponse response = viewBranchInfoBySectionRequestCommon(request);
@@ -185,7 +188,7 @@ public class BranchInfoController {
 			}
 			Pageable paging = PageRequest.of(page, size);
 			list = branchInfoDataService.findAll(paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
-			int totalCount = branchInfoDataService.getTotalCount();
+			int totalCount = branchInfoDataService.findAllTotalCount();//.getTotalCount();
 			
 			//list = jobWorldDataService.findByStdDatePaging(request.getStdYm(),);
 
@@ -232,7 +235,7 @@ public class BranchInfoController {
 	}
 	
 
-	public  BranchInfoResponse viewBranchInfoByNameRequestCommon( BranchInfoByNameRequest request) {
+	public  BranchInfoResponse viewBranchInfoByNameCommon( BranchInfoByNameRequest request) {
 
 		logger.info("BranchInfoByNameRequest="+request.toString());
 		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
@@ -317,7 +320,90 @@ public class BranchInfoController {
 		return response;			
 	}
 
-	
+	public  BranchInfoResponse viewBranchInfoByAddressCommon( BranchInfoByAddressRequest request) {
+
+		logger.info("BranchInfoByAddressRequest="+request.toString());
+		String key = DateUtil.getDateYYYYMMDDHHMMSSMISSS();
+		Random generator = new Random();   
+		int num= generator.nextInt(100);    
+		String logId = key + Integer.toString(num);
+
+		String apiId= "branchInfoByAddress";
+		String apiUrl=	"/branchInfo/branchInfoByAddress";
+		String apiName = "지점정보조회(주소) ";
+		String action = "CALL";
+		String statusCode ="";
+		String requestMessage = request.toString();
+		String responseMessage = "";//response.toString();
+		String trxDate = DateUtil.getDateYYYY_MM_DDHHMMSSMISSS();
+
+		
+		BranchInfoResponse response = new BranchInfoResponse();
+
+		int result = 0;
+		if(authYN.contentEquals("Y"))
+			result = authService.auth(request.getSG_APIM());
+
+		if(result!=-1) {
+			logger.info("인증성공");
+			//	ViewCareersResponse response = new ViewCareersResponse();
+			List<BranchInfoData> list = new ArrayList<BranchInfoData>();
+			List<BranchInfoResponseSub> responseSubList = new ArrayList<BranchInfoResponseSub> ();
+
+			int page = request.getPageNo();
+			int size = request.getNumOfRows();
+
+
+			logger.info("Paging:"+page+",size="+size);
+
+			if(size==0) {
+				size=10;
+				logger.info("Paging:"+page+",size="+size);
+			}
+			Pageable paging = PageRequest.of(page, size);
+			list = branchInfoDataService.findByBranchAddress(request.getBranchAddress(), paging);//.findByBranchName(request.getBranchName(), paging);//.findByATMName(request.getAtmName(), paging);//.findByStdDatePaging(request.getStdYm(),paging);
+			
+			int totalCount = branchInfoDataService.findByBranchAddressTotalCount(request.getBranchAddress());
+			logger.info("DB Result:"+list.size());
+
+			for(BranchInfoData data : list) {
+				BranchInfoResponseSub responseSub = convertToResponseSub(data);
+				responseSubList.add(responseSub);
+			}
+
+			for(BranchInfoResponseSub resSub : responseSubList) {
+				logger.info("select Result="+resSub.toString());
+
+			}
+			response.setItem(responseSubList);
+			response.setTotalCount(totalCount);
+			response.setResultCode("00");
+			response.setResultMsg("OK");
+			response.setNumOfRows(size);
+			response.setPageNo(page);
+			
+			
+			logger.info("인증수행 여부 ="+authYN);
+			//추후 apiInfo 조회를 통해서 처리 
+			
+			statusCode ="0000";
+			responseMessage = response.toString();
+		}else {
+
+
+			//추후 apiInfo 조회를 통해서 처리 
+			statusCode ="1111";//코드 확인필요 
+			responseMessage = "Error" ;
+			//LogApiData logApiData = new LogApiData(logId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+			response.setResultCode("99");
+			response.setResultMsg("인증실패");
+
+		}
+		LogApiData logApiData = new LogApiData(logId,docId,apiId,apiName,apiUrl,action,statusCode,requestMessage,responseMessage,trxDate);
+		logApiDataService.saveApiData(logApiData);
+		
+		return response;			
+	}
 	
 	
 //	@RequestMapping(value="/branchInfoBySection",produces="application/xml")
@@ -411,6 +497,26 @@ public class BranchInfoController {
 		
 		return response;			
 	}
+	public BranchInfoResponseSub convertToResponseSub(BranchInfoData data) {
+		String branchName = "";
+		String branchPhoneNumber= "";
+		String branchAddress = "";
+		String branchSection = "";
+		String branchSectionCode = "";
 
+		branchName = data.getBranchName();
+		branchPhoneNumber = data.getBranchPhoneNumber();
+		branchAddress = data.getBranchPhoneNumber();
+		branchSection = data.getBranchSection();
+		branchSectionCode = data.getBranchSectionCode();
+
+		BranchInfoResponseSub responseSub = new BranchInfoResponseSub(branchName, branchPhoneNumber, 
+				branchAddress, branchSection,
+				branchSectionCode
+				);
+
+
+		return responseSub;
+	}
 
 }
