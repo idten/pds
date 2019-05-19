@@ -170,11 +170,11 @@
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
 
-						<h1 class="h3 mb-0 text-gray-800">JOBWORLD DATA</h1>
+						<h1 class="h3 mb-0 text-gray-800">월별 채용공고 통계</h1>
 						<a href="#"
 							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
 							id="addUserButton"> <i
-							class="fas fa-download fa-sm text-white-50"></i> JOB WORLD
+							class="fas fa-download fa-sm text-white-50"></i> 아이원잡 월별 채용 공고 통계 
 						</a>
 
 					</div>
@@ -266,149 +266,6 @@
 		class="fas fa-angle-up"></i>
 	</a>
 
-	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="modal fade" id="userEditModal" tabindex="-1" role="dialog"
-		aria-labelledby="userModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content"></div>
-		</div>
-		<div class="modal-dialog">
-			<div class="modal-content"></div>
-		</div>
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true" class="">× </span><span class="sr-only">Close</span>
-
-					</button>
-					<h4 class="modal-title" id="userModalLabel">사용자 정보 수정</h4>
-
-				</div>
-				<div class="modal-body">
-					<div id="modalContent">
-						<form role="form" name="modalForm" action="/useredit"
-							method="post">
-							<div class="form-group">
-								<label for="id" class="col-md-3">직원번호</label> <input
-									class="col-md-8" name="modalId" id="modalId" value="">
-							</div>
-							<div class="form-group">
-								<label for="name" class="col-md-3">이름</label> <input
-									class="col-md-8" name="modalName" id="modalName" value="">
-							</div>
-							<div class="form-group">
-								<label for="dep" class="col-md-3">부서</label> <input
-									class="col-md-8" name="modalDep" id="modalDep" value="">
-							</div>
-							<div class="form-group">
-								<label for="auth" class="col-md-3">AUTH</label> <input
-									class="col-md-8" name="modalAuth" id="modalAuth" value="">
-							</div>
-						</form>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary"
-						id="editUserModalButton">수정</button>
-					<button type="button" class="btn btn-danger"
-						id="deleteUserModalButton">삭제</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="userAddModal" tabindex="-1" role="dialog"
-		aria-labelledby="userAddModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content"></div>
-		</div>
-		<div class="modal-dialog">
-			<div class="modal-content"></div>
-		</div>
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true" class="">× </span><span class="sr-only">Close</span>
-
-					</button>
-					<h4 class="modal-title" id="userAddModalLabel">사용자 정보 입력</h4>
-
-				</div>
-				<div class="modal-body">
-					<div id="modalContent">
-						<form role="form" name="modalForm" action="/useradd" method="post">
-							<div class="form-group">
-								<label for="id" class="col-md-3">직원번호</label> <input
-									class="col-md-8" name="modalAddId" id="modalAddId" value="">
-							</div>
-							<div class="form-group">
-								<label for="name" class="col-md-3">이름</label> <input
-									class="col-md-8" name="modalAddName" id="modalAddName" value="">
-							</div>
-							<div class="form-group">
-								<label for="dep" class="col-md-3">부서</label> <input
-									class="col-md-8" name="modalAddDep" id="modalAddDep" value="">
-							</div>
-							<div class="form-group">
-								<label for="auth" class="col-md-3">AUTH</label> <input
-									class="col-md-8" name="modalAddAuth" id="modalAddAuth" value="">
-							</div>
-						</form>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary"
-						id="addUserModalButton">추가</button>
-				</div>
-			</div>
-		</div>
-	</div>
 	
 	
 	

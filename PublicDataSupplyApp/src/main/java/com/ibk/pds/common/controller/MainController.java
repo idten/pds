@@ -1,5 +1,6 @@
 package com.ibk.pds.common.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -89,10 +90,21 @@ public class MainController
 		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
 
 		DocumentInfo docInfo=null;
-		List<DocumentInfo> docInfoList = documentInfoService.getDocInfoListByOwner(userInfo.getUserId());
-		List<DocumentStatus> docStatusList = documentStatusService.getDocStatusList();
+		List<DocumentInfo> docInfoList = new ArrayList<DocumentInfo>();
+		List<DocumentStatus> docStatusList = new ArrayList<DocumentStatus>();
+		List<ApiInfo> apiInfoList = new ArrayList<ApiInfo>();
+		
+		if("ADMIN".equals(userInfo.getAuthCode()))
+		{
+			docInfoList = documentInfoService.getDocInfoList();
+			docStatusList = documentStatusService.getDocStatusList();
+			apiInfoList = apiInfoService.getApiInfoList();
+		}else {
+			docInfoList = documentInfoService.getDocInfoListByOwner(userInfo.getUserId());
+			docStatusList = documentStatusService.getDocStatusListByOwner(userInfo.getUserId());
+			apiInfoList = apiInfoService.getApiInfoListByUserId(userInfo.getUserId());
 
-		List<ApiInfo> apiInfoList = apiInfoService.getApiInfoList();
+		}
 		
 		mav.addObject("userInfo",userInfo);
 		mav.addObject("datalist",docInfoList);	

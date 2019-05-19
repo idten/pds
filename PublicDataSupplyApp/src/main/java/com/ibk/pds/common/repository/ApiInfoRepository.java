@@ -12,5 +12,6 @@ public interface ApiInfoRepository extends MongoRepository<ApiInfo,String>{
 
 	
 	public List<ApiInfo> findByDocId(String docId);
+	public List<ApiInfo> findByUserId(String userId);
 
 }

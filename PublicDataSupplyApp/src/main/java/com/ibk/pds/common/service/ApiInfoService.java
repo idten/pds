@@ -42,6 +42,11 @@ public class ApiInfoService {
 		logger.info("getApiInfoListByDocId List[]");
 		return apis;
 	}
-	
+	public List<ApiInfo> getApiInfoListByUserId(String userId) {
+		List<ApiInfo> apis = apiInfoRepository.findByUserId(userId);//.findByDocId(userId);
+		
+		logger.info("getApiInfoListByUserId List.size()="+apis.size());
+		return apis;
+	}
 	
 }

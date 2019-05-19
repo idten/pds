@@ -85,5 +85,10 @@ public class DocumentStatusService {
 		LogDocData logDocData = new LogDocData(logId,docId,docName,"INSERT",docUpId,docOwners,"","");
 		logDocDataService.saveLogDocData(logDocData);
 	}
-
+	public List<DocumentStatus> getDocStatusListByOwner(String owner) {
+		List<DocumentStatus> docs = documentStatusRepository.findBydocOwnersRegex(".*"+ owner +"*");
+		//==================================docOwners
+		logger.info("getDocStatusListByOwner DocumentInfo[]");
+		return docs;
+	}
 }
