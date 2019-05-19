@@ -43,8 +43,10 @@ public class ApiInfoController {
 		return mav;
 	}
 	
+	
+	
 	@RequestMapping(value = "/api.do", method = RequestMethod.GET)
-	public ModelAndView user(ModelAndView mav) {
+	public ModelAndView api(ModelAndView mav) {
 		logger.info("Api Test");
 		List<ApiInfo> apiInfoList = apiInfoService.getApiInfoList();
 		ApiInfo apiInfo=null;
@@ -63,6 +65,20 @@ public class ApiInfoController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value = "/apiDetailSwagger.do", method = RequestMethod.GET)
+	public ModelAndView apiDetailSwagger(ModelAndView mav) {
+		logger.info("apiDetailSwagger Test");
+        UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		mav.addObject("userInfo",userInfo);
+		mav.setViewName("apiDetailSwagger");
+		logger.info("apiDetailSwagger Test End");
+		
+		return mav;
+	}
+	
+	
 	@RequestMapping(value = "/apilist", method = RequestMethod.GET)
 	public ModelAndView apiList(
 			@RequestParam("docId") String docId,ModelAndView mav

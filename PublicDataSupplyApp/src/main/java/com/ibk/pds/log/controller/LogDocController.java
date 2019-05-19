@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibk.pds.auth.service.UserAuthService;
 import com.ibk.pds.common.config.ConstantCode;
 import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.DocumentStatus;
@@ -46,18 +47,23 @@ public class LogDocController {
 	@Autowired
 	LogDocDataService logDocDataService;
 	//UserInfoRepository userInfoRepository;
+	@Autowired
+	UserInfoService userInfoService;
 
-	
+
 	private Logger logger = LoggerFactory.getLogger(LogDocController.class);
 
 	@RequestMapping(value = "/logDoc.do", method = RequestMethod.GET)
 	public ModelAndView logDoc(ModelAndView mav) {
 		logger.info("Doc Doc Test");
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		mav.addObject("userInfo",userInfo);
 		List<LogDocData> logDocDataList = logDocDataService.getLogDocDataList();
-				//getDocStatusList();
+		//getDocStatusList();
 		LogDocData logDocData = null;
-		
-		
+
+
 		int len = logDocDataList.size();
 		for(int i = 0; i<len ; i++){
 			logDocData = logDocDataList.get(i);
@@ -70,7 +76,7 @@ public class LogDocController {
 
 		logger.info("logDoc Test");
 		//return mav;
-		
+
 		mav.setViewName("logDoc");
 		return mav;
 	}

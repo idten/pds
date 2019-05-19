@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibk.pds.auth.service.UserAuthService;
 import com.ibk.pds.common.config.ConstantCode;
 import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.DocumentStatus;
@@ -44,6 +45,8 @@ public class LogApiController {
 	@Autowired
 	LogApiDataService logApiDataService;
 	//UserInfoRepository userInfoRepository;
+	@Autowired
+	UserInfoService userInfoService;
 
 //	@Autowired
 //	JobWorldDataService jobWorldDataService;
@@ -58,6 +61,9 @@ public class LogApiController {
 				//getDocStatusList();
 		LogApiData logApiData = null;
 		
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		mav.addObject("userInfo",userInfo);
 		
 		int len = logApiDataList.size();
 		for(int i = 0; i<len ; i++){

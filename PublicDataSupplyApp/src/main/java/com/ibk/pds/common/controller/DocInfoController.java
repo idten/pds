@@ -160,16 +160,32 @@ public class DocInfoController {
 		logger.info("Doc Add End:");
 		return "redirect:/doc.do"; 
 	}
+	
+	
+	
+	
 	//문서상세정보 관련 
 	@RequestMapping(value = "/docDetailList.do", method = RequestMethod.GET)
 	public ModelAndView docDetailList(
 			@RequestParam(value="docId",required=false) String docId,
 			ModelAndView mav) {
+		
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+	//	mav.addObject("userInfo",userInfo);
+		
 		//	logger.info("Doc id"+docId);
 		List<DocumentInfo> docInfoList;
 		if(docId==null) {
-			docInfoList = documentInfoService.getDocInfoList();
+			//현재 접속 사용자 정보를 가져와서 
+			if("ADMIN".equals(userInfo.getAuthCode())) {
+				docInfoList = documentInfoService.getDocInfoList();
+				logger.info("현재 대상 문서수 (ADMIN)= "+docInfoList.size());
 
+			}else {
+				docInfoList = documentInfoService.getDocInfoListByOwner(userInfo.getUserId());
+				logger.info("현재 대상 문서수 = "+docInfoList.size());
+			}
 		}else {
 			docInfoList = documentInfoService.getDocInfobyDocId(docId);
 		}

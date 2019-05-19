@@ -107,7 +107,7 @@ span.round-tab:hover {
 }
 
 .wizard .nav-tabs>li {
-	width: 33%;
+	width: 25%;
 }
 
 .wizard li:after {
@@ -357,6 +357,12 @@ span.round-tab:hover {
 										class="glyphicon glyphicon-pencil"></i>
 								</span>
 							</a></li>
+							<li role="presentation" class="disabled"><a href="#step3"
+								data-toggle="tab" aria-controls="step3" role="tab"
+								title="Step 3"> <span class="round-tab"> <i
+										class="glyphicon glyphicon-picture"></i>
+								</span>
+							</a></li>
 
 							<li role="presentation" class="disabled"><a href="#complete"
 								data-toggle="tab" aria-controls="complete" role="tab"
@@ -366,19 +372,24 @@ span.round-tab:hover {
 							</a></li>
 						</ul>
 						<div class="row mar_ned">
-							<div class="col-md-4 col-xs-4">
+							<div class="col-md-3 col-xs-3">
 								<p align="center">
 									<stong>문서등록</stong>
 								</p>
 							</div>
-							<div class="col-md-4 col-xs-4">
+							<div class="col-md-3 col-xs-3">
 								<p align="center">
 									<stong>API등록</stong>
 								</p>
 							</div>
 
+							<div class="col-md-3 col-xs-3">
+								<p align="center">
+									<stong>내용확인</stong>
+								</p>
+							</div>
 
-							<div class="col-md-4 col-xs-4">
+							<div class="col-md-3 col-xs-3">
 								<p align="center">
 									<stong>완료</stong>
 								</p>
@@ -427,9 +438,8 @@ span.round-tab:hover {
 											</p>
 										</div>
 										<div class="col-md-10 col-xs-9">
-										    <textarea rows="5" cols="70" name="docDetailInfo" id="docDetailInfo"
-												placeholder="펀드상세정보" class="dropselectsec"></textarea>
-											
+											<input type="text" name="docDetailInfo" id="docDetailInfo"
+												placeholder="펀드상세정보" class="dropselectsec">
 										</div>
 									</div>
 
@@ -571,7 +581,6 @@ span.round-tab:hover {
 										<div class="col-md-10 col-xs-9">
 											<input type="text" name="apiName" id="apiName"
 												placeholder="API명" class="dropselectsec" autocomplete="off">
-											
 										</div>
 									</div>
 									<div class="row mar_ned">
@@ -581,9 +590,8 @@ span.round-tab:hover {
 											</p>
 										</div>
 										<div class="col-md-10 col-xs-9">
-											   <textarea rows="5" cols="70" name="apiDetailName" id="apiDetailName"
-												placeholder="상세기능명" class="dropselectsec" ></textarea>
-										
+											<input type="text" name="apiDetailName" id="apiDetailName"
+												placeholder="상세기능명" class="dropselectsec" autocomplete="off">
 										</div>
 									</div>
 
@@ -622,7 +630,140 @@ span.round-tab:hover {
 											class="btn btn-primary next-step">계속(다음)</button></li>
 								</ul>
 							</div>
-							
+							<div class="tab-pane" role="tabpanel" id="step3">
+								<div class="step33">
+									<h5>
+										<strong>3단계 상세정보등록(개발 후 등록)</strong>
+									</h5>
+									<hr>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>API명</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="API명" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>상세기능명</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="API명" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>상세기능 설명</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="펀드정보" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>제공 URL</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="펀드정보" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>내부 URL</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="펀드정보" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+								</div>
+								<div class="step33">
+									<h5>
+										<strong>3단계 API 상세등록 </strong>
+									</h5>
+									<hr>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>API명</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="API명" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>상세기능명</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="API명" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>상세기능 설명</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="펀드정보" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>제공 URL</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="펀드정보" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>내부 URL</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<input type="text" name="specialization" id="specialization"
+												placeholder="펀드정보" class="dropselectsec" autocomplete="off">
+										</div>
+									</div>
+								</div>
+								<ul class="list-inline pull-right">
+									<li><button type="button"
+											class="btn btn-default prev-step">Previous</button></li>
+									<li><button type="button"
+											class="btn btn-default next-step">Skip</button></li>
+									<li><button type="button"
+											class="btn btn-primary btn-info-full next-step">Save
+											and continue</button></li>
+								</ul>
+							</div>
 							<div class="tab-pane" role="tabpanel" id="complete">
 								<div class="step44">
 									<h5>문서/API 등록 완료</h5>
