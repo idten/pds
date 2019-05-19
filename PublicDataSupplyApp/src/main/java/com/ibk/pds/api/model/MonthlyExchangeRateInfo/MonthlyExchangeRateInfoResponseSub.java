@@ -1,24 +1,41 @@
 
 package com.ibk.pds.api.model.MonthlyExchangeRateInfo;
 
+import io.swagger.annotations.ApiModelProperty;
 
 public class MonthlyExchangeRateInfoResponseSub {
 	
+	@ApiModelProperty(notes = "기준통화")
 	private String stdCurrency;
 	//상태 통화
+
+	@ApiModelProperty(notes = "상대통화")
 	private String relativeCurrency;
 	
+
+	@ApiModelProperty(notes = "1월환율")
 	private String monthly1Rate;
+	@ApiModelProperty(notes = "2월환율")
 	private String monthly2Rate;
+	@ApiModelProperty(notes = "3월환율")
 	private String monthly3Rate;
+	@ApiModelProperty(notes = "4월환율")
 	private String monthly4Rate;
+	@ApiModelProperty(notes = "5월환율")
 	private String monthly5Rate;
+	@ApiModelProperty(notes = "6월환율")
 	private String monthly6Rate;
+	@ApiModelProperty(notes = "7월환율")
 	private String monthly7Rate;
+	@ApiModelProperty(notes = "8월환율")
 	private String monthly8Rate;
+	@ApiModelProperty(notes = "9월환율")
 	private String monthly9Rate;
+	@ApiModelProperty(notes = "10월환율")
 	private String monthly10Rate;
+	@ApiModelProperty(notes = "11월환율")
 	private String monthly11Rate;
+	@ApiModelProperty(notes = "12월환율")
 	private String monthly12Rate;
 	
 	

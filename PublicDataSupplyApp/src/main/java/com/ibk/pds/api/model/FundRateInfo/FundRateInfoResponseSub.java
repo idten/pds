@@ -1,22 +1,37 @@
 
 package com.ibk.pds.api.model.FundRateInfo;
 
+import io.swagger.annotations.ApiModelProperty;
 
 public class FundRateInfoResponseSub {
 	//문서 내용 
+	@ApiModelProperty(notes = "기준년월일")
 	private String baseYmd;		//기준 년월일
+	@ApiModelProperty(notes = "운용사명")
 	private String opcmNm;  	//운용사명 
+	@ApiModelProperty(notes = "펀드명")
 	private String fundNm;		//펀드명
+	@ApiModelProperty(notes = "협회펀드코드")
 	private String ascnFundCd;	//협회펀드코드 
+	@ApiModelProperty(notes = "펀드자산유형코드")
 	private String fundAstTcd;	//펀드자산유형코드
+	@ApiModelProperty(notes = "펀드투자지역코드")
 	private String fundInvmAecd;//펀드투자지역코드 
+	@ApiModelProperty(notes = "1개월 수익률")
 	private String trmMn1ErnnRt;//1개월 수익률
+	@ApiModelProperty(notes = "3개월 수익률")
 	private String trmMn3ErnnRt;//3개월 수익률
+	@ApiModelProperty(notes = "6개월 수익률")
 	private String trmMn6ErnnRt;//6개월 수익률
+	@ApiModelProperty(notes = "12개월 수익률")
 	private String trmMn12ErnnRt;//12개월 수익률
+	@ApiModelProperty(notes = "상품리스크등급코드")
 	private String pdrsGdcd;	//상품리스크 등급코드 
+	@ApiModelProperty(notes = "펀드유형구분코드")
 	private String idivFnptDcd;	//펀드유형구분코드
+	@ApiModelProperty(notes = "선취수수료율")
 	private String prcqFeeRt;	//선취수수료율
+	@ApiModelProperty(notes = "총보수료")
 	private String ttalRmnrRt;	//총보수료;
 	
 	

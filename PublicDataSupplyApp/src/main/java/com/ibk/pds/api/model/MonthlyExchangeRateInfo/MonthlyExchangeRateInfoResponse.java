@@ -6,6 +6,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import io.swagger.annotations.ApiModelProperty;
+
 //채용정보 산업별 조회 응답 
 //조회조건: stdYm
 //등록일자: 2019.04.23 
@@ -15,12 +17,16 @@ public class MonthlyExchangeRateInfoResponse {
 
 	//private
 	//공통 코드 
-	private String resultCode = "";
+	@ApiModelProperty(notes = "응답코드")
+	private String resultCode = "";//결과코드 
+	@ApiModelProperty(notes = "응답메세지")
 	private String resultMsg = "";
+	@ApiModelProperty(notes = "전체수")
 	private Integer totalCount = 0;
+	@ApiModelProperty(notes = "한페이지 결과 수 ")
 	private Integer numOfRows=0;
+	@ApiModelProperty(notes = "페이지 번호")
 	private Integer pageNo=0;
-
 	
 
 
