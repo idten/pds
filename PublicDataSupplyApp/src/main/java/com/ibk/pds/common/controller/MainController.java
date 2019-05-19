@@ -23,18 +23,24 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.ibk.pds.auth.service.UserAuthService;
 import com.ibk.pds.common.model.ApiInfo;
 import com.ibk.pds.common.model.DocumentInfo;
+import com.ibk.pds.common.model.DocumentStatus;
 import com.ibk.pds.common.model.UserInfo;
 import com.ibk.pds.common.repository.DocumentInfoRepository;
 import com.ibk.pds.common.repository.UserInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.common.service.DocumentInfoService;
+import com.ibk.pds.common.service.DocumentStatusService;
 import com.ibk.pds.common.service.UserInfoService;
 
 @Controller
 public class MainController 
 {
+	@Autowired
+	DocumentStatusService documentStatusService;
+
 	@Autowired
 	DocumentInfoService documentInfoService;
 	//UserInfoRepository userInfoRepository;
@@ -51,7 +57,6 @@ public class MainController
 		mav.setViewName("login");
 		return mav;
 	}
-
 
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
 	public ModelAndView login(ModelAndView mav) {
@@ -80,38 +85,18 @@ public class MainController
 	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
 	public ModelAndView index(ModelAndView mav,HttpServletRequest request) {
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getPrincipal();
-		System.out.println("User SessionInfo = "+user.getUsername());
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
 
-
-		String userId="";
-		//로그인 처리가 없다면 기본 값은 d23358 
-		userId = user.getUsername();
-
-//		if(userId.equals("")) {
-
-//			if(null==request.getParameter("userId"))
-//			{	
-//				userId="d23358";
-//			}else {
-//				userId = request.getParameter("userId");
-
-//			}
-//		}
-		//String userId="d23358";
-		logger.info("login id="+userId);
-
-		UserInfo userInfo = userInfoService.findByUserId(userId);//   findByUserId
-		if(userInfo==null) {
-			userId="d23358";
-		}
-		userInfo = userInfoService.findByUserId(userId);//   findByUserId
 		DocumentInfo docInfo=null;
-		List<DocumentInfo> docInfoList = documentInfoService.getDocInfoListByOwner(userId);
+		List<DocumentInfo> docInfoList = documentInfoService.getDocInfoListByOwner(userInfo.getUserId());
+		List<DocumentStatus> docStatusList = documentStatusService.getDocStatusList();
+
 		List<ApiInfo> apiInfoList = apiInfoService.getApiInfoList();
+		
 		mav.addObject("userInfo",userInfo);
 		mav.addObject("datalist",docInfoList);	
+		mav.addObject("dataStatusList",docStatusList);
 		mav.addObject("apilist",apiInfoList);
 		mav.setViewName("index");
 		logger.info("index Test End");

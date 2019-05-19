@@ -16,12 +16,7 @@ public class DocumentStatus {
 	//문서 업로드할때 신규로 생성되는 id  
 	//해당 id기준으로 삭제/등 문서 control 진행예정 
 	private String docUpId;
-	public String getDocUpId() {
-		return docUpId;
-	}
-	public void setDocUpId(String docUpId) {
-		this.docUpId = docUpId;
-	}
+	
 	private String docName;
 	private String docOwners;
 	//승인 
@@ -64,15 +59,12 @@ public class DocumentStatus {
 	}
 	
 	
-//	public String getDocUpId() {
-//		return docUpId;
-//	}
-//
-//
-//	public void setDocUpId(String docUpId) {
-//		this.docUpId = docUpId;
-//	}
-
+	public String getDocUpId() {
+		return docUpId;
+	}
+	public void setDocUpId(String docUpId) {
+		this.docUpId = docUpId;
+	}
 
 	public String getUpdateDate() {
 		return updateDate;

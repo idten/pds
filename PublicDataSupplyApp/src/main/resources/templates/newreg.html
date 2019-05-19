@@ -28,9 +28,9 @@
 <script src="vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript">
       $(document).ready(function(){
-         $("#managerMenu").load("managermenu.html");
+      //   $("#managerMenu").load("managermenu.html");
          $("#commonMenu").load("commonmenu.html");
-         $("#commonNav").load("commonnav.html");
+       //  $("#commonNav").load("commonnav.html");
          $("#userMenu").load("usermenu.html");
          $("#alertMenu").load("alertMenu.html");
          $("#page-top").addClass('sidebar-toggled');
@@ -41,8 +41,9 @@
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
-
+		 <ul class="navbar-nav  sidebar sidebar-dark accordion toggled"
+			style="background-color: navy" id="accordionSidebar">
+    
 			<div id="commonMenu"></div>
 			<!--  managerMenu -->
 			<!-- Heading -->
@@ -66,7 +67,70 @@
 			<div id="content">
 
 				<!-- Topbar -->
-				<div id="commonNav"></div>
+				<div id="commonNav">
+     	 <nav
+						class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+						<!-- Sidebar Toggle (Topbar) -->
+						<button id="sidebarToggleTop"
+							class="btn btn-link d-md-none rounded-circle mr-3">
+							<i class="fa fa-bars"></i>
+						</button>
+
+						<div>
+							<h2>
+								공공데이터 OPEN API for <img src="img/dataportal.png" height="78px">
+							</h2>
+						</div>
+
+						<!-- Topbar Navbar -->
+						<ul class="navbar-nav ml-auto">
+
+							<!-- Nav Item - Search Dropdown (Visible Only XS) -->
+							<li class="nav-item dropdown no-arrow d-sm-none"><a
+								class="nav-link dropdown-toggle" href="#" id="searchDropdown"
+								role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"> <i class="fas fa-search fa-fw"></i>
+							</a> <!-- Dropdown - Messages -->
+								<div
+									class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+									aria-labelledby="searchDropdown">
+									<form class="form-inline mr-auto w-100 navbar-search">
+										<div class="input-group">
+											<input type="text"
+												class="form-control bg-light border-0 small"
+												placeholder="Search for..." aria-label="Search"
+												aria-describedby="basic-addon2">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button">
+													<i class="fas fa-search fa-sm"></i>
+												</button>
+											</div>
+										</div>
+									</form>
+								</div></li>
+							<div class="topbar-divider d-none d-sm-block"></div>
+
+							<!-- Nav Item - User Information -->
+							<li class="nav-item dropdown no-arrow"><a
+								class="nav-link dropdown-toggle" href="#" id="userDropdown"
+								role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"> <span
+									class="mr-2 d-none d-lg-inline text-gray-600 small"><span
+										id="userId" th:text="${userInfo.userName}"></span>(<span
+										id="userName" th:text="${userInfo.userId}"></span>)<span
+										id="authCode" th:text="${userInfo.authCode}"></span></span>
+							</a></li>
+
+						</ul>
+
+					</nav>
+     	 
+     	 
+     	 
+     	 
+     	 
+     	 </div>  <!--  managerMenu -->s
 				<!-- Begin Page Content -->
 				<iframe src="new.do" width="100%" height="100%" frameborder=0
 					framespacing=0 marginheight=0 marginwidth=0 scrolling=no vspace=0></iframe>
@@ -155,7 +219,17 @@
 
 	<!-- Page level custom scripts -->
 	<script src="js/demo/datatables-demo.js"></script>
-
+	<script> 
+   $(function(){
+	     $("#page-top").addClass('sidebar-toggled');
+		  var authCode = $('#authCode').text();
+		  if(authCode == "ADMIN"){
+	          $("#managerMenu").load("managermenu.html",function(){
+	        	  $("#regMenuLink").addClass('active');
+	          });
+	      }else{
+	      } 
+	  }) ;
+  </script>
 </body>
-
 </html>

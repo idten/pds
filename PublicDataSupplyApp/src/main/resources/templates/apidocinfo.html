@@ -9,8 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>문서정보 수정</title>
- 
+  <title>사용자 테이블 </title>
 
   <!-- Custom fonts for this template -->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -22,56 +21,30 @@
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <script src="vendor/jquery/jquery.min.js"></script>
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-<style>
-body {
-	font-family: "Malgun gothic", sans-serif;
-}
-
-.table>tbody>tr>.no-line {
-	border-top: none;
-}
-/*.table > thead > tr > .no-line {border-bottom: none;}*/
-.table>tbody>tr>.thick-line {
-	border-top: 2px solid;
-}
-
-.gr {
-	background-color: #F2F2F0
-}
-.panel-primary>.panel-heading {
-    color: #fff;
-    background-color: #09bd590f;
-    border-color: #428bca;
-}
-
-.panel-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 16px;
-    color: black;
-}
-
-</style>
   <script type="text/javascript">
       $(document).ready(function(){
-         $("#managerMenu").load("managermenu.html");
-         $("#commonMenu").load("commonmenu.html");
-         $("#commonNav").load("commonnav.html");
-         $("#userMenu").load("usermenu.html");
-         $("#alertMenu").load("alertMenu.html");
-         $("#page-top").addClass('sidebar-toggled');
+    	//  $("#managerMenu").load("managermenu.html");
+          $("#commonMenu").load("commonmenu.html");
+       //   $("#commonNav").load("commonnav.html");
+          $("#userMenu").load("usermenu.html");
+          $("#alertMenu").load("alertMenu.html");
+          $("#page-top").addClass('sidebar-toggled');
       });
   </script> 
 </head> 
+  
 <body id="page-top" class="sidebar-toggled">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-	 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
-
-      <div id="commonMenu"></div>  <!--  managerMenu -->
-     
+ 	 <!-- Sidebar -->
+	
+     <!-- Sidebar -->
+	
+	<ul class="navbar-nav  sidebar sidebar-dark accordion toggled"
+			style="background-color: navy" id="accordionSidebar">
+	
+	 <div id="commonMenu"></div>  <!--  managerMenu -->
 	  <!-- Heading -->
       <div id="managerMenu"></div>  <!--  managerMenu -->
       <!-- Divider -->
@@ -82,19 +55,87 @@ body {
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
       </div>
       </ul>
-	
-<!-- End of Sidebar -->
+  
+    <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
       <div id="content">
-  <!-- Topbar -->
-     	 <div id="commonNav"></div>  <!--  managerMenu -->
+
+        <!-- Topbar -->
+       <div id="commonNav">
+     	 <nav
+						class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+						<!-- Sidebar Toggle (Topbar) -->
+						<button id="sidebarToggleTop"
+							class="btn btn-link d-md-none rounded-circle mr-3">
+							<i class="fa fa-bars"></i>
+						</button>
+
+						<div>
+							<h2>
+								공공데이터 OPEN API for <img src="img/dataportal.png" height="78px">
+							</h2>
+						</div>
+
+						<!-- Topbar Navbar -->
+						<ul class="navbar-nav ml-auto">
+
+							<!-- Nav Item - Search Dropdown (Visible Only XS) -->
+							<li class="nav-item dropdown no-arrow d-sm-none"><a
+								class="nav-link dropdown-toggle" href="#" id="searchDropdown"
+								role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"> <i class="fas fa-search fa-fw"></i>
+							</a> <!-- Dropdown - Messages -->
+								<div
+									class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+									aria-labelledby="searchDropdown">
+									<form class="form-inline mr-auto w-100 navbar-search">
+										<div class="input-group">
+											<input type="text"
+												class="form-control bg-light border-0 small"
+												placeholder="Search for..." aria-label="Search"
+												aria-describedby="basic-addon2">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button">
+													<i class="fas fa-search fa-sm"></i>
+												</button>
+											</div>
+										</div>
+									</form>
+								</div></li>
+							<div class="topbar-divider d-none d-sm-block"></div>
+
+							<!-- Nav Item - User Information -->
+							<li class="nav-item dropdown no-arrow"><a
+								class="nav-link dropdown-toggle" href="#" id="userDropdown"
+								role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"> <span
+									class="mr-2 d-none d-lg-inline text-gray-600 small"><span
+										id="userId" th:text="${userInfo.userName}"></span>(<span
+										id="userName" th:text="${userInfo.userId}"></span>)<span
+										id="authCode" th:text="${userInfo.authCode}"></span></span>
+							</a></li>
+
+						</ul>
+
+					</nav>
+     	 
+     	 
+     	 
+     	 
+     	 
+     	 </div> 
         <!-- End of Topbar -->
-		<!-- Begin Page Content -->
-      	 <iframe src="docDetailList.do" width="100%" style="display:block; height: 100vh" frameborder=0 framespacing=0 marginheight=0 marginwidth=0 scrolling=yes vspace=0></iframe>
+
+        <!-- Begin Page Content -->
+        
+          	 <iframe src="docDetailList.do" width="100%" style="display:block; height: 100vh" frameborder=0 framespacing=0 marginheight=0 marginwidth=0 scrolling=yes vspace=0></iframe>
+    
+        
         <!-- /.container-fluid -->
 
       </div>
@@ -156,7 +197,125 @@ body {
       </div>
     </div>
   </div>
-  
+ 
+   <div class="modal fade" id="apiEditModal" tabindex="-1" role="dialog" aria-labelledby="apiModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="apiModalLabel">API 정보 수정</h4>
+
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/apiedit" method="post">
+            			<div class="form-group">
+            				<label for="apiUserId" class="col-md-3">ID</label>
+            				<input class="col-md-8" name="modalApiId" id="modalApiId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiName" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalApiName" id="modalApiName" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiUserId" class="col-md-3">담당자</label>
+            				<input class="col-md-8" name="modalApiUserId" id="modalApiUserId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiDocId" class="col-md-3">문서ID</label>
+            				<input class="col-md-8" name="modalApiDocId" id="modalApiDocId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiDocId" class="col-md-3">URL</label>
+            				<input class="col-md-8" name="modalApiUrl" id="modalApiUrl" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiConditions" class="col-md-3">조건</label>
+            				<input class="col-md-8" name="modalConditions" id="modalConditions" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiConditions" class="col-md-3">승인</label>
+            				<input class="col-md-8" name="modalApproval" id="modalApproval" value="">
+            			</div>
+            			
+					</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editApiModalButton">수정</button>
+                <button type="button" class="btn btn-primary" id="deleteApiModalButton">삭제</button>                
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="modal fade" id="apiAddModal" tabindex="-1" role="dialog" aria-labelledby="apiAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"> <span aria-hidden="true" class="">×   </span><span class="sr-only">Close</span>
+
+                </button>
+                 <h4 class="modal-title" id="apiModalLabel">API 정보 수정</h4>
+
+            </div>
+            <div class="modal-body">
+            	<div id="modalContent">
+            		<form role="form" name="modalForm" action="/apiadd" method="post">
+            			<div class="form-group">
+            				<label for="apiAddUserId" class="col-md-3">ID</label>
+            				<input class="col-md-8" name="modalAddApiId" id="modalAddApiId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddName" class="col-md-3">이름</label>
+            				<input class="col-md-8" name="modalAddApiName" id="modalAddApiName" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddUserId" class="col-md-3">담당자</label>
+            				<input class="col-md-8" name="modalAddApiUserId" id="modalAddApiUserId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddDocId" class="col-md-3">문서ID</label>
+            				<input class="col-md-8" name="modalAddApiDocId" id="modalAddApiDocId" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddDocId" class="col-md-3">URL</label>
+            				<input class="col-md-8" name="modalAddApiUrl" id="modalApiAddUrl" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddConditions" class="col-md-3">조건</label>
+            				<input class="col-md-8" name="modalAddConditions" id="modalAddConditions" value="">
+            			</div>
+            			<div class="form-group">
+            				<label for="apiAddApproval" class="col-md-3">조건</label>
+            				<input class="col-md-8" name="modalAddApproval" id="modalAddApproval" value="">
+            			</div>
+            			
+					</form>	
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addApiModalButton">추가</button>
+            </div>
+        </div>
+    </div>
+  </div>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -172,7 +331,126 @@ body {
 
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
+  <script> 
+  $(function(){
+	     $("#page-top").addClass('sidebar-toggled');
+		  var authCode = $('#authCode').text();
+		  if(authCode == "ADMIN"){
+	          $("#managerMenu").load("managermenu.html",function(){
+	        	  $("#apiMenuLink").addClass('active');
+	          });
+	      }else{
+	      } 
+	  }) ;
   
+  $("#addApiButton").click(
+  	function(){
+		
+		//$('#userModalLabel').val("사용자 등록");
+		$('#apiAddModal').modal();
+		//$('#userModalLabel').val("사용자 등록");
+		
+		
+		//userModalLabel
+  });
+  
+  $(".editApiButton").click(
+		  function(){
+			$('#apiEditModal').modal();	  
+		    var tdArr = new Array();
+		    var checkBtn = $(this);
+		    
+		    var tr = checkBtn.parent().parent();
+		    var td = tr.children();
+			var apiId = td.eq(0).text();
+		    var apiName = td.eq(1).text();
+		    var userId  = td.eq(2).text();
+		    var docId = td.eq(3).text();
+		    var apiUrl = td.eq(4).text();
+		    var conditions = td.eq(5).text();
+		    var approval = td.eq(6).text();
+		    
+		    
+		    $('#modalApiId').val(apiId);
+		    $('#modalApiName').val(apiName);
+		    $('#modalApiUserId').val(userId);
+		    $('#modalApiDocId').val(docId);
+		    $('#modalApiUrl').val(apiUrl);
+		    $('#modalConditions').val(conditions);
+		    $('#modalApproval').val(approval);
+		    
+		  });
+  $("#editApiModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "apiedit",
+		data:{
+			"APIID":$('#modalApiId').val(),
+			"APINAME":$('#modalApiName').val(),
+			"USERID":$('#modalApiUserId').val(),
+			"DOCID":$('#modalApiDocId').val(),
+			"APIURL":$('#modalApiUrl').val(),
+			"CONDITONS":$('#modalConditions').val(),
+			"APPROVAL":$('#modalApproval').val()
+		},
+		success:function(data){
+			alert('수정 성공');
+			window.open('api.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+	  });
+  });
+  $("#addApiModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "apiadd",
+		data:{
+			"APIID":$('#modalAddApiId').val(),
+			"APINAME":$('#modalAddApiName').val(),
+			"USERID":$('#modalAddApiUserId').val(),
+			"DOCID":$('#modalAddApiDocId').val(),
+			"APIURL":$('#modalApiAddUrl').val(),
+			"CONDITONS":$('#modalAddConditions').val(),
+			"APPROVAL":$('#modalApproval').val()
+		},
+		success:function(data){
+			alert('add 성공');
+			window.open('api.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		 
+	  });
+  });
+  $("#deleteApiModalButton").click(function(){
+	  $.ajax({
+		type:'POST',
+		url : "apidelete",
+		data:{
+			"APIID":$('#modalAddApiId').val(),
+			"APINAME":$('#modalAddApiName').val(),
+			"USERID":$('#modalAddApiUserId').val(),
+			"DOCID":$('#modalAddApiDocId').val(),
+			"APIURL":$('#modalApiAddUrl').val(),
+			"CONDITONS":$('#modalAddConditions').val(),
+			"APPROVAL":$('#modalApproval').val()
+		},
+		success:function(data){
+			alert('add 성공');
+			window.open('api.do','_self');
+		},
+		error:function(data){
+		//	alert('Error:'+data);
+		}
+		 
+	  });
+  });
+  
+  
+  </script>  
 </body>
 
 </html>

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibk.pds.auth.service.UserAuthService;
 import com.ibk.pds.code.model.DepInfo;
 import com.ibk.pds.code.service.DepInfoService;
 import com.ibk.pds.common.model.UserInfo;
@@ -44,18 +45,16 @@ public class UserInfoController {
 	public ModelAndView user(ModelAndView mav,HttpServletRequest httpServletRequest) {
 		                                                         //remoteUser
 		logger.info("User Test"+httpServletRequest.getRemoteUser());
-			//	+ "//.getPar.getParameter("remoteUser"));
+		
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		mav.addObject("userInfo",userInfo);
+		
 		List<UserInfo> userInfoList = userInfoService.getUserInfoList();
 		List<DepInfo> depCodeList = depInfoService.getDepCodeList();
 		Map<String,String> depCodeMap = depInfoService.getDepCodeMap();
 		
 		
-//		UserInfo userInfo=null;
-//		int len = userInfoList.size();
-//        for(int i = 0; i<len ; i++){
-//        	userInfo = userInfoList.get(i);
-//            logger.info(userInfo.getUserId()+":"+userInfo.getUserName());
-//        }
 		mav.addObject("depMap", depCodeMap);
 		mav.addObject("deplist",depCodeList);
         mav.addObject("datalist",userInfoList);

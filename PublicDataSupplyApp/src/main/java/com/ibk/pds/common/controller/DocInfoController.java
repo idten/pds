@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibk.pds.auth.service.UserAuthService;
 import com.ibk.pds.code.model.DepInfo;
 import com.ibk.pds.code.repository.AlarmStdRepository;
 import com.ibk.pds.code.repository.DocCycleRepository;
@@ -71,6 +72,11 @@ public class DocInfoController {
 		List<DocumentInfo> docInfoList = documentInfoService.getDocInfoList();
 		//logger.info("doc="+)
 		DocumentInfo docInfo=null;
+		
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		mav.addObject("userInfo",userInfo);
+		
 		int len = docInfoList.size();
 		for(int i = 0; i<len ; i++){
 			docInfo = docInfoList.get(i);
@@ -228,8 +234,12 @@ public class DocInfoController {
 	//상세정보 페이지 
 	@RequestMapping(value = "/apidocinfo.do", method = RequestMethod.GET)
 	public ModelAndView apidocInfo(ModelAndView mav) {
-		mav.setViewName("apidocinfo");
 		logger.info("Doc Test End");
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		mav.addObject("userInfo",userInfo);
+		mav.setViewName("apidocinfo");
+		
 		return mav;
 
 	}

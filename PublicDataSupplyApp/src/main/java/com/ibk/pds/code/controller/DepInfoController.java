@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibk.pds.auth.service.UserAuthService;
 import com.ibk.pds.code.model.DepInfo;
 import com.ibk.pds.code.service.DepInfoService;
 import com.ibk.pds.common.controller.UserInfoController;
@@ -23,6 +24,9 @@ public class DepInfoController {
 	@Autowired
 	DepInfoService depInfoService;
 	//UserInfoRepository userInfoRepository;
+	@Autowired
+	UserInfoService userInfoService;
+	
 		
 	//@Autowired
 	//DocumentInfoRepository documentInfoRepository;
@@ -32,9 +36,13 @@ public class DepInfoController {
 
 	@RequestMapping(value = "/depinfo.do", method = RequestMethod.GET)
 	public ModelAndView depCode(ModelAndView mav) {
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		
 		logger.info("DepCode Init");
 		List<DepInfo> depCodeList = depInfoService.getDepCodeList();
 		Map<String,String> depCodeMap = depInfoService.getDepCodeMap();
+		mav.addObject("userInfo",userInfo);
 		mav.addObject("deplist",depCodeList);
 		mav.addObject("depMap", depCodeMap);
 		mav.setViewName("depinfo");

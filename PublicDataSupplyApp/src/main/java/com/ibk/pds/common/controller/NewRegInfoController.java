@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibk.pds.auth.service.UserAuthService;
 import com.ibk.pds.code.model.DepInfo;
 import com.ibk.pds.code.service.DepInfoService;
 import com.ibk.pds.common.model.ApiInfo;
@@ -46,8 +47,12 @@ public class NewRegInfoController {
 	
 	@RequestMapping(value = "/newreg.do", method = RequestMethod.GET)
 	public ModelAndView newreg(ModelAndView mav) {
+		UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		mav.addObject("userInfo",userInfo);
 		mav.setViewName("newreg");
-		logger.info("Doc Test End");
+		
+		logger.info("new Reg");
 		return mav;
 		
 	}

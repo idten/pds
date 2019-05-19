@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibk.pds.auth.service.UserAuthService;
 import com.ibk.pds.common.model.ApiInfo;
 import com.ibk.pds.common.model.DocumentInfo;
 import com.ibk.pds.common.model.UserInfo;
@@ -21,12 +22,15 @@ import com.ibk.pds.common.repository.DocumentInfoRepository;
 import com.ibk.pds.common.repository.UserInfoRepository;
 import com.ibk.pds.common.service.ApiInfoService;
 import com.ibk.pds.common.service.DocumentInfoService;
+import com.ibk.pds.common.service.UserInfoService;
 import com.ibk.pds.common.util.DateUtil;
 
 @Controller
 public class ApiInfoController {
 	@Autowired
 	ApiInfoService apiInfoService;
+	@Autowired
+	UserInfoService userInfoService;
 
 	@Autowired
 	DocumentInfoService docInfoService;
@@ -49,7 +53,10 @@ public class ApiInfoController {
         	apiInfo = apiInfoList.get(i);
             logger.info(apiInfo.toString());
         }
-
+        UserAuthService userAuthService = new UserAuthService();
+		UserInfo userInfo = userAuthService.getUserAuthInfo(userInfoService);
+		mav.addObject("userInfo",userInfo);
+		
         mav.addObject("datalist",apiInfoList);
 		mav.setViewName("api");
 		logger.info("Api Test End");
