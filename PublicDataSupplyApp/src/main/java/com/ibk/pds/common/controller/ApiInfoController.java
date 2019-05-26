@@ -127,15 +127,16 @@ public class ApiInfoController {
 	}
 	@RequestMapping(value="/apiadd", method = RequestMethod.POST) 
 	public String apiAdd(
-		//	@RequestParam("APIID") String apiId,
 			@RequestParam("apiName") String apiName,
+			@RequestParam("apiId") String apiId,
+
 			@RequestParam("apiDetailName") String apiDetailName,
 			@RequestParam("apiExplanation") String apiExplanation,
 			@RequestParam("userId") String userId,
 			@RequestParam("docId") String docId
 			)
 	{ 
-		String apiId = "A"+DateUtil.getDateYYYYMMDDHHMMSS();	
+		//String apiId = "A"+DateUtil.getDateYYYYMMDDHHMMSS();	
 		DocumentInfo docInfo = docInfoService.getDocInfobyDocId(docId).get(0);
 		
 		String today = DateUtil.getDateYYYYMMDD();

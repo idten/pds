@@ -393,7 +393,7 @@ span.round-tab:hover {
 							</div>
 							<div class="col-md-10 col-xs-9">
 								<input type="text" name="docId" id="docId" placeholder="문서ID"
-									class="dropselectsec" th:value="${docId}" disabled>
+									class="dropselectsec"  >
 							</div>
 						</div>
 
@@ -565,25 +565,24 @@ span.round-tab:hover {
 									<div class="row mar_ned">
 										<div class="col-md-2 col-xs-3">
 											<p align="right">
-												<stong>API명</stong>
+												<stong>API ID(영문)</stong>
 											</p>
 										</div>
 										<div class="col-md-10 col-xs-9">
-											<input type="text" name="apiName" id="apiName"
-												placeholder="API명" class="dropselectsec" autocomplete="off">
+											<input type="text" name="apiId" id="apiId"
+												placeholder="API ID" class="dropselectsec" autocomplete="off">
 											
 										</div>
 									</div>
 									<div class="row mar_ned">
 										<div class="col-md-2 col-xs-3">
 											<p align="right">
-												<stong>상세기능명</stong>
+												<stong>상세기능명(국문)</stong>
 											</p>
 										</div>
 										<div class="col-md-10 col-xs-9">
-											   <textarea rows="5" cols="70" name="apiDetailName" id="apiDetailName"
-												placeholder="상세기능명" class="dropselectsec" ></textarea>
-										
+												<input type="text" name="apiDetailName" id="apiDetailName"
+												placeholder="기능명" class="dropselectsec" autocomplete="off">
 										</div>
 									</div>
 
@@ -594,8 +593,9 @@ span.round-tab:hover {
 											</p>
 										</div>
 										<div class="col-md-10 col-xs-9">
-											<input type="text" name="apiExplanation" id="apiExplanation"
-												placeholder="기능설명" class="dropselectsec" autocomplete="off">
+											
+					   					  <textarea rows="5" cols="70" name="apiExplanation" id="apiExplanation"
+												placeholder="기능설명" class="dropselectsec" ></textarea>
 										</div>
 									</div>
 									<div class="row mar_ned">
@@ -744,14 +744,15 @@ span.round-tab:hover {
 				url : "apiadd",
 				data : {
 					"docId" : $('#docId').val(),
-					"apiName" : $('#apiName').val(),
+					"apiId" : $('#apiId').val(),
+					"apiName" : $('#apiId').val(),
 					"apiDetailName" : $('#apiDetailName').val(),
 					"apiExplanation" : $('#apiExplanation').val(),
 					"userId" : $('#userId').val()
 				},
 				success : function(data) {
 					alert('API Add 성공');
-					$('#apiName').val('');
+					$('#apiId').val('');
 					$('#apiDetailName').val('');
 
 					//		window.open('doc.do','_self');
@@ -789,7 +790,7 @@ span.round-tab:hover {
 				},
 				success : function(data) {
 					alert('API Add 성공');
-					$('#apiName').val('');
+					$('#apiId').val('');
 					$('#apiDetailName').val('');
 
 					//		window.open('doc.do','_self');

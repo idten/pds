@@ -150,10 +150,10 @@
 											<div
 												class="font-weight-bold text-primary text-uppercase mb-1"
 												th:text="${obj.docName}"></div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">
-												UP:<span th:text="${obj.updateDate}"></span>
+											<div class="h8 mb-0 font-weight-bold text-gray-800">
+											<span th:text="${obj.updateDate}"></span>
 											</div>
-											<button class="btn-sm btn-primary" style="width: 150px"
+											<button class="btn-sm btn-primary" style="width: 100%"
 												th:onclick="'javascript:getDoc(\'' + @{${obj.docId}} +'\');'">상세</button>
 										</div>
 
@@ -190,7 +190,7 @@
 										<div class="col mr-2">
 											<div
 												class="font-weight-bold text-primary text-uppercase mb-1"
-												th:text="${obj.apiName}"></div>
+												th:text="${obj.apiDetailName}"></div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800">API</div>
 										</div>
 									</div>
