@@ -167,12 +167,13 @@
 										<tr align="center">
 											<th style="display: none">ID</th>
 											<th>문서명</th>
+											<th>담당부서</th>
 											<th>담당자</th>
-											<th>자동수신</th>
-											<th>알람발생</th>
+											<th style="display: none">자동수신</th>
+											<th style="display: none">알람발생</th>
 											<th>자동승인</th>
-											<th>주기</th>
-											<th>기준</th>
+											<th style="display: none">주기</th>
+											<th style="display: none">기준</th>
 											<th>수정</th>
 											<th>상세</th>
 										</tr>
@@ -186,12 +187,13 @@
 										<tr th:each="obj : ${datalist}" align="center">
 											<td th:text="${obj.docId}" style="display: none"></td>
 											<td th:text="${obj.docName}"></td>
+											<td th:text="${obj.depName}"></td>
 											<td th:text="${obj.docOwnerName}"></td>
-											<td th:text="${obj.autoSendYN}"></td>
-											<td th:text="${obj.alarmYN}"></td>
+											<td th:text="${obj.autoSendYN}" style="display: none"></td>
+											<td th:text="${obj.alarmYN}" style="display: none"></td>
 											<td th:text="${obj.autoApprovalYN}"></td>
-											<td th:text="${obj.docCycleName}"></td>
-											<td th:text="${obj.alarmStdName}"></td>
+											<td th:text="${obj.docCycleName}" style="display: none"></td>
+											<td th:text="${obj.alarmStdName}" style="display: none"></td>
 											<td th:text="${obj.updateDate}"></td>
 											<td><button class="btn btn-success detailButton">상세</button></td>
 										</tr>

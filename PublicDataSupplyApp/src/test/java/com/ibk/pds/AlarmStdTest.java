@@ -74,17 +74,7 @@ public class AlarmStdTest {
 		logger.info("API MongoDB 테스트");
 		DepInfo depInfo1 = new DepInfo("DEP001","IT기획부");
 		DepInfo depInfo2 = new DepInfo("DEP002","전략기획부");
-		//ApiInfo apiInfo = new ApiInfo("A001", "TEST", "d23358", "D001", "http://localhost:8080/1", "DAT1;DAT2");
-
-//		ApiInfo apiInfo = new DocumentInfo();
-//		String docId = "D0001";
-//		docInfo.setDocId(docId);
-//		docInfo.setDocType("EXCEL");
-//		//docInfo.setUrl("http://test");
-//		docInfo.setDepName("점포전략부");
-//		docInfo.setDocName("잡월드 정보2");
-//		docInfo.setDocOwners("d23358;d23351;d23311");
-		
+	
 		depInfoRepository.insert(depInfo1);
 		
 		depInfoRepository.insert(depInfo2);

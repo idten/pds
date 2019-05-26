@@ -99,13 +99,13 @@ modal-body {
 					</ul>
 				</div>
 				<div class="panel-body">
-					<div class="tab-content"  id="detailInfo">
+					<div class="tab-content">
 						<div th:each="objc: ${datalist}" class="tab-pane fade"
 							th:id="${objc.docId}">
 							<h1>
-								<span id="docNameTest" th:text="${objc.docName} +'(' + ${objc.docId} +')'">
+								<span th:text="${objc.docName} +'(' + ${objc.docId} +')'">
 								</span><span> <a href="#"
-									class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm editDocButtonClass"
+									class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
 									id="editDocButton"> <i
 										class="fas fa-download fa-sm text-white-50"></i> 수정
 								</a>
@@ -123,44 +123,47 @@ modal-body {
 										</p>
 									</h3>
 								</div>
-								<div class="panel-body" >
+								<div class="panel-body">
 									<div class="table-responsive">
 										<table class="table table-bordered">
 											<tbody>
-												<tr >
-													<td class="text-center gr col-md-2 col-xs-3"><strong>문서명</strong></td>
-													<td class="col-md-4 col-xs-3" th:text="${objc.docName}"
-														id="docName"></td>
+												<tr>
 													<td class="text-center gr col-md-2 col-xs-3"><strong>문서ID</strong></td>
 													<td class="col-md-4 col-xs-3" th:text="${objc.docId}"
 														id="docId"></td>
-														
-												</tr>
-												<tr>
-													<td class="text-center gr col-md-2 col-xs-3"><strong>담당자(이름)</strong></td>
-													<td th:text="${objc.docOwnerName}" id="docOwnerName"></td>				
 													<td class="text-center gr col-md-2 col-xs-3"><strong>담당자(직원번호)</strong></td>
 													<td class="col-md-4 col-xs-3" th:text="${objc.docOwners}"
 														id="docOwners"></td>
 												</tr>
 												<tr>
+													<td class="text-center gr col-md-2 col-xs-3"><strong>담당자(이름)</strong></td>
+													<td th:text="${objc.docOwnerName}" id="docOwnerName"></td>
 													<td class="text-center gr col-md-2 col-xs-3"><strong>담당부서</strong></td>
 													<td th:text="${objc.depName}" id="depName"></td>
-													<td class="text-center gr"><strong>자동승인</strong></td>
-													<td th:text="${objc.autoApprovalYN}" id="autoApprovalYN"></td>
-												
 												</tr>
 												<tr>
-													<td class="text-center gr  col-md-2 col-xs-3"><strong>최근수정일</strong></td>
-													<td th:text="${objc.updateDate}" id="updateDate"></td>
+													<td class="text-center gr"><strong>서버 송신(EAI)</strong></td>
+													<td th:text="${objc.autoSendYN}" id="autoSendYN"></td>
+													<td class="text-center gr"><strong>알림발생 </strong></td>
+													<td th:text="${objc.alarmYN}" id="alarmYN"></td>
+												</tr>
+												<tr>
+													<td class="text-center gr"><strong>자동승인</strong></td>
+													<td th:text="${objc.autoApprovalYN}" id="autoApprovalYN"></td>
+													<td class="text-center gr"><strong>갱신주기</strong></td>
+													<td th:text="${objc.docCycleName}" id="docCycleName"></td>
+												</tr>
+												<tr>
+													<td class="text-center gr"><strong>알람기준</strong></td>
+													<td th:text="${objc.alarmStdName}" id="alarmStdName"></td>
 													<td class="text-center gr"><strong>등록일</strong></td>
 													<td th:text="${objc.regDate}" id="regDate"></td>
 												</tr>
-												
-												<tr >
-													<td class="text-center gr col-md-2 col-xs-3"><strong>문서명</strong></td>
-													<td class="col-md-10 col-xs-3" colspan="3" th:text="${objc.docDetailInfo}"
-														id="docOwners"></td>
+												<tr>
+													<td class="text-center gr"><strong>최근수정일</strong></td>
+													<td th:text="${objc.updateDate}" id="updateDate"></td>
+													<td class="text-center gr"><strong>파일업로드</strong></td>
+													<td></td>
 												</tr>
 											</tbody>
 										</table>
@@ -207,53 +210,34 @@ modal-body {
 									class="col-md-9" name="modalDocId" id="modalDocId" value=""
 									disabled>
 							</div>
-							
 							<div class="form-group">
 								<label for="modalDocOwners" class="col-md-3">담당자ID</label> <input
 									class="col-md-9" name="modalDocOwners" id="modalDocOwners"
 									value="" disabled>
 							</div>
 							<div class="form-group">
-								<label for="name" class="col-md-3">담당자명</label> <input
+								<label for="name" class="col-md-3">담당자명</label>
+								 <input
 									class="col-md-8" name="modalDocOwnerName"
 									id="modalDocOwnerName" value="" disabled>
 							</div>
 							<div class="form-group">
-								<label for="name" class="col-md-3">부서명</label> <input
-									class="col-md-8" name="modalDocOwnerName" id="modalDepName"
-									value="" disabled>
-							</div>
-							<div class="form-group">
-								<label for="modalRegDate" class="col-md-3">등록일자</label>
+							
+							<label for="name" class="col-md-3">담당자명</label>
 								 <input
-									class="col-md-9" name="modalRegDate" id="modalRegDate" value="" rows="5" disabled
-								>
-								
-							</div>
-							
+									class="col-md-8" name="modalDocOwnerName"
+									id="modalDepName" value="" disabled>
+								</div>
 							<div class="form-group">
-								<label for="name" class="col-md-3">자동승인</label>
-								<select id="modalAutoApprovalYN" name="modalAutoApprovalYN" style="width:100px">
-            						<option value="Y"> Y </option>
-            						<option value="N"> N </option>
-            					</select>
+								<label for="name" class="col-md-3">자동송신</label> <input
+									class="col-md-8" name="modalAutoSendYN" id="modalAutoSendYN"
+									value="">
 							</div>
-							
 							<div class="form-group">
-								<label for="modalDocName" class="col-md-3">문서 이름</label> <input
-									class="col-md-9" name="modalDocName" id="modalDocName" value=""
-								>
+								<label for="name" class="col-md-3">자동승인</label> <input
+									class="col-md-8" name="modalAutoApprovalYN"
+									id="modalAutoApprovalYN" value="">
 							</div>
-							
-							<div class="form-group">
-								<label for="modalDocDetailInfo" class="col-md-3">상세 정보</label>
-								 <textarea
-									class="col-md-9" name="modalDocDetailInfo" id="modalDocDetailInfo" value="" rows="5"
-								></textarea>
-								
-							</div>
-							
-							
 						</form>
 					</div>
 				</div>
@@ -277,36 +261,44 @@ modal-body {
 			$(".tab-pane").first().addClass("active in");
 		});
 
-				
-		$(".editDocButtonClass").click(function(){
-			// var id = $('.tab-pane.active').attr('id');
-			 var id = $('.tab-pane.active').find('.table tr:eq(0)>td:eq(1)').html();
+		$("#editDocButton").click(
+		function() {
+			alert("TEST");
 			
 			$('#docEditModal').modal();
-			var docName = $('.tab-pane.active').find('.table tr:eq(0)>td:eq(1)').html();
-			var docId = $('.tab-pane.active').find('.table tr:eq(0)>td:eq(3)').html();
-			var docOwnerName = $('.tab-pane.active').find('.table tr:eq(1)>td:eq(1)').html();
-			var docOwners = $('.tab-pane.active').find('.table tr:eq(1)>td:eq(3)').html();
-			var depName = $('.tab-pane.active').find('.table tr:eq(2)>td:eq(1)').html();
-			var autoApprovalYN = $('.tab-pane.active').find('.table tr:eq(2)>td:eq(3)').html();
-			var regDate = $('.tab-pane.active').find('.table tr:eq(3)>td:eq(3)').html();
-			var docDetailInfo = $('.tab-pane.active').find('.table tr:eq(4)>td:eq(1)').html();
-				
-				
-								
-				$('#modalDocId').val(docId);
-				$('#modalDocOwners').val(docOwners);
-				$('#modalDocOwnerName').val(docOwnerName);
-				$('#modalDepName').val(depName);
-				$('#modalAutoApprovalYN').val(autoApprovalYN);
-				$('#modalDocName').val(docName);
-				$('#modalDocDetailInfo').val(docDetailInfo);
-				$('#modalRegDate').val(regDate); 
-			//alert(id);
+
+			var docId = $('tr:eq(0)>td:eq(1)').html();
+			var docOwners = $('tr:eq(0)>td:eq(3)').html();
+			var docOwnerName = $('tr:eq(1)>td:eq(1)').html();
+			var depName = $('tr:eq(1)>td:eq(3)').html()
+			
+			var autoSendYN =  $('tr:eq(2)>td:eq(1)').html()
+			var alarmYN =  $('tr:eq(2)>td:eq(3)').html()
+
+			var autoApprovalYN = $('tr:eq(3)>td:eq(1)').html()
+			var docCycleName = $('tr:eq(3)>td:eq(3)').html();
+			var alarmStdName = $('tr:eq(4)>td:eq(1)').html();
+			//alert($('tr:eq(0)>td:eq(1)').html());
+			//alert($('tr:eq(0)>td:eq(3)').html());
+			//alert($('tr:eq(1)>td:eq(1)').html());
+			//alert($('tr:eq(1)>td:eq(3)').html());
+			//alert($('tr:eq(2)>td:eq(1)').html());
+			//alert($('tr:eq(2)>td:eq(3)').html());
+			
+//			var depName
+			$('#modalDocId').val(docId);
+			$('#modalDocOwners').val(docOwners);
+			$('#modalDocOwnerName').val(docOwnerName);
+			$('#modalDepName').val(docDepName);
+			
+			$('#modalAutoSendYN').val(autoSendYN);
+			$('#modalAlarmYN').val(alarmYN);
+
+			$('#modalAutoApprovalYN').val(autoApprovalYN);
+			$('#modalDocCycleName').val(docCycleName);
+			$('#modalAlarmStdName').val(alarmStdName);
 		});
-				
-				
-	
+
 		$("#editDocModalButton").click(function() {
 			$.ajax({
 				type : 'POST',
@@ -314,16 +306,14 @@ modal-body {
 				data : {
 					"docId" : $('#modalDocId').val(),
 					"docName" : $('#modalDocName').val(),
+					"docType" : $('#modalDocType').val(),
+					"depName" : $('#modalDep').val(),
 					"docOwners" : $('#modalDocOwners').val(),
-//					"depName" : $('#modalDep').val(),
-					"regDate" : $('#modalRegDate').val(),
-					"autoApprovalYN" : $('#modalAutoApprovalYN').val(),
-					"docDetailInfo":$('#modalDocDetailInfo').val()
-				//	autoApprovalYN
+					"approval" : $('#modalDocApproval').val()
 				},
 				success : function(data) {
 					alert('doc 수정 성공');
-					window.open('docDetailList.do', '_self');
+					window.open('doc.do', '_self');
 				},
 				error : function(data) {
 					alert('Error:' + data);
@@ -331,28 +321,6 @@ modal-body {
 
 			});
 		});
-		$("#deleteDocModalButton").click(function() {
-			$.ajax({
-				type : 'POST',
-				url : "docdelete",
-				data : {
-					"docId" : $('#modalDocId').val(),
-				},
-				success : function(data) {
-					alert('doc 수정 성공');
-					window.open('docDetailList.do', '_self');
-				},
-				error : function(data) {
-					alert('Error:' + data);
-				}
-
-			});
-		});
-				
-		
-		
-		
-		
 	</script>
 
 </body>

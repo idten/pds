@@ -130,13 +130,13 @@ public class DocInfoController {
 			@RequestParam("docId") String docId,
 			@RequestParam("docName") String docName,
 			@RequestParam("docDetailInfo") String docDetailInfo,
-			@RequestParam("docCycle") String docCycle,
 			@RequestParam("docOwners") String docOwners,
+			@RequestParam(value="docCycle", required=false, defaultValue="U003") String docCycle, 
+			@RequestParam(value="alarmYN", required=false, defaultValue="N") String alarmYN, 
+			@RequestParam(value="autoSendYN", required=false, defaultValue="N") String autoSendYN, 
+			@RequestParam(value="autoApprovalYN", required=false, defaultValue="Y") String autoApprovalYN, 
+			@RequestParam(value="alarmStd", required=false, defaultValue="M030") String alarmStd 
 
-			@RequestParam("alarmYN") String alarmYN,
-			@RequestParam("autoSendYN") String autoSendYN,
-			@RequestParam("autoApprovalYN") String autoApprovalYN,
-			@RequestParam("alarmStd") String alarmStd
 			)
 	{ 
 		String today = DateUtil.getDateYYYYMMDD();
@@ -288,18 +288,38 @@ public class DocInfoController {
 		return mav;
 	}
 
+	
+	
+//	"docId" : $('#modalDocId').val(),
+//	"docName" : $('#modalDocName').val(),
+////	"docType" : $('#modalDocType').val(),
+////	"depName" : $('#modalDep').val(),
+////	"docOwners" : $('#modalDocOwners').val(),
+//	"approval" : $('#modalDocApproval').val(),
+//	"docDetailInfo":$('#modalDocDetailInfo').val()
+//	@RequestParam(value="docCycle", required=false, defaultValue="U003") String docCycle, 
+//	@RequestParam(value="alarmYN", required=false, defaultValue="N") String alarmYN, 
+//	@RequestParam(value="autoSendYN", required=false, defaultValue="N") String autoSendYN, 
+//	@RequestParam(value="autoApprovalYN", required=false, defaultValue="Y") String autoApprovalYN, 
+//	@RequestParam(value="alarmStd", required=false, defaultValue="M030") String alarmStd 
+	
+	
 	@RequestMapping(value="/docedit", method = RequestMethod.POST) 
-	public String userEdit(@RequestParam("docId") String docId,
+	public String userEdit(
+			@RequestParam("docId") String docId,
 			@RequestParam("docName") String docName,
 			@RequestParam("docDetailInfo") String docDetailInfo,
-			@RequestParam("docCycle") String docCycle,
 			@RequestParam("docOwners") String docOwners,
 
-			@RequestParam("alarmYN") String alarmYN,
-			@RequestParam("autoSendYN") String autoSendYN,
-			@RequestParam("autoApprovalYN") String autoApprovalYN,
-			@RequestParam("alarmStd") String alarmStd,
-			@RequestParam("regDate") String regDate
+			@RequestParam("regDate") String regDate,
+
+			@RequestParam(value="docCycle", required=false, defaultValue="U003") String docCycle, 
+			@RequestParam(value="alarmYN", required=false, defaultValue="N") String alarmYN, 
+			@RequestParam(value="autoSendYN", required=false, defaultValue="N") String autoSendYN, 
+			@RequestParam(value="autoApprovalYN", required=false, defaultValue="Y") String autoApprovalYN, 
+			@RequestParam(value="alarmStd", required=false, defaultValue="M030") String alarmStd 
+
+			
 
 			)
 	{ 
@@ -310,7 +330,8 @@ public class DocInfoController {
 		UserInfo userInfo = userInfoService.findByUserId(docOwners);
 		String docOwnerName = userInfo.getUserName();
 		String depName = userInfo.getDepName();
-
+	//	DocumentInfo docInfo = depInfoService..
+				
 		DocumentInfo docInfo = new DocumentInfo(docId, docName, docDetailInfo, docCycle, docCycleName, docOwners,docOwnerName, depName,alarmYN,autoSendYN,autoApprovalYN,alarmStd,alarmStdName,regDate,today);
 
 		//DocumentInfo docInfo = new DocumentInfo(docId, docName, docDetailInfo, docCycle,docOwners,alarmYN,autoSendYN,autoApprovalYN,alarmStd,regDate,today);
@@ -319,40 +340,22 @@ public class DocInfoController {
 		logger.info("docInfo Edit"+docInfo.toString());
 		documentInfoService.saveDocInfo(docInfo);//Info(docInfo);
 		logger.info("Update End:");
-		return "redirect:/doc.do"; 
+		return "redirect:docDetailList.do";
 	}
 
 
 
 	@RequestMapping(value="/docdelete", method = RequestMethod.POST) 
 	public String docDelete(
-			@RequestParam("docId") String docId,
-			@RequestParam("docName") String docName,
-			@RequestParam("docDetailInfo") String docDetailInfo,
-			@RequestParam("docCycle") String docCycle,
-			@RequestParam("docOwners") String docOwners,
-
-			@RequestParam("alarmYN") String alarmYN,
-			@RequestParam("autoSendYN") String autoSendYN,
-			@RequestParam("autoApprovalYN") String autoApprovalYN,
-			@RequestParam("alarmStd") String alarmStd
-
+			@RequestParam("docId") String docId
 			)
 	{ 
-		String docCycleName = docCycleRepository.findByDocCycleCode(docCycle).getDocCycleName();
-		String alarmStdName = alarmStdRepository.findByAlarmStdCode(alarmStd).getAlarmStdName();
-		UserInfo userInfo = userInfoService.findByUserId(docOwners);
-		String docOwnerName = userInfo.getUserName();
-		String depName = userInfo.getDepName();
-		DocumentInfo docInfo = new DocumentInfo(docId, docName, docDetailInfo, docCycle, docCycleName, docOwners,docOwnerName, depName,alarmYN,autoSendYN,autoApprovalYN,alarmStd,alarmStdName,"","");
-		logger.info("Doc Delete:"+docInfo.toString());
-		if(docInfo.getDocId()==null) {
-			logger.info("Doc Delete fail");
-			return "error";
-		}
-		documentInfoService.deleteDocInfo(docInfo);
+		logger.info("Doc Delete:"+docId);
+		documentInfoService.deleteDocInfo(docId);
+		documentStatusService.deleteDocStatus(docId);
+
 		logger.info("Doc Delete End:");
-		return "redirect:/doc.do"; 
+		return "redirect:docDetailList.do";
 	}
 
 }

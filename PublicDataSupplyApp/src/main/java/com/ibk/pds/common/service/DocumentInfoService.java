@@ -60,7 +60,10 @@ public class DocumentInfoService {
 		logger.info("delete DocumentInfo["+docInfo.toString());
 		documentInfoRepository.deleteBydocId(docInfo.getDocId());
 	}
-
+	public void deleteDocInfo(String docId) {
+		logger.info("delete DocumentInfo["+docId);
+		documentInfoRepository.deleteBydocId(docId);
+	}
 	public List<DocumentInfo> getDocInfoListByOwner(String owner) {
 		List<DocumentInfo> docs = documentInfoRepository.findBydocOwnersRegex(".*"+ owner +"*");
 		//==================================

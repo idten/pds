@@ -57,6 +57,10 @@ public class DocumentStatusService {
 		logger.info("delete DocumentInfo["+docStatus.toString());
 		documentStatusRepository.deleteBydocId(docStatus.getDocId());
 	}
+	public void deleteDocStatus(String docId) {
+		logger.info("delete DocumentInfo["+docId+"]");
+		documentStatusRepository.deleteBydocId(docId);
+	}
 	
 
 	public DocumentStatus getDocStatus(String docId) {

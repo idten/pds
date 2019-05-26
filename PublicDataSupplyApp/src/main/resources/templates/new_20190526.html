@@ -393,7 +393,7 @@ span.round-tab:hover {
 							</div>
 							<div class="col-md-10 col-xs-9">
 								<input type="text" name="docId" id="docId" placeholder="문서ID"
-									class="dropselectsec">
+									class="dropselectsec"  >
 							</div>
 						</div>
 
@@ -427,10 +427,9 @@ span.round-tab:hover {
 											</p>
 										</div>
 										<div class="col-md-10 col-xs-9">
-											<textarea rows="5" cols="70" name="docDetailInfo"
-												id="docDetailInfo" placeholder="펀드상세정보"
-												class="dropselectsec"></textarea>
-
+										    <textarea rows="5" cols="70" name="docDetailInfo" id="docDetailInfo"
+												placeholder="펀드상세정보" class="dropselectsec"></textarea>
+											
 										</div>
 									</div>
 
@@ -452,7 +451,21 @@ span.round-tab:hover {
 
 
 
-
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>자동송신여부</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<label class="radio-inline"> <input type="radio"
+												name="autoSendYN" id="autoSendY" value="Y"> 자동
+											</label> <label class="radio-inline"> <input type="radio"
+												name="autoSendYN" id="autoSendN" value="N" checked="checked">
+												수기
+											</label>
+										</div>
+									</div>
 									<div class="row mar_ned">
 										<div class="col-md-2 col-xs-3">
 											<p align="right">
@@ -469,6 +482,71 @@ span.round-tab:hover {
 											</label>
 										</div>
 									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>알람발생여부</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<label class="radio-inline"> <input type="radio"
+												name="alarmYN" id="alarmY" value="Y"> O
+											</label> <label class="radio-inline"> <input type="radio"
+												name="alarmYN" id="alarmN" value="N" checked="checked">
+												X
+											</label>
+										</div>
+									</div>
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>제공주기</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<select name="docCycle" id="docCycle" class="dropselectsec">
+												<option value="U001" checked="checked">수시로</option>
+												<option value="U002">주 1회</option>
+												<option value="U003">월 1회</option>
+												<option value="U004">분기 1회</option>
+												<option value="U005">반기 1회</option>
+												<option value="U006">년 1회</option>
+											</select>
+										</div>
+									</div>
+
+
+
+									<div class="row mar_ned">
+										<div class="col-md-2 col-xs-3">
+											<p align="right">
+												<stong>등록일(알람사용시만)</stong>
+											</p>
+										</div>
+										<div class="col-md-10 col-xs-9">
+											<div class="row">
+												<div class="col-md-4 col-xs-4 wdth">
+													<select name="alarmStd" id="alarmStd"
+														class="dropselectsec1">
+														<option value="W001">월</option>
+														<option value="W002">화</option>
+														<option value="W003">수</option>
+														<option value="W004">목</option>
+														<option value="W005">금</option>
+														<option value="M001">1일</option>
+														<option value="M005">5일</option>
+														<option value="M010">10일</option>
+														<option value="M020">20일</option>
+														<option value="M028">28일</option>
+														<option value="M030">30일</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+
 								</div>
 								<ul class="list-inline pull-right">
 									<li><button type="button"
@@ -492,9 +570,8 @@ span.round-tab:hover {
 										</div>
 										<div class="col-md-10 col-xs-9">
 											<input type="text" name="apiId" id="apiId"
-												placeholder="API ID" class="dropselectsec"
-												autocomplete="off">
-
+												placeholder="API ID" class="dropselectsec" autocomplete="off">
+											
 										</div>
 									</div>
 									<div class="row mar_ned">
@@ -504,7 +581,7 @@ span.round-tab:hover {
 											</p>
 										</div>
 										<div class="col-md-10 col-xs-9">
-											<input type="text" name="apiDetailName" id="apiDetailName"
+												<input type="text" name="apiDetailName" id="apiDetailName"
 												placeholder="기능명" class="dropselectsec" autocomplete="off">
 										</div>
 									</div>
@@ -516,9 +593,9 @@ span.round-tab:hover {
 											</p>
 										</div>
 										<div class="col-md-10 col-xs-9">
-
-											<textarea rows="5" cols="70" name="apiExplanation"
-												id="apiExplanation" placeholder="기능설명" class="dropselectsec"></textarea>
+											
+					   					  <textarea rows="5" cols="70" name="apiExplanation" id="apiExplanation"
+												placeholder="기능설명" class="dropselectsec" ></textarea>
 										</div>
 									</div>
 									<div class="row mar_ned">
@@ -545,7 +622,7 @@ span.round-tab:hover {
 											class="btn btn-primary next-step">계속(다음)</button></li>
 								</ul>
 							</div>
-
+							
 							<div class="tab-pane" role="tabpanel" id="complete">
 								<div class="step44">
 									<h5>문서/API 등록 완료</h5>
@@ -752,11 +829,25 @@ span.round-tab:hover {
 														'#docDetailInfo').val(),
 												"docOwners" : $('#docOwners')
 														.val(),
+												"autoSendYN" : $(
+														'input[name=autoSendYN]:checked')
+														.val(),
+												"alarmYN" : $(
+														'input[name=alarmYN]:checked')
+														.val(),
 												"autoApprovalYN" : $(
 														'input[name=autoApprovalYN]:checked')
-														.val()
+														.val(),
 
-										
+												"docCycle" : $(
+														"#docCycle option:selected")
+														.val(),
+												"alarmStd" : alarmStd
+											//"approval":$('#modalAddDocApprovaldocOwners
+
+											//			').val(),
+											//"alarmYN":$('')
+
 											},
 											success : function(data) {
 												alert('doc Add 성공');
