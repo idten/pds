@@ -161,25 +161,10 @@
                       <th>문서ID</th>
                       <th>담당자</th>
                       <th>승인</th>
-                      
                       <th>등록일</th>
                       <th>수정일</th>
-                      <th>상세</th>
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th style="display: none">ID</th>
-                      <th>API명</th>
-                      <th>상세API</th>
-                      <th>문서ID</th>
-                      <th>담당자</th>
-                      <th>승인</th>
-                      <th>등록일</th>
-                      <th>수정일</th>
-                      <th>상세</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
                   	<tr th:each="obj : ${datalist}">
     					<td style="display: none" th:text="${obj.apiId}"></td>
@@ -193,7 +178,6 @@
     					<td th:text="${obj.approvalYN}"></td>
     					<td th:text="${obj.regDate}"></td>
     					<td th:text="${obj.updateDate}"></td>
-    					<td><button class="btn btn-success editApiButton" data-toggle="modal" data-target="#editApiModal">Edit</button></td>
     				</tr>                
     
                   </tbody>
@@ -497,13 +481,7 @@ aria-hidden="true">
 		type:'POST',
 		url : "apidelete",
 		data:{
-			"APIID":$('#modalAddApiId').val(),
-			"APINAME":$('#modalAddApiName').val(),
-			"USERID":$('#modalAddApiUserId').val(),
-			"DOCID":$('#modalAddApiDocId').val(),
-			"APIURL":$('#modalApiAddUrl').val(),
-			"CONDITONS":$('#modalAddConditions').val(),
-			"APPROVAL":$('#modalApproval').val()
+			"apiId":$('#modalApiId').val()
 		},
 		success:function(data){
 			alert('add 성공');

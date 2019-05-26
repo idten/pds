@@ -35,7 +35,10 @@ public class ApiInfoService {
 		logger.info("delete ApiInfo["+apiInfo.toString());
 		apiInfoRepository.deleteByApiId(apiInfo.getApiId());
 	}	
-	
+	public void deleteApiInfo(String apiId) {
+		//logger.info("delete ApiInfo["+apiInfo.toString());
+		apiInfoRepository.deleteByApiId(apiId);
+	}	
 	public List<ApiInfo> getApiInfoListByDocId(String docId) {
 		List<ApiInfo> apis = apiInfoRepository.findByDocId(docId);
 		
@@ -48,5 +51,14 @@ public class ApiInfoService {
 		logger.info("getApiInfoListByUserId List.size()="+apis.size());
 		return apis;
 	}
+	
+	
+	public ApiInfo getApiInfoByApiId(String apiId) {
+		ApiInfo apiInfo = apiInfoRepository.findByApiId(apiId);//.findByDocId(docId);
+		
+		logger.info("getApiInfoByApiId");
+		return apiInfo;
+	}
+	
 	
 }

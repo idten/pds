@@ -99,23 +99,30 @@ public class ApiInfoController {
 		return mav;
 	}
 	
+//	"apiId":$('#modalApiId').val(),
+//	"apiName":$('#modalApiId').val(),
+//	"userId":$('#modalUserId').val(),
+//	"apiDetailName":$('#modalApiDetailName').val(),
+//	"modalApiExplanation":$('#modalApiExplanation').val(),
 	@RequestMapping(value="/apiedit", method = RequestMethod.POST) 
 	public String apiEdit(
 			@RequestParam("apiId") String apiId,
 			@RequestParam("apiName") String apiName,
 			@RequestParam("apiDetailName") String apiDetailName,
 			@RequestParam("apiExplanation") String apiExplanation,
-			@RequestParam("userId") String userId,
-			@RequestParam("docId") String docId,
-			@RequestParam("regDate") String regDate
+			@RequestParam("userId") String userId
+		//	@RequestParam("docId") String docId,
+		//	@RequestParam("regDate") String regDate
 			
 			)
 	{ 
 		String today = DateUtil.getDateYYYYMMDD();
-		
-		DocumentInfo docInfo = docInfoService.getDocInfobyDocId(docId).get(0);
-		
-		ApiInfo apiInfo = new ApiInfo(apiId, apiName, apiDetailName, apiExplanation,userId, docId,docInfo.getDocName(), "", "","","N",regDate,today,"","");
+		ApiInfo orgApiInfo = apiInfoService.getApiInfoByApiId(apiId);
+	//	DocumentInfo docInfo = docInfoService.getDocInfobyDocId(docId).get(0);
+		String docId = orgApiInfo.getDocId();
+		String docName = orgApiInfo.getDocName();
+		String regDate = orgApiInfo.getRegDate();
+		ApiInfo apiInfo = new ApiInfo(apiId, apiName, apiDetailName, apiExplanation,userId, docId,docName, "", "","","N",regDate,today,"","");
 		
 		//ApiInfo apiInfo = new ApiInfo(apiId, apiName, userId, docId, apiUrl, conditions);
 //		UserInfo userInfo = new UserInfo(id,name,dep,auth,null,null);
@@ -123,24 +130,33 @@ public class ApiInfoController {
 		
 		apiInfoService.saveApiInfo(apiInfo);
 		logger.info("Api Update End:");
-		return "redirect:/api.do"; 
+		return "redirect:/docDetailListApi.do?docId="+docId; 
 	}
+//	"apiId":$('#modalApiId').val(),
+//	"apiName":$('#modalApiId').val(),
+//	"userId":$('#modalUserId').val(),
+//	"apiDetailName":$('#modalApiDetailName').val(),
+//	"apiExplanation":$('#modalApiExplanation').val(),
+//	"docId":docId
+//	
 	@RequestMapping(value="/apiadd", method = RequestMethod.POST) 
 	public String apiAdd(
-			@RequestParam("apiName") String apiName,
+		//	@RequestParam("apiName") String apiName,
 			@RequestParam("apiId") String apiId,
 
-			@RequestParam("apiDetailName") String apiDetailName,
-			@RequestParam("apiExplanation") String apiExplanation,
-			@RequestParam("userId") String userId,
+			@RequestParam(value="apiDetailName", required=false, defaultValue="-") String apiDetailName,
+			@RequestParam(value="apiExplanation", required=false, defaultValue="-") String apiExplanation,
+			
+		//	@RequestParam(value="userId", required=false, defaultValue="d00000") String userId, 
+		//	@RequestParam("userId") String userId,
 			@RequestParam("docId") String docId
 			)
 	{ 
 		//String apiId = "A"+DateUtil.getDateYYYYMMDDHHMMSS();	
 		DocumentInfo docInfo = docInfoService.getDocInfobyDocId(docId).get(0);
-		
+		String userId = docInfo.getDocOwners();
 		String today = DateUtil.getDateYYYYMMDD();
-		ApiInfo apiInfo = new ApiInfo(apiId, apiName, apiDetailName, apiExplanation,userId, docId, docInfo.getDocName(),"", "","","N",today,today,"","");
+		ApiInfo apiInfo = new ApiInfo(apiId, apiId, apiDetailName, apiExplanation,userId, docId, docInfo.getDocName(),"", "","","Y",today,today,"","");
 //		UserInfo userInfo = new UserInfo(id,name,dep,auth,null,null);
 		logger.info("Api Add"+apiInfo.toString());
 		if(apiInfo.getApiId()==null) {
@@ -149,33 +165,19 @@ public class ApiInfoController {
 		}
 		apiInfoService.addApiInfo(apiInfo);
 		logger.info("Api Add End:");
-		return "redirect:/api.do"; 
+		return "redirect:/docDetailListApi.do?docId="+docId; 
 	}
 	
 	@RequestMapping(value="/apidelete", method = RequestMethod.POST) 
 	public String apiDelete(
 			@RequestParam("apiId") String apiId,
-			@RequestParam("apiName") String apiName,
-			@RequestParam("apiDetailName") String apiDetailName,
-			@RequestParam("apiExplanation") String apiExplanation,
-			@RequestParam("userId") String userId,
-			@RequestParam("docId") String docId,
-			@RequestParam("regDate") String regDate
+			@RequestParam("docId") String docId
+			
 			)
 	{ 
 		String today = DateUtil.getDateYYYYMMDD();
-		ApiInfo apiInfo = new ApiInfo(apiId, apiName, apiDetailName, apiExplanation,userId, docId, "","", "","","N",regDate,today,"","");
-//		UserInfo userInfo = new UserInfo(id,name,dep,auth,null,null);
-		
-		logger.info("Api Delete:"+apiInfo.toString());
-		if(apiInfo.getUserId()==null) {
-			logger.info("API Add fail");
-			return "error";
-		}
-		apiInfoService.deleteApiInfo(apiInfo);
-		//.deleteUserInfo(userInfo);
-	//	userInfoService.addUserInfo(userInfo);
+		apiInfoService.deleteApiInfo(apiId);
 		logger.info("Api Delete End:");
-		return "redirect:/api.do"; 
+		return "redirect:/docDetailListApi.do?docId="+docId; 
 	}
 }
