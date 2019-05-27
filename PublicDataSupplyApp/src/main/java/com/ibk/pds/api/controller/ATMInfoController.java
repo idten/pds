@@ -141,7 +141,8 @@ public class ATMInfoController {
 			@RequestParam(value="atmAddress",      required=false, defaultValue="을지로") String atmAddress,
 			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
 			) {
-		ATMInfoByAddressRequest request = new ATMInfoByAddressRequest(serviceKey,numOfRows,pageNo,atmAddress,SG_APIM);
+		ATMInfoByAddressRequest request = new ATMInfoByAddressRequest(serviceKey,numOfRows,pageNo,atmAddress
+				,SG_APIM);
 		ATMInfoResponse response = viewATMInfoByAddressCommon(request);
 		return response;
 	}
