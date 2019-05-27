@@ -129,7 +129,7 @@ public class ATMInfoController {
 		@ApiImplicitParam(name = "numOfRows", 	value = "한페이지 결과수",	required=false, defaultValue="10",			paramType = "query"),
 		@ApiImplicitParam(name = "pageNo", 		value = "페이지수 ",		required=false, defaultValue="0",			paramType = "query" 	),
 		@ApiImplicitParam(name = "serviceKey", 	value = "인증키",			required=false, defaultValue="defaultKey",	paramType = "query"),
-		@ApiImplicitParam(name = "atmName", 	value = "ATM코너명",		required=false, defaultValue="을지로",	paramType = "query"),
+		@ApiImplicitParam(name = "atmAddress", 	value = "주소",		required=false, defaultValue="을지로",	paramType = "query"),
 		@ApiImplicitParam(name = "SG_APIM", 	value = "인증키(공공포털)",	required=false, defaultValue="defaultKey",	paramType = "query")
 
 	})
@@ -138,10 +138,10 @@ public class ATMInfoController {
 			@RequestParam(value="numOfRows", 	required=false, defaultValue="10") int numOfRows, 
 			@RequestParam(value="pageNo", 		required=false, defaultValue="0") int pageNo,
 			@RequestParam(value="serviceKey", 	required=false, defaultValue="defaultKey") String serviceKey,
-			@RequestParam(value="atmName",      required=false, defaultValue="atmName") String atmName,
+			@RequestParam(value="atmAddress",      required=false, defaultValue="을지로") String atmAddress,
 			@RequestParam(value="SG_APIM", 		required=false, defaultValue="defaultKey") String SG_APIM
 			) {
-		ATMInfoByAddressRequest request = new ATMInfoByAddressRequest(serviceKey,numOfRows,pageNo,atmName,SG_APIM);
+		ATMInfoByAddressRequest request = new ATMInfoByAddressRequest(serviceKey,numOfRows,pageNo,atmAddress,SG_APIM);
 		ATMInfoResponse response = viewATMInfoByAddressCommon(request);
 		return response;
 	}
